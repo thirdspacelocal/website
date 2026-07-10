@@ -1,0 +1,70 @@
+{{ define "main" }}
+{{- partial "page-hero.html" . }}
+
+{{/* Mission intro (authored in content/about.md) */}}
+<section>
+  <div class="wrap stack content" style="max-width: 46rem">
+    {{ .Content }}
+  </div>
+</section>
+
+{{/* The five values */}}
+{{- with site.Data.values }}
+<section class="section-alt">
+  <div class="wrap">
+    <p class="eyebrow">What We Stand For</p>
+    <h2>Five things we hold to.</h2>
+    <div class="values-grid mt-2">
+      {{- range $i, $v := . }}
+      <article class="value card">
+        <div class="card-body">
+          <span class="value-num">{{ printf "%02d" (add $i 1) }}</span>
+          <h3>{{ $v.title }}</h3>
+          <p class="muted">{{ $v.body }}</p>
+        </div>
+      </article>
+      {{- end }}
+    </div>
+  </div>
+</section>
+{{- end }}
+
+{{/* The people — crew, then owners, then founders */}}
+{{- $t := site.Data.team }}
+{{- $groups := slice
+    (dict "eyebrow" "Who You'll Meet" "title" "The Crew" "people" $t.crew)
+    (dict "eyebrow" "Us" "title" "The Owners" "people" $t.owners)
+    (dict "eyebrow" "Who Started It" "title" "The Founders" "people" $t.founders) }}
+{{- range $gi, $g := $groups }}
+{{- with $g.people }}
+<section{{ if eq (mod $gi 2) 1 }} class="section-alt"{{ end }}>
+  <div class="wrap">
+    <p class="eyebrow">{{ $g.eyebrow }}</p>
+    <h2>{{ $g.title }}</h2>
+    <div class="team-grid mt-2">
+      {{- range . }}
+      {{- $m := . }}
+      <article class="card member">
+        {{- with resources.Get .image }}
+        {{- $i := .Fill "500x500 Center" }}<img src="{{ $i.RelPermalink }}" width="{{ $i.Width }}" height="{{ $i.Height }}" alt="{{ $m.name }}" loading="lazy">
+        {{- else }}
+        {{- $parts := split $m.name " " }}{{ $ini := "" }}{{ range first 2 $parts }}{{ $ini = printf "%s%s" $ini (substr . 0 1) }}{{ end }}
+        <div class="monogram" aria-hidden="true">{{ $ini }}</div>
+        {{- end }}
+        <div class="card-body">
+          <h3>{{ .name }}</h3>
+          <p class="title">{{ .title }}</p>
+          <p class="bio">{{ .bio }}</p>
+        </div>
+      </article>
+      {{- end }}
+    </div>
+  </div>
+</section>
+{{- end }}
+{{- end }}
+
+{{- if .Params.visit }}
+{{- partial "visit.html" . }}
+{{- end }}
+{{ end }}

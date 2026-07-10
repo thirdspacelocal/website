@@ -8,7 +8,7 @@ enableRobotsTXT = false  # we ship our own static/robots.txt
 disableKinds = ["taxonomy", "term"]
 
 [params]
-  description = "Gravity Brewing — handcrafted ales and lagers in Louisville, Colorado. Brewed by engineers with a technical approach to craft beer."
+  description = "Gravity Brewing — Louisville, Colorado's oldest brewery. Award-winning handcrafted ales and lagers, wood-fired sourdough pizza, and a welcoming bier garten in historic downtown Louisville."
   tagline = "Handcrafted in Louisville, Colorado"
   streetAddress = "1150 Pine Street"
   addressLocality = "Louisville"
@@ -78,13 +78,17 @@ disableKinds = ["taxonomy", "term"]
     pageRef = "/food"
     weight = 4
   [[menus.main]]
+    name = "About Us"
+    pageRef = "/about"
+    weight = 5
+  [[menus.main]]
     name = "Find Our Beers"
     pageRef = "/find-our-beers"
-    weight = 5
+    weight = 6
   [[menus.main]]
     name = "Order Online"
     url = "https://gravitybrewing.square.site"
-    weight = 6
+    weight = 7
     [menus.main.params]
       external = true
 

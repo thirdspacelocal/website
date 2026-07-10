@@ -7,9 +7,9 @@
 {{- end }}
   <div class="wrap">
     {{- with resources.Get "images/logo.png" }}<img class="hero-logo" src="{{ .RelPermalink }}" width="{{ .Width }}" height="{{ .Height }}" alt="Gravity Brewing">{{ end }}
-    <p class="eyebrow">Historic Downtown Louisville, Colorado</p>
+    <p class="eyebrow">Louisville's Oldest Brewery</p>
     <h1>Handcrafted in Louisville, Colorado.</h1>
-    <p class="lead">Award-winning, full-flavored ales &amp; lagers, brewed by engineers — plus out-of-this-world sourdough pizza from <strong>Double D's Sourdough Pizzeria</strong>, right in the tasting room.</p>
+    <p class="lead">Award-winning, full-flavored ales &amp; lagers, plus out-of-this-world sourdough pizza from <strong>Double D's Sourdough Pizzeria</strong> — in the heart of historic downtown Louisville.</p>
     <div class="hero-cta">
       <a class="btn btn-order" href="{{ site.Params.orderUrl }}" rel="noopener">Order Online</a>
       <a class="btn btn-light" href="{{ "/our-beers" | relURL }}">Our Beers</a>
@@ -26,13 +26,13 @@
 <section>
   <div class="wrap split">
     <div class="split-text stack">
-      <p class="eyebrow">A Technical Approach</p>
-      <h2>Brewing as seriously as possible.</h2>
-      <p>Gravity Brewing is owned and operated by registered professional engineers and brewing industry professionals who have a strong curiosity about how things work in the physical world. Based on this strong appreciation and knowledge of science and engineering, Gravity Brewing takes the art and technique of brewing as seriously as possible while keeping a humble perspective of our existence in this world.</p>
-      <p class="muted">We are always striving to push the envelope of conventional brewing, while maintaining a strong regard for tradition and authenticity.</p>
+      <p class="eyebrow">The Third Place</p>
+      <h2>Craft the reason to gather.</h2>
+      <p>Gravity is a <strong>third place</strong> — the spot between home and work where the neighborhood comes together. The beer is award-winning and the pizza is worth the trip, but those are really just the excuse. The point is the table you pull up to, and the people already sitting there.</p>
+      <p class="muted">Whether you're a Louisville regular or it's your very first pint, there's a seat for you here. <a href="{{ "/about" | relURL }}">Get to know us →</a></p>
     </div>
     <div class="split-media">
-      {{- with resources.Get "images/home-about-1.jpg" }}{{ $i := .Fill "760x600 Center" }}<img src="{{ $i.RelPermalink }}" width="{{ $i.Width }}" height="{{ $i.Height }}" alt="Brewing at Gravity" loading="lazy">{{ end }}
+      {{- with resources.Get "images/home-about-1.jpg" }}{{ $i := .Fill "760x600 Center" }}<img src="{{ $i.RelPermalink }}" width="{{ $i.Width }}" height="{{ $i.Height }}" alt="Gathering at Gravity Brewing" loading="lazy">{{ end }}
     </div>
   </div>
 </section>
@@ -42,8 +42,8 @@
     <div class="split-text stack">
       <p class="eyebrow">Inspirational Explorations</p>
       <h2>Why “Gravity”?</h2>
-      <p>The name Gravity encapsulates our passion nicely in one word. It represents the goal to produce high quality, full flavored ales and lagers; a product of substance and dignity; the adventure lifestyle enjoyed in Colorado; a sense of our existence in this world; and thought provocation.</p>
-      <p class="muted">Not to mention, gravity is a common term brewers use to measure the density of wort and beer — and thus the alcohol content. We are constantly looking toward innovation in engineering, science and space exploration for inspiration.</p>
+      <p>The name says it in one word. It's the pursuit of high-quality, full-flavored ales and lagers — a product of substance and dignity; the adventure lifestyle we love here in Colorado; a sense of our place in this world; and a little thought provocation with every pour.</p>
+      <p class="muted">Not to mention, gravity is the term brewers use to measure the density of wort and beer — and so its strength. We stay endlessly curious, always looking to science and space exploration for inspiration.</p>
     </div>
     <div class="split-media">
       {{- with resources.Get "images/home-about-2.jpg" }}{{ $i := .Fill "760x600 Center" }}<img src="{{ $i.RelPermalink }}" width="{{ $i.Width }}" height="{{ $i.Height }}" alt="At Gravity Brewing" loading="lazy">{{ end }}
@@ -52,25 +52,6 @@
 </section>
 
 <section>
-  <div class="wrap">
-    <p class="eyebrow">Your Hosts</p>
-    <h2>Engineers &amp; brewers.</h2>
-    <div class="grid grid-4 mt-2">
-      {{- range site.Data.team }}
-      <article class="card member">
-        {{- $m := . }}{{ with resources.Get .image }}{{ $i := .Fill "500x500 Center" }}<img src="{{ $i.RelPermalink }}" width="{{ $i.Width }}" height="{{ $i.Height }}" alt="{{ $m.name }}" loading="lazy">{{ end }}
-        <div class="card-body">
-          <h3>{{ .name }}</h3>
-          <p class="title">{{ .title }}</p>
-          <p class="bio">{{ .bio }}</p>
-        </div>
-      </article>
-      {{- end }}
-    </div>
-  </div>
-</section>
-
-<section class="section-alt">
   <div class="wrap">
     <p class="eyebrow">Come Say Hello</p>
     <h2>Beer, pizza &amp; a bier garten.</h2>

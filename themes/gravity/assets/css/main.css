@@ -152,6 +152,17 @@ section { padding-block: clamp(3rem, 7vw, 5.5rem); }
 .member img { aspect-ratio: 1/1; object-fit: cover; width: 100%; }
 .member .title { font-family: var(--mono); font-size: .78rem; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); }
 .member .bio { font-size: .95rem; color: var(--muted); }
+.member .monogram { aspect-ratio: 1/1; display: grid; place-items: center; background: var(--navy); color: #fff; font-family: var(--display); font-size: 2.6rem; letter-spacing: .05em; }
+
+/* Team groups on the About page — centered cards, capped width */
+.team-grid { display: grid; gap: 1.6rem; grid-template-columns: repeat(auto-fit, minmax(220px, 300px)); justify-content: center; }
+
+/* Five-values grid */
+.values-grid { display: grid; gap: 1.4rem; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+.value .card-body { position: relative; }
+.value-num { font-family: var(--display); font-size: .9rem; color: var(--accent); letter-spacing: .1em; }
+.value h3 { margin: .3rem 0 .5rem; }
+.value p { font-size: .95rem; }
 
 /* ---------- Quick links ---------- */
 .quicklinks { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.4rem; }

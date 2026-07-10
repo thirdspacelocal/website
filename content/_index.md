@@ -1,4 +1,4 @@
 ---
 title: "Gravity Brewing"
-description: "Gravity Brewing — handcrafted ales and lagers in Louisville, Colorado. Brewed by engineers with a technical approach to craft beer."
+description: "Gravity Brewing — Louisville, Colorado's oldest brewery. Award-winning handcrafted ales and lagers, wood-fired sourdough pizza, and a welcoming bier garten in historic downtown Louisville."
 ---
