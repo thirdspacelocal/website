@@ -177,7 +177,7 @@ body.page-dark .muted { color: #9fb0bd; }
 body.page-dark .lead { color: #dbe3ea; }
 body.page-dark .section-alt { background: var(--navy-2); }
 body.page-dark .page-head { background: var(--navy-2); border-bottom-color: var(--line-d); }
-body.page-dark .content a { color: var(--accent); }
+body.page-dark .content a:not(.btn) { color: var(--accent); }
 body.page-dark .callout { background: var(--navy-2); border-color: var(--line-d); box-shadow: none; }
 body.page-dark .hours-row { border-bottom-color: var(--line-d); }
 body.page-dark .hours dt { color: #9fb0bd; }
