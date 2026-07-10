@@ -179,7 +179,6 @@ body.page-dark .callout { background: var(--navy-2); border-color: var(--line-d)
 body.page-dark .hours-row { border-bottom-color: var(--line-d); }
 body.page-dark .hours dt { color: #9fb0bd; }
 body.page-dark .hours dd { color: #f2f6f9; }
-body.page-dark .btn { color: var(--accent); border-color: var(--accent); }
 body.page-dark address a { color: #dbe3ea; }
 
 /* Minimal featured-beers list (Our Beers) */
