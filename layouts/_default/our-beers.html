@@ -18,6 +18,7 @@
         </div>
         <div class="card-body stack">
           <h3>{{ .name }}</h3>
+          {{- with .style }}<p class="title" style="color:var(--accent);font-family:var(--mono);font-size:.75rem;letter-spacing:.12em;text-transform:uppercase">{{ . }}</p>{{ end }}
           <p class="muted">{{ .blurb }}</p>
           <a class="btn" href="{{ .untappd }}" rel="noopener">View on Untappd</a>
         </div>
