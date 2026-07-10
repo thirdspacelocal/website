@@ -3,21 +3,29 @@ title: "Tasting Room"
 eyebrow: "A spacious and relaxed atmosphere"
 subtitle: "Award-winning beer and friendly, down-to-earth service — inside and out in the bier garten."
 description: "The Gravity Brewing tasting room in Louisville, CO — craft beer by the glass, growlers, crowlers, cans and kegs to go, plus a large outdoor bier garten and Double D's Sourdough Pizzeria."
-heroImage: images/taproom-full.jpg
+heroImage: images/tr-crowd.jpg
 galleryTitle: "Inside the Tasting Room"
 gallery:
   - image: images/taproom-taps.jpg
     alt: Fresh beer on tap
-  - image: images/taproom-bar.jpg
-    alt: The bar at Gravity Brewing
-  - image: images/taproom-patio.jpg
-    alt: The outdoor bier garten
+  - image: images/tr-cans.jpg
+    alt: Gravity cans to go
+  - image: images/tr-pour.jpg
+    alt: Pouring a fresh Gravity beer
   - image: images/taproom-samples.jpg
     alt: A flight of Gravity beers
-  - image: images/brewing-barrels.jpg
-    alt: Barrel-aged beer
-  - image: images/food-pizza.jpg
-    alt: Sourdough pizza from Double D's
+  - image: images/tr-glass.jpg
+    alt: A glass of Gravity beer
+  - image: images/tr-event.jpg
+    alt: An event at the tasting room
+  - image: images/tr-gear-1.jpg
+    alt: Gravity Gear merchandise
+  - image: images/tr-gear-2.jpg
+    alt: More Gravity Gear
+  - image: images/tr-pellets.jpg
+    alt: Hops for brewing
+  - image: images/tr-lamp.jpg
+    alt: Inside the Gravity tasting room
 visit: true
 ---
 

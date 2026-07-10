@@ -1,18 +1,14 @@
-# Tasting-room / brewery photos for the rotating carousel.
-# Theme-agnostic data — any theme can render these.
-- image: images/taproom-taps.jpg
-  alt: Fresh beer on tap at the Gravity tasting room
-- image: images/taproom-bar.jpg
-  alt: The bar at Gravity Brewing
-- image: images/food-pizza.jpg
-  alt: Sourdough pizza from Double D's
-- image: images/brewing-barrels.jpg
-  alt: Barrel-aged beer at Gravity
-- image: images/taproom-patio.jpg
-  alt: The outdoor bier garten
-- image: images/taproom-samples.jpg
-  alt: A flight of Gravity beers
-- image: images/food-doubleds.jpg
-  alt: Double D's Sourdough Pizzeria at Gravity Brewing
+# HOME carousel — general "look around" shots.
+# Kept DISJOINT from the Tasting Room and Food galleries (unique images per page).
 - image: images/taproom-full.jpg
   alt: Inside the Gravity tasting room
+- image: images/taproom-patio.jpg
+  alt: The outdoor bier garten
+- image: images/brewing-barrels.jpg
+  alt: Barrel-aged beer at Gravity
+- image: images/tr-long.jpg
+  alt: The Gravity tasting room
+- image: images/tr-4452.jpg
+  alt: At Gravity Brewing
+- image: images/tr-5109.jpg
+  alt: At Gravity Brewing

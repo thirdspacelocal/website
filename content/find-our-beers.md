@@ -1,7 +1,7 @@
 ---
 title: "Find Our Beers"
 layout: "find-our-beers"
-heroImage: images/taproom-samples.jpg
+heroImage: images/band-beer.jpg
 eyebrow: "Ask for Gravity at your favorite spot"
 subtitle: "Love our beer? Ask for Gravity at your favorite bar, restaurant or bottle shop — or order online for pickup and delivery."
 description: "Where to find Gravity Brewing beer — order online at gravitybrewing.square.site, or ask for Gravity at your favorite bar or bottle shop. Wholesale inquiries welcome."

@@ -20,7 +20,7 @@
 
 {{/* Rotating photo carousel — the "highlighted pictures that rotate" */}}
 <section class="section-alt">
-  {{ partial "carousel.html" (dict "images" site.Data.gallery "title" "Inside the Tasting Room" "autoplay" 4500) }}
+  {{ partial "carousel.html" (dict "images" site.Data.gallery "title" "A Look Around Gravity" "autoplay" 4500) }}
 </section>
 
 <section>
@@ -32,7 +32,7 @@
       <p class="muted">We are always striving to push the envelope of conventional brewing, while maintaining a strong regard for tradition and authenticity.</p>
     </div>
     <div class="split-media">
-      {{- with resources.Get "images/brewing-barrels.jpg" }}{{ $i := .Fill "760x600 Center" }}<img src="{{ $i.RelPermalink }}" width="{{ $i.Width }}" height="{{ $i.Height }}" alt="Brewing at Gravity" loading="lazy">{{ end }}
+      {{- with resources.Get "images/home-about-1.jpg" }}{{ $i := .Fill "760x600 Center" }}<img src="{{ $i.RelPermalink }}" width="{{ $i.Width }}" height="{{ $i.Height }}" alt="Brewing at Gravity" loading="lazy">{{ end }}
     </div>
   </div>
 </section>
@@ -46,7 +46,7 @@
       <p class="muted">Not to mention, gravity is a common term brewers use to measure the density of wort and beer — and thus the alcohol content. We are constantly looking toward innovation in engineering, science and space exploration for inspiration.</p>
     </div>
     <div class="split-media">
-      {{- with resources.Get "images/taproom-taps.jpg" }}{{ $i := .Fill "760x600 Center" }}<img src="{{ $i.RelPermalink }}" width="{{ $i.Width }}" height="{{ $i.Height }}" alt="Taps at the Gravity tasting room" loading="lazy">{{ end }}
+      {{- with resources.Get "images/home-about-2.jpg" }}{{ $i := .Fill "760x600 Center" }}<img src="{{ $i.RelPermalink }}" width="{{ $i.Width }}" height="{{ $i.Height }}" alt="At Gravity Brewing" loading="lazy">{{ end }}
     </div>
   </div>
 </section>
