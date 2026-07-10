@@ -1,6 +1,6 @@
 <!-- rendered inside the harness doctype/head skeleton is NOT used here; this is a full Hugo page -->
 {{- partial "head.html" . -}}
-<body>
+<body{{ if not .IsHome }} class="page-dark"{{ end }}>
   {{- partial "header.html" . -}}
   <main id="main">
     {{- block "main" . }}{{ end -}}
