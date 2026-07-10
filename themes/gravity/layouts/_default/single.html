@@ -1,4 +1,7 @@
 {{ define "main" }}
+{{- if .Params.heroImage }}
+{{- partial "page-hero.html" . }}
+{{- else }}
 <div class="page-head">
   <div class="wrap">
     {{- with .Params.eyebrow }}<p class="eyebrow">{{ . }}</p>{{ end }}
@@ -6,9 +9,16 @@
     {{- with .Params.subtitle }}<p class="lead">{{ . }}</p>{{ end }}
   </div>
 </div>
+{{- end }}
+
+{{- with .Params.gallery }}
+<section class="section-alt">
+  {{ partial "carousel.html" (dict "images" . "title" $.Params.galleryTitle) }}
+</section>
+{{- end }}
 
 <section>
-  <div class="wrap stack">
+  <div class="wrap stack content">
     {{ .Content }}
   </div>
 </section>

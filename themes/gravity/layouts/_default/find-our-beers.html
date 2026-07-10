@@ -1,4 +1,5 @@
 {{ define "main" }}
+{{- if .Params.heroImage }}{{ partial "page-hero.html" . }}{{ else }}
 <div class="page-head">
   <div class="wrap">
     {{- with .Params.eyebrow }}<p class="eyebrow">{{ . }}</p>{{ end }}
@@ -6,6 +7,7 @@
     {{- with .Params.subtitle }}<p class="lead">{{ . }}</p>{{ end }}
   </div>
 </div>
+{{- end }}
 
 <section>
   <div class="wrap stack">

@@ -20,22 +20,7 @@
 
 {{/* Rotating photo carousel — the "highlighted pictures that rotate" */}}
 <section class="section-alt">
-  <div class="wrap carousel" data-carousel data-autoplay="4500">
-    <p class="eyebrow carousel-title">Inside the Tasting Room</p>
-    <div class="carousel-viewport">
-      <div class="carousel-track">
-        {{- range site.Data.gallery }}
-        {{- $g := . }}
-        <div class="carousel-slide">
-          {{- with resources.Get .image }}{{ $i := .Fill "700x460 Center" }}<img src="{{ $i.RelPermalink }}" width="{{ $i.Width }}" height="{{ $i.Height }}" alt="{{ $g.alt }}" loading="lazy">{{ end }}
-        </div>
-        {{- end }}
-      </div>
-    </div>
-    <button class="carousel-btn carousel-prev" aria-label="Previous photos">‹</button>
-    <button class="carousel-btn carousel-next" aria-label="Next photos">›</button>
-    <div class="carousel-dots" aria-hidden="true"></div>
-  </div>
+  {{ partial "carousel.html" (dict "images" site.Data.gallery "title" "Inside the Tasting Room" "autoplay" 4500) }}
 </section>
 
 <section>

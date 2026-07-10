@@ -1,0 +1,20 @@
+{{- /* Reusable rotating carousel. Params: images (list of {image, alt}), title, autoplay. */ -}}
+{{- $images := .images -}}
+{{- if $images -}}
+<div class="wrap carousel" data-carousel data-autoplay="{{ .autoplay | default 4500 }}">
+  {{- with .title }}<p class="eyebrow carousel-title">{{ . }}</p>{{ end }}
+  <div class="carousel-viewport">
+    <div class="carousel-track">
+      {{- range $images }}
+      {{- $alt := .alt | default "" }}
+      <div class="carousel-slide">
+        {{- with resources.Get .image }}{{ $i := .Fill "700x460 Center" }}<img src="{{ $i.RelPermalink }}" width="{{ $i.Width }}" height="{{ $i.Height }}" alt="{{ $alt }}" loading="lazy">{{ end }}
+      </div>
+      {{- end }}
+    </div>
+  </div>
+  <button class="carousel-btn carousel-prev" aria-label="Previous photos">‹</button>
+  <button class="carousel-btn carousel-next" aria-label="Next photos">›</button>
+  <div class="carousel-dots" aria-hidden="true"></div>
+</div>
+{{- end -}}

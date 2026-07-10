@@ -1,0 +1,10 @@
+{{- /* Compact page hero banner. Context = the page. Uses .Params.heroImage. */ -}}
+{{- $bg := "" -}}
+{{- with resources.Get .Params.heroImage }}{{ $b := .Fill "1800x820 Center" }}{{ $bg = $b.RelPermalink }}{{ end -}}
+<section class="hero page-hero"{{ with $bg }} style="--hero-img: url('{{ . }}')"{{ end }}>
+  <div class="wrap">
+    {{- with .Params.eyebrow }}<p class="eyebrow">{{ . }}</p>{{ end }}
+    <h1>{{ .Title }}</h1>
+    {{- with .Params.subtitle }}<p class="lead">{{ . }}</p>{{ end }}
+  </div>
+</section>
