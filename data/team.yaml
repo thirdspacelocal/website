@@ -1,19 +1,8 @@
 # The people of Gravity Brewing. Grouped and rendered on /about.
-# Order intentionally leads with the crew who run the place day to day,
-# then the owners, then the founders who built it and passed it on.
+# The crew (the team you'll actually meet) leads; the owner/operators follow;
+# the original founders get a brief credit line, not cards.
 
 crew:
-  - name: C.K. Lichenstein
-    title: Sales Manager
-    image: images/team-ck-lichenstein.jpg
-    bio: >-
-      CK has been involved in craft beer for way longer than he'd care to admit — first
-      volunteering at beer festivals around Portland, then moving into sales. He's worked
-      the craft scene from Free the Hops and The J. Clyde Gastropub to Yellowhammer Brewing
-      and the Alabama Brewers Guild. Since joining Gravity in 2023 he's grown from Sales
-      Representative to Sales Manager, and he's still constantly trying new styles, beers
-      and breweries.
-
   - name: Scott Smith
     title: Head Brewer
     image: images/team-scott-smith.jpg
@@ -24,37 +13,64 @@ crew:
       Brew Mart, which gave him a deep appreciation for the raw materials that make great
       beer. He runs our brewhouse today.
 
-owners:
-  - name: Don Brown
-    title: Co-Owner
-    image: images/team-don-brown.jpg
+  - name: C.K. Lichenstein
+    title: Sales Manager
+    image: images/team-ck-lichenstein.jpg
     bio: >-
-      Don has called Louisville home since 2012, and also runs Hana Studios just up the
-      street downtown. His background is in software — a career spent building startups —
-      and he took the reins at Gravity in 2026 on a simple bet: that a great neighborhood
-      brewery is really about the table you pull up to.
+      CK has been involved in craft beer for way longer than he'd care to admit. He got
+      his start volunteering at beer festivals around Portland, then moved into sales. He's
+      worked the craft scene from Free the Hops and The J. Clyde Gastropub to Yellowhammer
+      Brewing and the Alabama Brewers Guild. Since joining Gravity in 2023 he's grown from
+      Sales Representative to Sales Manager, and he's still constantly trying new styles,
+      beers and breweries.
+
+  - name: Ashley Luke
+    title: Assistant Taproom Manager
+    image: images/team-ashley-luke.jpg
+
+  - name: Caleb Hardaway
+    title: Bartender
+    image: images/team-caleb-hardaway.jpg
+
+  - name: Justin Prosolow
+    title: Bartender
+    image: images/team-justin-prosolow.jpg
+
+  - name: Michaela Murphy
+    title: Bartender & Marketing
+    image: images/team-michaela-murphy.jpg
+
+  - name: Coleridge Gollata
+    title: Delivery & Bartender
+    image: images/team-coleridge-gollata.jpg
 
   - name: Matt Gorbsky
-    title: Co-Owner
+    title: Owner / Operator
     image: images/team-matt-gorbsky.jpeg
     bio: >-
       Matt is a home brewer at heart who took the leap to the other side of the bar. His
-      background is in software too — he leads product at Broadcom — but his real happy
+      background is in software too (he leads product at Broadcom), but his real happy
       place is next to a fermenter. He joined Don as co-owner in 2026.
+
+  - name: Don Brown
+    title: Owner / Operator
+    image: images/team-don-brown.jpg
+    bio: >-
+      Don has called Louisville home since 2012, and also runs Hana Studios just up the
+      street downtown. His background is in software, a career spent building startups, and
+      he took the reins at Gravity in 2026 on a simple bet: that a great neighborhood
+      brewery is really about the table you pull up to.
 
 founders:
   - name: John Frazee
-    title: Founder
     image: images/team-john-frazee.png
     bio: >-
-      John founded Gravity Brewing, turning a longtime home-brewing hobby — sparked by his
-      older brother and Colorado's Front Range craft scene — into one of Louisville's
-      favorite breweries. He built what Gravity is today before passing the torch in 2026.
+      John caught the craft beer bug while studying engineering at CU Boulder. With a nudge
+      from his older brother and Colorado's Front Range scene, he turned a longtime
+      home-brewing hobby into Gravity Brewing, opening the doors in 2012.
 
   - name: Ryan Bowers
-    title: Co-Founder
     image: images/team-ryan-bowers.png
     bio: >-
-      Ryan co-founded Gravity, bringing a deep passion for the craft and the science behind
-      it to the brewhouse from day one. Like John, he was shaped by the Boulder and Denver
-      beer scene, and helped make Gravity what it is before handing it on in 2026.
+      Ryan brought a background in mechanical and process engineering to the science and
+      craft of brewing, shaped like John by the Boulder and Denver beer scene.

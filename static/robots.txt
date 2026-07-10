@@ -1,4 +1,4 @@
-# Gravity Brewing — we WANT to be found, by search engines and AI assistants alike.
+# Gravity Brewing: we WANT to be found, by search engines and AI assistants alike.
 
 User-agent: *
 Allow: /

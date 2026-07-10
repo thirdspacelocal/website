@@ -8,7 +8,7 @@ enableRobotsTXT = false  # we ship our own static/robots.txt
 disableKinds = ["taxonomy", "term"]
 
 [params]
-  description = "Gravity Brewing — Louisville, Colorado's oldest brewery. Award-winning handcrafted ales and lagers, wood-fired sourdough pizza, and a welcoming bier garten in historic downtown Louisville."
+  description = "Gravity Brewing is Louisville, Colorado's oldest brewery. Award-winning handcrafted ales and lagers, wood-fired sourdough pizza, and a welcoming bier garten in historic downtown Louisville."
   tagline = "Handcrafted in Louisville, Colorado"
   streetAddress = "1150 Pine Street"
   addressLocality = "Louisville"

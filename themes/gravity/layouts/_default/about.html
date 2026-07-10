@@ -2,7 +2,7 @@
 {{- partial "page-hero.html" . }}
 
 {{/* Mission intro (authored in content/about.md) */}}
-<section>
+<section class="about-intro">
   <div class="wrap stack content" style="max-width: 46rem">
     {{ .Content }}
   </div>
@@ -29,12 +29,11 @@
 </section>
 {{- end }}
 
-{{/* The people — crew, then owners, then founders */}}
+{{/* The people — crew, then owners */}}
 {{- $t := site.Data.team }}
 {{- $groups := slice
-    (dict "eyebrow" "Who You'll Meet" "title" "The Crew" "people" $t.crew)
-    (dict "eyebrow" "Us" "title" "The Owners" "people" $t.owners)
-    (dict "eyebrow" "Who Started It" "title" "The Founders" "people" $t.founders) }}
+    (dict "eyebrow" "Us" "title" "The Crew" "people" $t.crew)
+    (dict "eyebrow" "Where It Began" "title" "Who Started It All" "people" $t.founders) }}
 {{- range $gi, $g := $groups }}
 {{- with $g.people }}
 <section{{ if eq (mod $gi 2) 1 }} class="section-alt"{{ end }}>
@@ -53,8 +52,8 @@
         {{- end }}
         <div class="card-body">
           <h3>{{ .name }}</h3>
-          <p class="title">{{ .title }}</p>
-          <p class="bio">{{ .bio }}</p>
+          {{- with .title }}<p class="title">{{ . }}</p>{{ end }}
+          {{- with .bio }}<p class="bio">{{ . }}</p>{{ end }}
         </div>
       </article>
       {{- end }}

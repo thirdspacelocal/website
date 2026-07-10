@@ -10,17 +10,28 @@
       "closes" .closes) -}}
 {{- end -}}
 {{- $sameAs := slice $p.social.facebook $p.social.instagram $p.social.twitter $p.social.untappd -}}
+{{- /* Photos + logo — Google's LocalBusiness rich result wants at least one image. */ -}}
+{{- $images := slice -}}
+{{- range slice "images/taproom-full.jpg" "images/taproom-bar.jpg" "images/taproom-patio.jpg" -}}
+  {{- with resources.Get . }}{{ $i := .Fill "1200x800 Center" }}{{ $images = $images | append $i.Permalink }}{{ end -}}
+{{- end -}}
+{{- $logo := "" -}}
+{{- with resources.Get "images/logo.png" }}{{ $logo = .Permalink }}{{ end -}}
 {{- $data := dict
     "@context" "https://schema.org"
     "@type" (slice "Brewery" "BarOrPub")
+    "@id" (printf "%s#brewery" site.BaseURL)
     "name" site.Title
     "description" $p.description
     "url" site.BaseURL
     "telephone" $p.phone
     "email" $p.email
     "hasMap" $p.mapUrl
+    "hasMenu" $p.foodMenuUrl
     "priceRange" "$$"
     "servesCuisine" "Pizza"
+    "image" $images
+    "logo" $logo
     "address" (dict
       "@type" "PostalAddress"
       "streetAddress" $p.streetAddress
@@ -34,5 +45,12 @@
       "longitude" $p.longitude)
     "openingHoursSpecification" $hours
     "sameAs" $sameAs -}}
+{{- /* On the About page, name the crew (incl. owner/operators) so search + AI can answer "who owns / runs Gravity". */ -}}
+{{- if eq .RelPermalink "/about/" -}}
+  {{- $t := site.Data.team -}}
+  {{- $staff := slice -}}
+  {{- range $t.crew }}{{ $staff = $staff | append (dict "@type" "Person" "name" .name "jobTitle" .title) }}{{ end -}}
+  {{- $data = merge $data (dict "employee" $staff) -}}
+{{- end -}}
 {{ $data | jsonify (dict "indent" "  ") | safeJS }}
 </script>

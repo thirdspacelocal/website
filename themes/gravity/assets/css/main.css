@@ -152,10 +152,13 @@ section { padding-block: clamp(3rem, 7vw, 5.5rem); }
 .member img { aspect-ratio: 1/1; object-fit: cover; width: 100%; }
 .member .title { font-family: var(--mono); font-size: .78rem; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); }
 .member .bio { font-size: .95rem; color: var(--muted); }
-.member .monogram { aspect-ratio: 1/1; display: grid; place-items: center; background: var(--navy); color: #fff; font-family: var(--display); font-size: 2.6rem; letter-spacing: .05em; }
+.member .monogram { aspect-ratio: 1/1; display: grid; place-items: center; background: var(--bg-alt); color: var(--navy); font-family: var(--display); font-size: 2.6rem; letter-spacing: .05em; }
 
 /* Team groups on the About page — centered cards, capped width */
 .team-grid { display: grid; gap: 1.6rem; grid-template-columns: repeat(auto-fit, minmax(220px, 300px)); justify-content: center; }
+
+/* About intro sits closer to the values band below it */
+.about-intro { padding-bottom: clamp(1rem, 2vw, 1.5rem); }
 
 /* Five-values grid */
 .values-grid { display: grid; gap: 1.4rem; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
@@ -203,6 +206,9 @@ section { padding-block: clamp(3rem, 7vw, 5.5rem); }
 body.page-dark { background: var(--navy); color: #dbe3ea; }
 body.page-dark h1, body.page-dark h2, body.page-dark h3 { color: #f2f6f9; }
 body.page-dark .muted { color: #9fb0bd; }
+/* White cards on dark interior pages keep light-theme (dark) text for contrast */
+body.page-dark .card h3 { color: var(--ink); }
+body.page-dark .card .muted { color: var(--muted); }
 body.page-dark .lead { color: #dbe3ea; }
 body.page-dark .section-alt { background: var(--navy); }
 body.page-dark .page-head { background: var(--navy); border-bottom-color: var(--line-d); }
