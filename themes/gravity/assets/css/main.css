@@ -3,8 +3,8 @@
 :root {
   --bg:      #ffffff;
   --bg-alt:  #f4efe7;   /* warm cream section band */
-  --navy:    #1b2a3a;   /* dark bands + footer */
-  --navy-2:  #16222f;
+  --navy:    #1b2b38;   /* dark bands + footer — matches the original's section color exactly */
+  --navy-2:  #14222d;
   --ink:     #1c242c;
   --muted:   #62707c;
   --accent:  #e8543a;   /* coral */
@@ -175,8 +175,8 @@ body.page-dark { background: var(--navy); color: #dbe3ea; }
 body.page-dark h1, body.page-dark h2, body.page-dark h3 { color: #f2f6f9; }
 body.page-dark .muted { color: #9fb0bd; }
 body.page-dark .lead { color: #dbe3ea; }
-body.page-dark .section-alt { background: var(--navy-2); }
-body.page-dark .page-head { background: var(--navy-2); border-bottom-color: var(--line-d); }
+body.page-dark .section-alt { background: var(--navy); }
+body.page-dark .page-head { background: var(--navy); border-bottom-color: var(--line-d); }
 body.page-dark .content a:not(.btn) { color: var(--accent); }
 body.page-dark .callout { background: var(--navy-2); border-color: var(--line-d); box-shadow: none; }
 body.page-dark .hours-row { border-bottom-color: var(--line-d); }
