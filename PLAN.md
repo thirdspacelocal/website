@@ -186,7 +186,7 @@ Brochure site, minimal dynamic behavior of its own:
 - **`sitemap.xml`** (Hugo built-in), **favicon**, and default **OG/Twitter card image** —
   these directly shape the AI/social snippet the whole plan optimizes for.
 - Deploy to Netlify (build on git push). Ship the `_redirects` map; preserve titles/meta.
-- Enable **Netlify Analytics** (server-side, no cookie banner) to measure the machine-first bet.
+- **Skip Netlify Analytics** ($9/site add-on) — traffic is already tracked elsewhere.
 
 ### Phase 2 — Content model (announcements still hand-authored Markdown) *(meets the machine-readable goal)*
 - `announcements` section: `type` discriminator, per-type layouts, per-item **JSON-LD**
@@ -221,6 +221,10 @@ of us before committing the Kit effort.
 - **Build-hook ping:** a Kit on-publish trigger does an authenticated POST to the Netlify build
   hook. Keep the **hook URL secret in Kit config** (open URL = anyone can trigger builds);
   rate-limit. Do **not** reuse the existing `netlify` OAuth app — a bare POST is simpler.
+- **Deploy-conscious triggering (Netlify credit model):** each production deploy costs 15 of the
+  free plan's 300 monthly credits (~11–14 deploys/mo of headroom after traffic). So **debounce/
+  batch** rebuilds — coalesce rapid edits and/or a scheduled daily rebuild — rather than one
+  deploy per edit. Deploy previews/failed deploys/rollbacks cost 0 credits.
 
 ### Phase 4 — Syndication *(defer; low priority for one location)*
 - Point a publishing tool (FeedHive/Publer/Buffer, RSS-in) at the site's feed, **or** Kit pushes
@@ -258,3 +262,8 @@ of us before committing the Kit effort.
   (Skills/Cards/Memories/Tasks all differ) → genuinely new app.
 - X API 2026: pay-per-use ($0.015/post, **$0.20 if it contains a link**). Facebook Pages API
   posting supported (needs never-expiring Page token + app review). Instagram is fussiest → last.
+- **Netlify plan: Free** (credit model since Sept 2025 — 300 credits/mo, hard cap, no overage
+  billing, commercial use allowed). Traffic (~2.6k views/mo ≈ 6 GB) is trivial; **production
+  deploys (15 credits each) are the real limiter** → keep rebuilds batched. Upgrade path if
+  deploys regularly exceed ~15/mo is **Personal $9/mo (1,000 credits)**, not Pro. Skip the
+  $9/site Netlify Analytics add-on.
