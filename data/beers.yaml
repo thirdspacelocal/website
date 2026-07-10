@@ -1,0 +1,16 @@
+# Featured beers — availability based on season.
+# Descriptions are placeholders/short blurbs; Untappd links are authoritative.
+- name: Golden Mosaic
+  image: images/beer-golden-mosaic.png
+  untappd: https://untappd.com/b/gravity-brewing-golden-mosaic/1146958
+  blurb: A bright, hop-forward golden ale showcasing the tropical, citrusy character of Mosaic hops.
+
+- name: Cerveza Espacial
+  image: images/beer-cerveza-espacial.png
+  untappd: https://untappd.com/b/gravity-brewing-cerveza-espacial/1540020
+  blurb: A crisp, easy-drinking Mexican-style lager — light, refreshing, and out of this world.
+
+- name: Olde Gravitatem
+  image: images/beer-olde-gravitatem.png
+  untappd: https://untappd.com/b/gravity-brewing-olde-gravitatem/1337903
+  blurb: A rich, full-bodied ale with depth and substance — a beer of dignity.

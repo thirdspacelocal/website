@@ -1,0 +1,10 @@
+<!-- rendered inside the harness doctype/head skeleton is NOT used here; this is a full Hugo page -->
+{{- partial "head.html" . -}}
+<body>
+  {{- partial "header.html" . -}}
+  <main id="main">
+    {{- block "main" . }}{{ end -}}
+  </main>
+  {{- partial "footer.html" . -}}
+</body>
+</html>

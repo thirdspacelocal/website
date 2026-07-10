@@ -1,0 +1,25 @@
+{{- $p := site.Params -}}
+<section class="section-alt">
+  <div class="wrap split">
+    <div class="stack">
+      <p class="eyebrow">Visit Us</p>
+      <h2>{{ site.Title }}</h2>
+      <address style="font-style:normal">
+        <a href="{{ $p.mapUrl }}" rel="noopener">{{ $p.streetAddress }}, {{ $p.addressLocality }}, {{ $p.addressRegion }} {{ $p.postalCode }}</a>
+      </address>
+      <div class="callout">
+        <p class="eyebrow" style="margin-bottom:.6rem">Tasting Room Hours</p>
+        <dl class="hours">
+          {{- range $p.hours }}
+          <div class="hours-row"><dt>{{ .days }}</dt><dd>{{ .display }}</dd></div>
+          {{- end }}
+        </dl>
+      </div>
+    </div>
+    <div>
+      <iframe class="map-embed" title="Map to Gravity Brewing"
+        src="https://maps.google.com/maps?q={{ printf "%s %s %s %s" $p.streetAddress $p.addressLocality $p.addressRegion $p.postalCode | urlquery }}&output=embed"
+        loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </div>
+  </div>
+</section>

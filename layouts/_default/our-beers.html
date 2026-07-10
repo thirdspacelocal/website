@@ -1,0 +1,37 @@
+{{ define "main" }}
+<div class="page-head">
+  <div class="wrap">
+    <p class="eyebrow">Featured Beers · Availability based on season</p>
+    <h1>Our Beers</h1>
+    <p class="lead">Full-flavored ales and lagers, brewed fresh in Louisville. Our tap list rotates — the latest is always live on Untappd.</p>
+  </div>
+</div>
+
+<section>
+  <div class="wrap">
+    <div class="grid grid-3">
+      {{- range site.Data.beers }}
+      {{- $b := . }}
+      <article class="card beer">
+        <div class="beer-img">
+          {{- with resources.Get .image }}{{ $i := .Fit "500x400" }}<img src="{{ $i.RelPermalink }}" width="{{ $i.Width }}" height="{{ $i.Height }}" alt="{{ $b.name }}" loading="lazy">{{ end }}
+        </div>
+        <div class="card-body stack">
+          <h3>{{ .name }}</h3>
+          <p class="muted">{{ .blurb }}</p>
+          <a class="btn" href="{{ .untappd }}" rel="noopener">View on Untappd</a>
+        </div>
+      </article>
+      {{- end }}
+    </div>
+
+    <div class="center mt-2 stack">
+      <p class="muted">See the full, current tap list and check in your pours:</p>
+      <p>
+        <a class="btn" href="{{ site.Params.social.untappd }}" rel="noopener">All Beers on Untappd</a>
+        <a class="btn btn-order" href="{{ site.Params.orderUrl }}" rel="noopener">Order Gravity Beer Online</a>
+      </p>
+    </div>
+  </div>
+</section>
+{{ end }}

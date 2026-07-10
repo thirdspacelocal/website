@@ -1,0 +1,50 @@
+{{- $p := site.Params -}}
+<footer class="site-footer">
+  <div class="wrap footer-grid">
+
+    <div class="footer-col">
+      <h2>Visit Us</h2>
+      <p class="footer-name">{{ site.Title }}</p>
+      <address>
+        <a href="{{ $p.mapUrl }}" rel="noopener">
+          {{ $p.streetAddress }}<br>
+          {{ $p.addressLocality }}, {{ $p.addressRegion }} {{ $p.postalCode }}
+        </a>
+      </address>
+    </div>
+
+    <div class="footer-col">
+      <h2>Tasting Room Hours</h2>
+      <dl class="hours">
+        {{- range $p.hours }}
+        <div class="hours-row"><dt>{{ .days }}</dt><dd>{{ .display }}</dd></div>
+        {{- end }}
+      </dl>
+    </div>
+
+    <div class="footer-col">
+      <h2>Get In Touch</h2>
+      <p class="contact-label">Tasting Room</p>
+      <p><a href="mailto:{{ $p.email }}">{{ $p.email }}</a><br>
+         <a href="tel:{{ $p.phoneRaw }}">{{ $p.phone }}</a></p>
+      <p class="contact-label">Sales — {{ $p.salesContactName }}</p>
+      <p><a href="mailto:{{ $p.salesEmail }}">{{ $p.salesEmail }}</a><br>
+         <a href="tel:{{ $p.phoneRaw }}">{{ $p.phone }}</a></p>
+    </div>
+
+    <div class="footer-col">
+      <h2>Find Us Online</h2>
+      <ul class="social">
+        <li><a href="{{ $p.social.facebook }}" rel="noopener">Facebook</a></li>
+        <li><a href="{{ $p.social.instagram }}" rel="noopener">Instagram</a></li>
+        <li><a href="{{ $p.social.twitter }}" rel="noopener">Twitter</a></li>
+        <li><a href="{{ $p.social.untappd }}" rel="noopener">Untappd</a></li>
+      </ul>
+      <a class="btn btn-order" href="{{ $p.orderUrl }}" rel="noopener">Order Online</a>
+    </div>
+
+  </div>
+  <div class="wrap footer-legal">
+    <p>&copy; {{ now.Year }} Gravity Brewing LLC.</p>
+  </div>
+</footer>

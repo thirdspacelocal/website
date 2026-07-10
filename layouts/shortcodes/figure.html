@@ -1,0 +1,8 @@
+{{- $src := .Get "src" -}}
+{{- $alt := .Get "alt" | default "" -}}
+{{- with resources.Get $src -}}
+  {{- $i := .Fit "1100x800" -}}
+  <figure class="fig"><img src="{{ $i.RelPermalink }}" width="{{ $i.Width }}" height="{{ $i.Height }}" alt="{{ $alt }}" loading="lazy">{{ with $.Get "caption" }}<figcaption class="muted">{{ . }}</figcaption>{{ end }}</figure>
+{{- else -}}
+  <figure class="fig"><img src="{{ $src | relURL }}" alt="{{ $alt }}" loading="lazy"></figure>
+{{- end -}}

@@ -1,0 +1,28 @@
+# Gravity Brewing — we WANT to be found, by search engines and AI assistants alike.
+
+User-agent: *
+Allow: /
+
+# Explicitly welcome AI crawlers (discovery via ChatGPT, Perplexity, Google AI, Claude)
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+Sitemap: https://www.thegravitybrewing.com/sitemap.xml

@@ -1,0 +1,91 @@
+baseURL = "https://www.thegravitybrewing.com/"
+languageCode = "en-us"
+title = "Gravity Brewing"
+enableRobotsTXT = false  # we ship our own static/robots.txt
+
+# Clean output — no Squarespace-style cruft
+disableKinds = ["taxonomy", "term"]
+
+[params]
+  description = "Gravity Brewing — handcrafted ales and lagers in Louisville, Colorado. Brewed by engineers with a technical approach to craft beer."
+  tagline = "Handcrafted in Louisville, Colorado"
+  streetAddress = "1150 Pine Street"
+  addressLocality = "Louisville"
+  addressRegion = "CO"
+  postalCode = "80027"
+  addressCountry = "US"
+  phone = "(303) 544-0746"
+  phoneRaw = "+13035440746"
+  email = "info@thegravitybrewing.com"
+  salesContactName = "C.K. Lichenstein"
+  salesEmail = "ck@thegravitybrewing.com"
+  # approximate coords for Louisville, CO downtown — VERIFY before relying on for maps
+  latitude = "39.9783"
+  longitude = "-105.1319"
+
+  orderUrl = "https://gravitybrewing.square.site"
+  mapUrl = "https://g.page/GravityBrewing?share"
+  foodMenuUrl = "https://doubledspizza.com/menu"
+
+  [params.social]
+    facebook = "https://facebook.com/gravitybrewing"
+    instagram = "https://instagram.com/thegravitybrewing"
+    twitter = "https://twitter.com/gravitybrewing"
+    untappd = "https://untappd.com/gravitybrewing"
+
+  # Hours in 24h for JSON-LD openingHoursSpecification; label for display
+  [[params.hours]]
+    days = "Monday – Thursday"
+    display = "3 – 9pm"
+    dow = ["Monday", "Tuesday", "Wednesday", "Thursday"]
+    opens = "15:00"
+    closes = "21:00"
+  [[params.hours]]
+    days = "Friday"
+    display = "3 – 10pm"
+    dow = ["Friday"]
+    opens = "15:00"
+    closes = "22:00"
+  [[params.hours]]
+    days = "Saturday"
+    display = "12 – 10pm"
+    dow = ["Saturday"]
+    opens = "12:00"
+    closes = "22:00"
+  [[params.hours]]
+    days = "Sunday"
+    display = "12 – 7pm"
+    dow = ["Sunday"]
+    opens = "12:00"
+    closes = "19:00"
+
+[menus]
+  [[menus.main]]
+    name = "Welcome"
+    pageRef = "/"
+    weight = 1
+  [[menus.main]]
+    name = "Our Beers"
+    pageRef = "/our-beers"
+    weight = 2
+  [[menus.main]]
+    name = "Tasting Room"
+    pageRef = "/tasting-room"
+    weight = 3
+  [[menus.main]]
+    name = "Food"
+    pageRef = "/food"
+    weight = 4
+  [[menus.main]]
+    name = "Find Our Beers"
+    pageRef = "/find-our-beers"
+    weight = 5
+  [[menus.main]]
+    name = "Order Online"
+    url = "https://gravitybrewing.square.site"
+    weight = 6
+    [menus.main.params]
+      external = true
+
+[markup.goldmark.renderer]
+  unsafe = true  # allow inline HTML in content where needed

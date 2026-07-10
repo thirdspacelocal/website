@@ -1,0 +1,86 @@
+{{ define "main" }}
+{{- with resources.Get "images/taproom-bar.jpg" }}
+  {{- $hero := .Fill "1800x1100 Center" }}
+<section class="hero" style="--hero-img: url('{{ $hero.RelPermalink }}')">
+{{- else }}
+<section class="hero">
+{{- end }}
+  <div class="wrap">
+    <p class="eyebrow">Louisville, Colorado</p>
+    <h1>Handcrafted ales &amp; lagers, brewed by engineers.</h1>
+    <p class="lead">Gravity Brewing takes the art and technique of brewing as seriously as possible — full-flavored beer with a technical approach and a humble perspective.</p>
+    <div class="hero-cta">
+      <a class="btn btn-order" href="{{ site.Params.orderUrl }}" rel="noopener">Order Online</a>
+      <a class="btn" href="{{ "/our-beers" | relURL }}">Our Beers</a>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap split">
+    <div class="split-text stack">
+      <p class="eyebrow">A Technical Approach</p>
+      <h2>Brewing as seriously as possible.</h2>
+      <p>Gravity Brewing is owned and operated by registered professional engineers and brewing industry professionals who have a strong curiosity about how things work in the physical world. Based on this strong appreciation and knowledge of science and engineering, Gravity Brewing takes the art and technique of brewing as seriously as possible while keeping a humble perspective of our existence in this world.</p>
+      <p class="muted">We are always striving to push the envelope of conventional brewing, while maintaining a strong regard for tradition and authenticity.</p>
+    </div>
+    <div class="split-media">
+      {{- with resources.Get "images/brewing-barrels.jpg" }}{{ $i := .Fill "760x600 Center" }}<img src="{{ $i.RelPermalink }}" width="{{ $i.Width }}" height="{{ $i.Height }}" alt="Brewing at Gravity" loading="lazy">{{ end }}
+    </div>
+  </div>
+</section>
+
+<section class="section-alt">
+  <div class="wrap split reverse">
+    <div class="split-text stack">
+      <p class="eyebrow">Inspirational Explorations</p>
+      <h2>Why “Gravity”?</h2>
+      <p>The name Gravity encapsulates our passion nicely in one word. It represents the goal to produce high quality, full flavored ales and lagers; a product of substance and dignity; the adventure lifestyle enjoyed in Colorado; a sense of our existence in this world; and thought provocation.</p>
+      <p class="muted">Not to mention, gravity is a common term brewers use to measure the density of wort and beer — and thus the alcohol content. We are constantly looking toward innovation in engineering, science and space exploration for inspiration.</p>
+    </div>
+    <div class="split-media">
+      {{- with resources.Get "images/taproom-taps.jpg" }}{{ $i := .Fill "760x600 Center" }}<img src="{{ $i.RelPermalink }}" width="{{ $i.Width }}" height="{{ $i.Height }}" alt="Taps at the Gravity tasting room" loading="lazy">{{ end }}
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <p class="eyebrow">The Team</p>
+    <h2>Engineers &amp; brewers.</h2>
+    <div class="grid grid-4 mt-2">
+      {{- range site.Data.team }}
+      <article class="card member">
+        {{- $m := . }}{{ with resources.Get .image }}{{ $i := .Fill "500x500 Center" }}<img src="{{ $i.RelPermalink }}" width="{{ $i.Width }}" height="{{ $i.Height }}" alt="{{ $m.name }}" loading="lazy">{{ end }}
+        <div class="card-body">
+          <h3>{{ .name }}</h3>
+          <p class="title">{{ .title }}</p>
+          <p class="bio">{{ .bio }}</p>
+        </div>
+      </article>
+      {{- end }}
+    </div>
+  </div>
+</section>
+
+<section class="section-alt">
+  <div class="wrap">
+    <p class="eyebrow">Come Say Hello</p>
+    <h2>Beer, pizza &amp; a bier garten.</h2>
+    <div class="quicklinks mt-2">
+      <a class="quicklink" href="{{ "/food" | relURL }}">
+        {{- with resources.Get "images/food-pizza.jpg" }}{{ $i := .Fill "600x500 Center" }}<img src="{{ $i.RelPermalink }}" alt="Wood-fired pizza" loading="lazy">{{ end }}
+        <span>Food</span>
+      </a>
+      <a class="quicklink" href="{{ "/tasting-room" | relURL }}">
+        {{- with resources.Get "images/taproom-patio.jpg" }}{{ $i := .Fill "600x500 Center" }}<img src="{{ $i.RelPermalink }}" alt="The bier garten patio" loading="lazy">{{ end }}
+        <span>Tasting Room</span>
+      </a>
+      <a class="quicklink" href="{{ site.Params.orderUrl }}" rel="noopener">
+        {{- with resources.Get "images/taproom-samples.jpg" }}{{ $i := .Fill "600x500 Center" }}<img src="{{ $i.RelPermalink }}" alt="Beer to go" loading="lazy">{{ end }}
+        <span>Order Online</span>
+      </a>
+    </div>
+  </div>
+</section>
+{{ end }}

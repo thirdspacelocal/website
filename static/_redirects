@@ -1,0 +1,3 @@
+# Old Squarespace URLs → new structure. Homepage moved from /home to /.
+/home              /                 301
+/cart              https://gravitybrewing.square.site   301

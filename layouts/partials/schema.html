@@ -1,0 +1,38 @@
+{{- /* Site-wide LocalBusiness / Brewery structured data — the machine-readable core. */ -}}
+{{- $p := site.Params -}}
+<script type="application/ld+json">
+{{- $hours := slice -}}
+{{- range $p.hours -}}
+  {{- $hours = $hours | append (dict
+      "@type" "OpeningHoursSpecification"
+      "dayOfWeek" .dow
+      "opens" .opens
+      "closes" .closes) -}}
+{{- end -}}
+{{- $sameAs := slice $p.social.facebook $p.social.instagram $p.social.twitter $p.social.untappd -}}
+{{- $data := dict
+    "@context" "https://schema.org"
+    "@type" (slice "Brewery" "BarOrPub")
+    "name" site.Title
+    "description" $p.description
+    "url" site.BaseURL
+    "telephone" $p.phone
+    "email" $p.email
+    "hasMap" $p.mapUrl
+    "priceRange" "$$"
+    "servesCuisine" "Pizza"
+    "address" (dict
+      "@type" "PostalAddress"
+      "streetAddress" $p.streetAddress
+      "addressLocality" $p.addressLocality
+      "addressRegion" $p.addressRegion
+      "postalCode" $p.postalCode
+      "addressCountry" $p.addressCountry)
+    "geo" (dict
+      "@type" "GeoCoordinates"
+      "latitude" $p.latitude
+      "longitude" $p.longitude)
+    "openingHoursSpecification" $hours
+    "sameAs" $sameAs -}}
+{{ $data | jsonify (dict "indent" "  ") | safeJS }}
+</script>
