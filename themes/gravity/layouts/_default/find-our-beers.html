@@ -1,0 +1,40 @@
+{{ define "main" }}
+<div class="page-head">
+  <div class="wrap">
+    {{- with .Params.eyebrow }}<p class="eyebrow">{{ . }}</p>{{ end }}
+    <h1>{{ .Title }}</h1>
+    {{- with .Params.subtitle }}<p class="lead">{{ . }}</p>{{ end }}
+  </div>
+</div>
+
+<section>
+  <div class="wrap stack">
+    {{ .Content }}
+
+    <p>
+      <a class="btn btn-order" href="{{ site.Params.orderUrl }}" rel="noopener">Order Gravity Beer Online</a>
+      <a class="btn" href="{{ site.Params.social.untappd }}" rel="noopener">See What's Pouring on Untappd</a>
+    </p>
+  </div>
+</section>
+
+<section class="section-alt">
+  <div class="wrap split">
+    <div>
+      <p class="eyebrow">Where to buy</p>
+      <h2>Find Gravity on tap &amp; on shelves.</h2>
+      <ul class="retailers mt-2">
+        {{- range site.Data.retailers }}
+        <li><strong>{{ .name }}</strong><span>{{ .address }}</span></li>
+        {{- end }}
+      </ul>
+      <p class="muted mt-2">…and many more across the Front Range. Don't see your favorite spot? <strong>Ask for Gravity</strong> — the more people request us, the more places carry us.</p>
+    </div>
+    <div>
+      <iframe class="map-embed" title="Where to find Gravity Brewing beer"
+        referrerpolicy="no-referrer-when-downgrade"
+        src="https://maps.google.com/maps?q=Gravity%20Brewing%20Louisville%20Colorado&z=10&output=embed"></iframe>
+    </div>
+  </div>
+</section>
+{{ end }}

@@ -1,6 +1,7 @@
 baseURL = "https://www.thegravitybrewing.com/"
 languageCode = "en-us"
 title = "Gravity Brewing"
+theme = "gravity"
 enableRobotsTXT = false  # we ship our own static/robots.txt
 
 # Clean output — no Squarespace-style cruft

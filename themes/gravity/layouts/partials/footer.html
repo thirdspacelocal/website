@@ -11,6 +11,9 @@
           {{ $p.addressLocality }}, {{ $p.addressRegion }} {{ $p.postalCode }}
         </a>
       </address>
+      <iframe class="footer-map" title="Map to Gravity Brewing"
+        referrerpolicy="no-referrer-when-downgrade"
+        src="https://maps.google.com/maps?q={{ printf "%s %s %s %s" $p.streetAddress $p.addressLocality $p.addressRegion $p.postalCode | urlquery }}&output=embed"></iframe>
     </div>
 
     <div class="footer-col">

@@ -6,14 +6,35 @@
 <section class="hero">
 {{- end }}
   <div class="wrap">
-    <p class="eyebrow">Historic Downtown Louisville, Colorado</p>
-    <h1>Handcrafted ales &amp; lagers, brewed by engineers.</h1>
-    <p class="lead">Full-flavored craft beer with a technical approach — plus out-of-this-world sourdough pizza from <strong>Double D's Sourdough Pizzeria</strong>, right in the tasting room.</p>
+    {{- with resources.Get "images/logo.png" }}<img class="hero-logo" src="{{ .RelPermalink }}" width="{{ .Width }}" height="{{ .Height }}" alt="Gravity Brewing">{{ end }}
+    <p class="eyebrow">Louisville, Colorado</p>
+    <h1>Handcrafted in Louisville, Colorado.</h1>
+    <p class="lead">Full-flavored ales &amp; lagers, brewed by engineers — plus out-of-this-world sourdough pizza from <strong>Double D's Sourdough Pizzeria</strong>, right in the tasting room.</p>
     <div class="hero-cta">
-      <a class="btn btn-order" href="{{ "/food" | relURL }}">See Double D's Pizza Menu</a>
-      <a class="btn" href="{{ site.Params.orderUrl }}" rel="noopener">Order Beer Online</a>
-      <a class="btn" href="{{ "/our-beers" | relURL }}">Our Beers</a>
+      <a class="btn btn-order" href="{{ site.Params.orderUrl }}" rel="noopener">Order Online</a>
+      <a class="btn btn-light" href="{{ "/our-beers" | relURL }}">Our Beers</a>
+      <a class="btn btn-light" href="{{ "/food" | relURL }}">Double D's Menu</a>
     </div>
+  </div>
+</section>
+
+{{/* Rotating photo carousel — the "highlighted pictures that rotate" */}}
+<section class="section-alt">
+  <div class="wrap carousel" data-carousel data-autoplay="4500">
+    <p class="eyebrow carousel-title">Inside the Tasting Room</p>
+    <div class="carousel-viewport">
+      <div class="carousel-track">
+        {{- range site.Data.gallery }}
+        {{- $g := . }}
+        <div class="carousel-slide">
+          {{- with resources.Get .image }}{{ $i := .Fill "700x460 Center" }}<img src="{{ $i.RelPermalink }}" width="{{ $i.Width }}" height="{{ $i.Height }}" alt="{{ $g.alt }}" loading="lazy">{{ end }}
+        </div>
+        {{- end }}
+      </div>
+    </div>
+    <button class="carousel-btn carousel-prev" aria-label="Previous photos">‹</button>
+    <button class="carousel-btn carousel-next" aria-label="Next photos">›</button>
+    <div class="carousel-dots" aria-hidden="true"></div>
   </div>
 </section>
 

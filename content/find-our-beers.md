@@ -1,17 +1,13 @@
 ---
 title: "Find Our Beers"
+layout: "find-our-beers"
 eyebrow: "Ask for Gravity at your favorite spot"
 subtitle: "Love our beer? Ask for Gravity at your favorite bar, restaurant or bottle shop — or order online for pickup and delivery."
 description: "Where to find Gravity Brewing beer — order online at gravitybrewing.square.site, or ask for Gravity at your favorite bar or bottle shop. Wholesale inquiries welcome."
 ---
 
-Enjoy Gravity beer beyond the tasting room. **Ask for Gravity at your favorite spot** — the more
-people ask, the more places carry us.
-
-<p>
-  <a class="btn btn-order" href="{{< param orderUrl >}}" rel="noopener">Order Gravity Beer Online</a>
-  <a class="btn" href="{{< param social.untappd >}}" rel="noopener">See What's Pouring on Untappd</a>
-</p>
+Enjoy Gravity beer beyond the tasting room — order online for pickup and delivery, or find us
+on tap and on shelves across the Front Range.
 
 ### Wholesale &amp; distribution
 

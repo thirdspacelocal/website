@@ -1,0 +1,4 @@
+name = "Gravity"
+license = "MIT"
+min_version = "0.128.0"
+description = "Custom Gravity Brewing theme. Consumes site data (data/beers, data/team, params.hours/contact/social) so it can be swapped for another theme without touching content."

@@ -3,7 +3,7 @@
   command = "hugo --gc --minify"
 
 [build.environment]
-  HUGO_VERSION = "0.139.3"
+  HUGO_VERSION = "0.164.0"
   HUGO_ENV = "production"
 
 # Long-cache fingerprinted assets (Hugo fingerprints CSS + processed images)

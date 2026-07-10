@@ -30,5 +30,10 @@
   <link rel="icon" href="{{ .RelPermalink }}" type="image/webp">
   {{- end }}
 
+  {{- with resources.Get "js/carousel.js" }}
+  {{- $js := . | resources.Minify | resources.Fingerprint }}
+  <script src="{{ $js.RelPermalink }}" integrity="{{ $js.Data.Integrity }}" defer></script>
+  {{- end }}
+
   {{- partial "schema.html" . -}}
 </head>
