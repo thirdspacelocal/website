@@ -134,6 +134,8 @@ section { padding-block: clamp(3rem, 7vw, 5.5rem); }
 .carousel-dots { display: flex; gap: .5rem; justify-content: center; margin-top: 1.2rem; }
 .carousel-dots button { width: 10px; height: 10px; border-radius: 50%; border: 0; background: var(--line); cursor: pointer; padding: 0; }
 .carousel-dots button[aria-current="true"] { background: var(--accent); }
+/* Tighten the carousel band so it doesn't leave a big empty gap before the next section */
+.carousel-band { padding-top: clamp(2rem, 4vw, 3rem); padding-bottom: 0; }
 
 /* ---------- Cards / grids ---------- */
 .grid { display: grid; gap: 1.6rem; }
@@ -201,12 +203,13 @@ body.page-dark .hours dd { color: #f2f6f9; }
 body.page-dark address a { color: #dbe3ea; }
 
 /* Minimal featured-beers list (Our Beers) */
-.featured-beers { list-style: none; margin: 1rem 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
-@media (max-width: 620px) { .featured-beers { grid-template-columns: 1fr; } }
-.featured-beers a { display: flex; flex-direction: column; gap: .2rem; padding: 1rem 1.2rem; border: 1px solid var(--line-d); border-radius: 6px; color: inherit; text-decoration: none; transition: .15s; }
+.featured-beers { list-style: none; margin: 1.4rem 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.4rem; }
+@media (max-width: 720px) { .featured-beers { grid-template-columns: 1fr; } }
+.featured-beers a { display: block; border: 1px solid var(--line-d); border-radius: 6px; overflow: hidden; color: inherit; text-decoration: none; transition: .15s; }
 .featured-beers a:hover { border-color: var(--accent); }
-.featured-beers strong { font-size: 1.15rem; }
-.featured-beers span { font-family: var(--mono); font-size: .74rem; letter-spacing: .1em; text-transform: uppercase; color: var(--accent); }
+.featured-beers a img { width: 100%; height: auto; display: block; background: var(--navy-2); }
+.featured-beers strong { display: block; padding: .9rem 1.1rem 0; font-size: 1.15rem; }
+.featured-beers span { display: block; padding: .15rem 1.1rem 1rem; font-family: var(--display); font-size: .74rem; letter-spacing: .04em; text-transform: uppercase; color: var(--accent); }
 
 /* ---------- Retailer list (Find Our Beers) ---------- */
 .retailers { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, 1fr); gap: .4rem 2rem; }

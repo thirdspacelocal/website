@@ -1,11 +1,14 @@
-# Minimal featured-beers list (links to Untappd). The live tap list comes from
-# the Untappd embed; this is just the small "featured" callout.
+# Featured-beers callout on Our Beers — with the beer label graphics.
+# The full live tap list comes from the Untappd embed above.
 - name: Golden Mosaic
   style: Galactic Pale Ale
+  image: images/beer-golden-mosaic.png
   untappd: https://untappd.com/b/gravity-brewing-golden-mosaic/1146958
 - name: Cerveza Espacial
   style: Mexican-Style Lager
+  image: images/beer-cerveza-espacial.png
   untappd: https://untappd.com/b/gravity-brewing-cerveza-espacial/1540020
 - name: Olde Gravitatem
   style: Winter Warmer
+  image: images/beer-olde-gravitatem.png
   untappd: https://untappd.com/b/gravity-brewing-olde-gravitatem/1337903

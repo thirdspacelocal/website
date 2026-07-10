@@ -19,7 +19,11 @@
     <p class="eyebrow">Featured Beers · Availability based on season</p>
     <ul class="featured-beers">
       {{- range site.Data.featured }}
-      <li><a href="{{ .untappd }}" rel="noopener"><strong>{{ .name }}</strong><span>{{ .style }}</span></a></li>
+      {{- $b := . }}
+      <li><a href="{{ .untappd }}" rel="noopener">
+        {{- with resources.Get .image }}{{ $i := .Fit "560x420" }}<img src="{{ $i.RelPermalink }}" width="{{ $i.Width }}" height="{{ $i.Height }}" alt="{{ $b.name }}" loading="lazy">{{ end }}
+        <strong>{{ .name }}</strong><span>{{ .style }}</span>
+      </a></li>
       {{- end }}
     </ul>
   </div>

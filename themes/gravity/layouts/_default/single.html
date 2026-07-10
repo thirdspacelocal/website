@@ -12,7 +12,7 @@
 {{- end }}
 
 {{- with .Params.gallery }}
-<section class="section-alt">
+<section class="section-alt carousel-band">
   {{ partial "carousel.html" (dict "images" . "title" $.Params.galleryTitle) }}
 </section>
 {{- end }}
