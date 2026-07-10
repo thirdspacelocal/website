@@ -1,6 +1,16 @@
 /* Gravity Brewing theme — light, image-forward. Dependency-free (one tiny vanilla-JS carousel). */
 
+/* Bungee — the original's display font, self-hosted (no external dependency). */
+@font-face {
+  font-family: "Bungee";
+  src: url("/fonts/bungee.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
+  --display: "Bungee", var(--sans);
   --bg:      #ffffff;
   --bg-alt:  #f4efe7;   /* warm cream section band */
   --navy:    #1b2b38;   /* dark bands + footer — matches the original's section color exactly */
@@ -28,14 +38,14 @@ a { color: var(--accent); text-decoration: none; }
 a:hover { text-decoration: underline; }
 
 .wrap { max-width: var(--wrap); margin-inline: auto; padding-inline: clamp(1.1rem, 4vw, 2.5rem); }
-h1,h2,h3 { font-weight: 800; line-height: 1.1; letter-spacing: -0.01em; }
-h1 { font-size: clamp(2.4rem, 6vw, 4rem); }
-h2 { font-size: clamp(1.7rem, 3.5vw, 2.5rem); }
-h3 { font-size: 1.25rem; }
+h1,h2,h3 { font-family: var(--display); font-weight: 400; line-height: 1.15; letter-spacing: 0; text-transform: uppercase; }
+h1 { font-size: clamp(2rem, 5vw, 3.4rem); }
+h2 { font-size: clamp(1.5rem, 3vw, 2.2rem); }
+h3 { font-size: 1.15rem; }
 
 .eyebrow {
-  font-family: var(--mono); font-size: .78rem; letter-spacing: .22em;
-  text-transform: uppercase; color: var(--accent); margin: 0 0 .75rem;
+  font-family: var(--display); font-size: .8rem; letter-spacing: .04em;
+  text-transform: uppercase; color: var(--accent); margin: 0 0 .8rem;
 }
 .muted { color: var(--muted); }
 .lead { font-size: 1.2rem; max-width: 60ch; }
@@ -55,9 +65,9 @@ h3 { font-size: 1.25rem; }
 .brand { display: flex; align-items: center; gap: .7rem; color: var(--ink); }
 .brand:hover { text-decoration: none; }
 .brand img { width: 44px; height: 44px; }
-.brand-name { font-weight: 800; letter-spacing: .04em; text-transform: uppercase; font-size: 1.05rem; }
-.site-nav ul { display: flex; gap: 1.5rem; list-style: none; margin: 0; padding: 0; }
-.site-nav a { color: var(--ink); font-size: .82rem; letter-spacing: .12em; text-transform: uppercase; font-weight: 600; padding-block: .4rem; border-bottom: 2px solid transparent; }
+.brand-name { font-family: var(--display); font-weight: 400; letter-spacing: 0; text-transform: uppercase; font-size: 1rem; }
+.site-nav ul { display: flex; gap: 1.3rem; list-style: none; margin: 0; padding: 0; }
+.site-nav a { font-family: var(--display); color: var(--ink); font-size: .74rem; letter-spacing: .02em; text-transform: uppercase; font-weight: 400; padding-block: .4rem; border-bottom: 2px solid transparent; }
 .site-nav a:hover { color: var(--accent); text-decoration: none; }
 .site-nav a[aria-current="page"] { border-bottom-color: var(--accent); color: var(--accent); }
 .nav-toggle, .nav-toggle-label { display: none; }
@@ -74,7 +84,7 @@ h3 { font-size: 1.25rem; }
 }
 
 /* ---------- Buttons ---------- */
-.btn { display: inline-block; font-family: var(--mono); font-size: .82rem; letter-spacing: .14em; text-transform: uppercase; font-weight: 600; padding: .8rem 1.5rem; border-radius: 3px; border: 2px solid var(--accent); color: var(--accent); transition: .15s; background: transparent; }
+.btn { display: inline-block; font-family: var(--display); font-size: .78rem; letter-spacing: .02em; text-transform: uppercase; font-weight: 400; padding: .85rem 1.5rem; border-radius: 3px; border: 2px solid var(--accent); color: var(--accent); transition: .15s; background: transparent; }
 .btn:hover { background: var(--accent); color: #fff; text-decoration: none; }
 .btn-order { background: var(--accent); color: #fff; }
 .btn-order:hover { background: var(--accent-d); border-color: var(--accent-d); color: #fff; }
@@ -204,7 +214,7 @@ body.page-dark address a { color: #dbe3ea; }
 .footer-grid { display: grid; grid-template-columns: 1.3fr 1fr 1fr 1fr; gap: 2rem; }
 @media (max-width: 860px) { .footer-grid { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 480px) { .footer-grid { grid-template-columns: 1fr; } }
-.footer-col h2 { font-size: .8rem; letter-spacing: .16em; text-transform: uppercase; color: #ffb4a3; font-family: var(--mono); font-weight: 600; margin: 0 0 .9rem; }
+.footer-col h2 { font-size: .82rem; letter-spacing: .04em; text-transform: uppercase; color: #ffb4a3; font-family: var(--display); font-weight: 400; margin: 0 0 .9rem; }
 .footer-col p, .footer-col address { margin: 0 0 .5rem; font-style: normal; font-size: .95rem; }
 .footer-col a { color: #eef2f6; }
 .footer-name { font-weight: 700; }
