@@ -1,30 +1,16 @@
 {{ define "main" }}
-{{- if .Params.heroImage }}{{ partial "page-hero.html" . }}{{ else }}
-<div class="page-head">
+{{- $bg := "" -}}
+{{- with resources.Get .Params.heroImage }}{{ $b := .Fill "1800x820 Center" }}{{ $bg = $b.RelPermalink }}{{ end -}}
+<section class="hero page-hero"{{ with $bg }} style="--hero-img: url('{{ . }}')"{{ end }}>
   <div class="wrap">
-    {{- with .Params.eyebrow }}<p class="eyebrow">{{ . }}</p>{{ end }}
-    <h1>{{ .Title }}</h1>
-    {{- with .Params.subtitle }}<p class="lead">{{ . }}</p>{{ end }}
-  </div>
-</div>
-{{- end }}
-
-<section>
-  <div class="wrap stack content">
-    {{ .Content }}
-    <p>
-      <a class="btn btn-order" href="{{ site.Params.orderUrl }}" rel="noopener">Order Gravity Beer Online</a>
-      <a class="btn" href="{{ site.Params.social.untappd }}" rel="noopener">See What's Pouring on Untappd</a>
-    </p>
+    <h1>Ask for Gravity at Your Favorite Spot</h1>
   </div>
 </section>
 
 {{/* Live store locator — the brewery's own Storepoint map (same one the original site uses). */}}
 <section class="section-alt">
   <div class="wrap">
-    <p class="eyebrow">Where to buy</p>
-    <h2>Find Gravity on tap &amp; on shelves.</h2>
-    <div id="storepoint-container" data-map-id="161c4696062e19" class="mt-2"></div>
+    <div id="storepoint-container" data-map-id="161c4696062e19"></div>
   </div>
 </section>
 <script>(function(){var a=document.createElement("script");a.type="text/javascript";a.async=!0;a.src="https://cdn.storepoint.co/api/v1/js/161c4696062e19.js";var b=document.getElementsByTagName("script")[0];b.parentNode.insertBefore(a,b);}());</script>
