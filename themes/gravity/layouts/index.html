@@ -7,9 +7,9 @@
 {{- end }}
   <div class="wrap">
     {{- with resources.Get "images/logo.png" }}<img class="hero-logo" src="{{ .RelPermalink }}" width="{{ .Width }}" height="{{ .Height }}" alt="Gravity Brewing">{{ end }}
-    <p class="eyebrow">Louisville, Colorado</p>
+    <p class="eyebrow">Historic Downtown Louisville, Colorado</p>
     <h1>Handcrafted in Louisville, Colorado.</h1>
-    <p class="lead">Full-flavored ales &amp; lagers, brewed by engineers — plus out-of-this-world sourdough pizza from <strong>Double D's Sourdough Pizzeria</strong>, right in the tasting room.</p>
+    <p class="lead">Award-winning, full-flavored ales &amp; lagers, brewed by engineers — plus out-of-this-world sourdough pizza from <strong>Double D's Sourdough Pizzeria</strong>, right in the tasting room.</p>
     <div class="hero-cta">
       <a class="btn btn-order" href="{{ site.Params.orderUrl }}" rel="noopener">Order Online</a>
       <a class="btn btn-light" href="{{ "/our-beers" | relURL }}">Our Beers</a>
@@ -53,7 +53,7 @@
 
 <section>
   <div class="wrap">
-    <p class="eyebrow">The Team</p>
+    <p class="eyebrow">Your Hosts</p>
     <h2>Engineers &amp; brewers.</h2>
     <div class="grid grid-4 mt-2">
       {{- range site.Data.team }}

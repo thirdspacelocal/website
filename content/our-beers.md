@@ -7,6 +7,7 @@ description: "Featured Gravity Brewing beers — Golden Mosaic (Galactic Pale Al
 ---
 
 Full-flavored ales and lagers, brewed fresh in Louisville. Our tap list rotates with the seasons —
-regulars include **Golden Mosaic** (a Galactic Pale Ale), **Cerveza Espacial** (a Mexican-style
-lager) and **Olde Gravitatem** (a winter warmer old ale). The current, always-up-to-date list is
-pulled live from Untappd below.
+regulars include [**Golden Mosaic**](https://untappd.com/b/gravity-brewing-golden-mosaic/1146958)
+(a Galactic Pale Ale), [**Cerveza Espacial**](https://untappd.com/b/gravity-brewing-cerveza-espacial/1540020)
+(a Mexican-style lager) and [**Olde Gravitatem**](https://untappd.com/b/gravity-brewing-olde-gravitatem/1337903)
+(a winter warmer old ale). The current, always-up-to-date list is pulled live from Untappd below.

@@ -17,3 +17,5 @@ visit: true
 pizza to pair perfectly with your pint. Check out the full menu below.
 
 <p><a class="btn btn-order" href="{{< param foodMenuUrl >}}" rel="noopener">View the Food Menu</a></p>
+
+Want to find Gravity Beer near you? [Find our beer](/find-our-beers/).
