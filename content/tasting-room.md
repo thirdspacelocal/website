@@ -45,8 +45,9 @@ We also sell beer for consumption off premises:
 
 ### Food
 
-Now featuring **[Double D's Sourdough Pizzeria]({{< param foodMenuUrl >}})** — fresh sourdough
-pizza right in the tasting room.
+Now featuring **Double D's Sourdough Pizzeria** — fresh sourdough pizza right in the tasting room.
+
+<p><a class="btn btn-order" href="{{< param foodMenuUrl >}}" rel="noopener">Food Menu</a></p>
 
 ### Gravity Gear
 
