@@ -18,6 +18,10 @@
   </div>
 </section>
 
+{{/* Rotating photo carousel — a look around Gravity */}}
+<section class="section-alt">
+  {{ partial "carousel.html" (dict "images" site.Data.gallery "title" "A Look Around Gravity" "autoplay" 4500) }}
+</section>
 
 <section>
   <div class="wrap split">

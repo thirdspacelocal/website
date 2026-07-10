@@ -156,6 +156,9 @@ section { padding-block: clamp(3rem, 7vw, 5.5rem); }
 .content h3 { margin-top: 2rem; }
 .fig { margin: 1.6rem 0; }
 .fig img { border-radius: 6px; box-shadow: 0 8px 30px rgba(0,0,0,.12); }
+.gear-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem; }
+.gear-grid .fig { margin: 0; }
+@media (max-width: 560px) { .gear-grid { grid-template-columns: 1fr; } }
 
 /* ---------- Callout / hours / map ---------- */
 .callout { background: #fff; border: 1px solid var(--line); border-radius: 6px; padding: clamp(1.4rem, 4vw, 2.2rem); box-shadow: 0 4px 18px rgba(0,0,0,.05); }

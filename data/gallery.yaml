@@ -1,0 +1,10 @@
+# HOME carousel — a "look around Gravity" reel of signature shots.
+# May repeat photos used on the Tasting Room page (that's fine).
+- { image: images/taproom-full.jpg, alt: Inside the Gravity tasting room }
+- { image: images/taproom-bar.jpg, alt: The bar at Gravity Brewing }
+- { image: images/tr-crowd.jpg, alt: The outdoor bier garten }
+- { image: images/brewing-barrels.jpg, alt: Barrel-aged beer }
+- { image: images/tr-pour.jpg, alt: Pouring a fresh Gravity beer }
+- { image: images/taproom-patio.jpg, alt: The patio }
+- { image: images/food-pizza.jpg, alt: Sourdough pizza from Double D's }
+- { image: images/taproom-samples.jpg, alt: A flight of Gravity beers }

@@ -52,3 +52,8 @@ pizza right in the tasting room.
 
 Choose from a wide array of stylish Gravity Gear at the tasting room — t-shirts, long sleeve
 shirts, hoodies, hats, glassware and more.
+
+<div class="gear-grid">
+  {{< figure src="images/tr-gear-1.jpg" alt="Gravity Gear apparel" >}}
+  {{< figure src="images/tr-gear-2.jpg" alt="More Gravity Gear" >}}
+</div>
