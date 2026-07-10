@@ -166,6 +166,12 @@ section { padding-block: clamp(3rem, 7vw, 5.5rem); }
 .content h3 { margin-top: 2rem; }
 .fig { margin: 1.6rem 0; }
 .fig img { border-radius: 6px; box-shadow: 0 8px 30px rgba(0,0,0,.12); }
+/* Food page — circular Double D's graphic (like the original) */
+.food-block { max-width: 760px; padding-top: clamp(1rem, 3vw, 2rem); }
+.circle-img { width: min(440px, 82vw); height: min(440px, 82vw); border-radius: 50%; object-fit: cover; margin: 0 auto 2rem; box-shadow: 0 12px 44px rgba(0,0,0,.35); }
+.food-block .content { text-align: center; }
+.food-block .content p { margin-inline: auto; }
+
 .gear-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem; }
 .gear-grid .fig { margin: 0; }
 @media (max-width: 560px) { .gear-grid { grid-template-columns: 1fr; } }

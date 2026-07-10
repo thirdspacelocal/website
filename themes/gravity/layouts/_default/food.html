@@ -1,0 +1,13 @@
+{{ define "main" }}
+<section>
+  <div class="wrap food-block center stack">
+    {{- with resources.Get .Params.circleImage }}
+    {{- $i := .Fill "620x620 Center" }}
+    <img class="circle-img" src="{{ $i.RelPermalink }}" width="{{ $i.Width }}" height="{{ $i.Height }}" alt="Double D's Sourdough Pizzeria at Gravity Brewing">
+    {{- end }}
+    <div class="content stack">
+      {{ .Content }}
+    </div>
+  </div>
+</section>
+{{ end }}
