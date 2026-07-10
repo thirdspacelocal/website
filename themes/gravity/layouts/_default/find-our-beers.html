@@ -10,9 +10,8 @@
 {{- end }}
 
 <section>
-  <div class="wrap stack">
+  <div class="wrap stack content">
     {{ .Content }}
-
     <p>
       <a class="btn btn-order" href="{{ site.Params.orderUrl }}" rel="noopener">Order Gravity Beer Online</a>
       <a class="btn" href="{{ site.Params.social.untappd }}" rel="noopener">See What's Pouring on Untappd</a>
@@ -20,23 +19,13 @@
   </div>
 </section>
 
+{{/* Live store locator — the brewery's own Storepoint map (same one the original site uses). */}}
 <section class="section-alt">
-  <div class="wrap split">
-    <div>
-      <p class="eyebrow">Where to buy</p>
-      <h2>Find Gravity on tap &amp; on shelves.</h2>
-      <ul class="retailers mt-2">
-        {{- range site.Data.retailers }}
-        <li><strong>{{ .name }}</strong><span>{{ .address }}</span></li>
-        {{- end }}
-      </ul>
-      <p class="muted mt-2">…and many more across the Front Range. Don't see your favorite spot? <strong>Ask for Gravity</strong> — the more people request us, the more places carry us.</p>
-    </div>
-    <div>
-      <iframe class="map-embed" title="Where to find Gravity Brewing beer"
-        referrerpolicy="no-referrer-when-downgrade"
-        src="https://maps.google.com/maps?q=Gravity%20Brewing%20Louisville%20Colorado&z=10&output=embed"></iframe>
-    </div>
+  <div class="wrap">
+    <p class="eyebrow">Where to buy</p>
+    <h2>Find Gravity on tap &amp; on shelves.</h2>
+    <div id="storepoint-container" data-map-id="161c4696062e19" class="mt-2"></div>
   </div>
 </section>
+<script>(function(){var a=document.createElement("script");a.type="text/javascript";a.async=!0;a.src="https://cdn.storepoint.co/api/v1/js/161c4696062e19.js";var b=document.getElementsByTagName("script")[0];b.parentNode.insertBefore(a,b);}());</script>
 {{ end }}

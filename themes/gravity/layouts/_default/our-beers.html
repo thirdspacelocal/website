@@ -1,38 +1,31 @@
 {{ define "main" }}
+{{- if .Params.heroImage }}{{ partial "page-hero.html" . }}{{ else }}
 <div class="page-head">
   <div class="wrap">
     <p class="eyebrow">Featured Beers · Availability based on season</p>
-    <h1>Our Beers</h1>
-    <p class="lead">Full-flavored ales and lagers, brewed fresh in Louisville. Our tap list rotates — the latest is always live on Untappd.</p>
+    <h1>{{ .Title }}</h1>
   </div>
 </div>
+{{- end }}
 
 <section>
-  <div class="wrap">
-    <div class="grid grid-3">
-      {{- range site.Data.beers }}
-      {{- $b := . }}
-      <article class="card beer">
-        <div class="beer-img">
-          {{- with resources.Get .image }}{{ $i := .Fit "500x400" }}<img src="{{ $i.RelPermalink }}" width="{{ $i.Width }}" height="{{ $i.Height }}" alt="{{ $b.name }}" loading="lazy">{{ end }}
-        </div>
-        <div class="card-body stack">
-          <h3>{{ .name }}</h3>
-          {{- with .style }}<p class="title" style="color:var(--accent);font-family:var(--mono);font-size:.75rem;letter-spacing:.12em;text-transform:uppercase">{{ . }}</p>{{ end }}
-          <p class="muted">{{ .blurb }}</p>
-          <a class="btn" href="{{ .untappd }}" rel="noopener">View on Untappd</a>
-        </div>
-      </article>
-      {{- end }}
-    </div>
-
-    <div class="center mt-2 stack">
-      <p class="muted">See the full, current tap list and check in your pours:</p>
-      <p>
-        <a class="btn" href="{{ site.Params.social.untappd }}" rel="noopener">All Beers on Untappd</a>
-        <a class="btn btn-order" href="{{ site.Params.orderUrl }}" rel="noopener">Order Gravity Beer Online</a>
-      </p>
-    </div>
+  <div class="wrap stack content">
+    {{ .Content }}
+    <p>
+      <a class="btn btn-order" href="{{ site.Params.orderUrl }}" rel="noopener">Order Gravity Beer Online</a>
+      <a class="btn" href="{{ site.Params.social.untappd }}" rel="noopener">Our Untappd Page</a>
+    </p>
   </div>
 </section>
+
+{{/* Live tap list — the brewery's own Untappd for Business menu (location 5925 / theme 19978). */}}
+<section class="section-alt">
+  <div class="wrap">
+    <p class="eyebrow">On Tap Now</p>
+    <div id="menu-container"></div>
+  </div>
+</section>
+<script type="text/javascript">
+  !function(e,n){var t=document.createElement("script"),a=document.getElementsByTagName("script")[0];t.async=1,a.parentNode.insertBefore(t,a),t.onload=t.onreadystatechange=function(e,a){(a||!t.readyState||/loaded|complete/.test(t.readyState))&&(t.onload=t.onreadystatechange=null,t=void 0,a||n&&n())},t.src=e}("https://embed-menu-preloader.untappdapi.com/embed-menu-preloader.min.js",function(){PreloadEmbedMenu("menu-container",5925,19978)});
+</script>
 {{ end }}
