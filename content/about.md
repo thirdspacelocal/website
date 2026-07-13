@@ -8,11 +8,9 @@ heroImage: images/tr-crowd.jpg
 visit: true
 ---
 
-Gravity has been part of historic downtown Louisville for years, long enough to be the
-town's oldest brewery and stubborn enough to still care about every pour. In 2026 the
-brewery changed hands, but the plan didn't: keep making award-winning beer, keep the
-bier garten full, and keep this a place the whole neighborhood is glad to call theirs.
+Gravity Brewing opened in downtown Louisville in 2012, which makes it the oldest brewery
+in town. New owners took over in 2026, but what matters didn't change: award-winning ales
+and lagers, wood-fired sourdough pizza, and a bier garten that stays full.
 
-We think of Gravity as a **third place**, the spot between home and work where people
-actually come together. The beer and the sourdough pizza are the excuse. The gathering is
-the point.
+We want Gravity to be an easy place for the neighborhood to gather, somewhere to land
+between home and work. Pull up a chair.
