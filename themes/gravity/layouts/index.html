@@ -6,10 +6,13 @@
 <section class="hero">
 {{- end }}
   <div class="wrap">
+    <a class="hero-badge" href="{{ "/about" | relURL }}">
+      <span class="hero-badge-star" aria-hidden="true">✦</span>
+      <span class="hero-badge-text"><strong>Same great beer, new orbit.</strong> <span class="hero-badge-cta">Meet the new local owners →</span></span>
+    </a>
     {{- with resources.Get "images/logo.png" }}<img class="hero-logo" src="{{ .RelPermalink }}" width="{{ .Width }}" height="{{ .Height }}" alt="Gravity Brewing">{{ end }}
-    <p class="eyebrow">Louisville's Oldest Brewery</p>
     <h1>Handcrafted in Louisville, Colorado.</h1>
-    <p class="lead">Award-winning, full-flavored ales &amp; lagers, plus out-of-this-world sourdough pizza from <strong>Double D's Sourdough Pizzeria</strong>, in the heart of historic downtown Louisville.</p>
+    <p class="lead"><strong>Louisville's oldest brewery.</strong> Award-winning, full-flavored ales &amp; lagers, plus out-of-this-world sourdough pizza from <strong>Double D's Sourdough Pizzeria</strong>, in the heart of historic downtown Louisville.</p>
     <div class="hero-cta">
       <a class="btn btn-order" href="{{ site.Params.orderUrl }}" rel="noopener">Order Online</a>
       <a class="btn btn-light" href="{{ "/our-beers" | relURL }}">Our Beers</a>

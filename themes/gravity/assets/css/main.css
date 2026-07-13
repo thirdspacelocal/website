@@ -107,6 +107,24 @@ section { padding-block: clamp(3rem, 7vw, 5.5rem); }
 .hero .lead { color: #f3f0ea; }
 .hero-cta { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 2rem; }
 
+/* New-ownership hero badge — an evergreen line that catches a returning visitor's eye */
+.hero-badge {
+  display: inline-flex; align-items: center; gap: .6rem;
+  margin-bottom: 1.4rem; padding: .5rem .95rem .5rem .8rem;
+  background: var(--accent); color: #fff;
+  border-radius: 999px; font-size: .84rem; line-height: 1.25;
+  box-shadow: 0 6px 22px rgba(232,84,58,.4);
+  animation: badge-in .6s ease both;
+}
+.hero-badge:hover { background: var(--accent-d); color: #fff; text-decoration: none; }
+.hero-badge strong { font-weight: 700; }
+.hero-badge-cta { opacity: .9; white-space: nowrap; }
+.hero-badge-star { font-size: .95rem; animation: badge-twinkle 2.6s ease-in-out infinite; }
+@keyframes badge-twinkle { 0%,100% { opacity: .55; transform: scale(.9) rotate(0); } 50% { opacity: 1; transform: scale(1.15) rotate(90deg); } }
+@keyframes badge-in { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: none; } }
+@media (max-width: 520px) { .hero-badge { font-size: .78rem; } .hero-badge-cta { display: none; } }
+@media (prefers-reduced-motion: reduce) { .hero-badge, .hero-badge-star { animation: none; } }
+
 /* Compact page hero (interior pages) */
 .page-hero { min-height: 42vh; padding-block: 3.5rem; }
 .page-hero h1 { max-width: none; }
