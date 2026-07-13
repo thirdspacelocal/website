@@ -14,9 +14,9 @@
     <h1>Handcrafted in Louisville, Colorado.</h1>
     <p class="lead"><strong>Louisville's oldest brewery.</strong> Award-winning, full-flavored ales &amp; lagers, plus out-of-this-world sourdough pizza from <strong>Double D's Sourdough Pizzeria</strong>, in the heart of historic downtown Louisville.</p>
     <div class="hero-cta">
-      <a class="btn btn-order" href="{{ site.Params.orderUrl }}" rel="noopener">Order Online</a>
-      <a class="btn btn-light" href="{{ "/our-beers" | relURL }}">Our Beers</a>
+      <a class="btn btn-order" href="{{ "/our-beers" | relURL }}">Our Beers</a>
       <a class="btn btn-light" href="{{ "/food" | relURL }}">Double D's Menu</a>
+      <a class="btn btn-light" href="{{ "/tasting-room" | relURL }}">Visit the Tasting Room</a>
     </div>
   </div>
 </section>
@@ -67,9 +67,9 @@
         {{- with resources.Get "images/taproom-patio.jpg" }}{{ $i := .Fill "600x500 Center" }}<img src="{{ $i.RelPermalink }}" alt="The bier garten patio" loading="lazy">{{ end }}
         <span>Tasting Room</span>
       </a>
-      <a class="quicklink" href="{{ site.Params.orderUrl }}" rel="noopener">
-        {{- with resources.Get "images/taproom-samples.jpg" }}{{ $i := .Fill "600x500 Center" }}<img src="{{ $i.RelPermalink }}" alt="Beer to go" loading="lazy">{{ end }}
-        <span>Order Online</span>
+      <a class="quicklink" href="{{ "/our-beers" | relURL }}">
+        {{- with resources.Get "images/taproom-samples.jpg" }}{{ $i := .Fill "600x500 Center" }}<img src="{{ $i.RelPermalink }}" alt="A flight of Gravity beers" loading="lazy">{{ end }}
+        <span>Our Beers</span>
       </a>
     </div>
   </div>

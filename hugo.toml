@@ -24,7 +24,6 @@ disableKinds = ["taxonomy", "term"]
   latitude = "39.9783"
   longitude = "-105.1319"
 
-  orderUrl = "https://gravitybrewing.square.site"
   mapUrl = "https://g.page/GravityBrewing?share"
   foodMenuUrl = "https://doubledspizza.com/menu"
 
@@ -85,12 +84,6 @@ disableKinds = ["taxonomy", "term"]
     name = "Find Our Beers"
     pageRef = "/find-our-beers"
     weight = 6
-  [[menus.main]]
-    name = "Order Online"
-    url = "https://gravitybrewing.square.site"
-    weight = 7
-    [menus.main.params]
-      external = true
 
 [markup.goldmark.renderer]
   unsafe = true  # allow inline HTML in content where needed
