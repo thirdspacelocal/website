@@ -11,12 +11,12 @@ visit: true
 <p class="eyebrow">A Note From the Owners</p>
 
 Gravity opened in 2012 as the first brewery in Louisville, and the two of us have been
-regulars since close to the start. It's where we met friends, brought family, and lost
-track of more than a few good afternoons.
+regulars since the start. It's where we met friends, brought family, and lost track of
+more than a few good afternoons.
 
 Now it's ours to look after. We're proud to keep the legacy going and raise the orbit a
-little: an easy place to walk into, where everyone has a seat and the crowd pulls you in.
+little: an easy place to walk into, where the crowd pulls you in and everyone has a seat.
 
-Come find your seat.
+Come find yours.
 
 <p class="signoff"><span class="signoff-name">- Matt &amp; Don</span></p>
