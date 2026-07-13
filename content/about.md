@@ -2,7 +2,6 @@
 title: "About Us"
 layout: about
 eyebrow: "Louisville's Oldest Brewery"
-subtitle: "Established in 2012."
 description: "About Gravity Brewing, Louisville, Colorado's oldest brewery. Our mission, our values, and the people behind the beer, the pizza, and the bier garten."
 heroImage: images/tr-crowd.jpg
 visit: true
