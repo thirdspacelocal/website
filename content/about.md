@@ -14,13 +14,9 @@ Gravity opened in 2012 as the first brewery in Louisville, and the two of us hav
 regulars since close to the start. It's where we met friends, brought family, and lost
 track of more than a few good afternoons.
 
-When it came up for sale in 2026, we couldn't stand to watch it become something else. So
-we bought it. Same beer, same bier garten, same name over the door.
-
-What we care about most is the room itself: a place that's easy to walk into and hard to
-leave, where everyone has a seat and the crowd pulls you in. Somewhere between home and
-work that the whole neighborhood can call theirs.
+Now it's ours to look after. We're proud to keep the legacy going and raise the orbit a
+little: an easy place to walk into, where everyone has a seat and the crowd pulls you in.
 
 Come find your seat.
 
-<p class="signoff"><span class="signoff-name">Matt &amp; Don</span><span class="signoff-role">Owner / Operators</span></p>
+<p class="signoff"><span class="signoff-name">- Matt &amp; Don</span></p>

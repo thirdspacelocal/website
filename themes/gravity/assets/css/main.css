@@ -179,9 +179,8 @@ section { padding-block: clamp(3rem, 7vw, 5.5rem); }
 .about-intro { padding-bottom: clamp(1rem, 2vw, 1.5rem); }
 
 /* Owner's-note signature */
-.signoff { margin-top: 2.2rem; }
-.signoff-name { display: block; font-family: var(--display); font-size: 1.15rem; letter-spacing: .02em; }
-.signoff-role { display: block; font-family: var(--mono); font-size: .72rem; letter-spacing: .14em; text-transform: uppercase; color: var(--accent); margin-top: .4rem; }
+.signoff { margin-top: 2rem; }
+.signoff-name { display: block; font-family: var(--display); font-size: 1rem; letter-spacing: .02em; color: var(--accent); }
 
 /* Five-values grid */
 .values-grid { display: grid; gap: 1.4rem; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
