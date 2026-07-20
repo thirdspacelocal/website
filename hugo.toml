@@ -80,10 +80,6 @@ disableKinds = ["taxonomy", "term"]
     name = "About Us"
     pageRef = "/about"
     weight = 5
-  [[menus.main]]
-    name = "Find Our Beers"
-    pageRef = "/find-our-beers"
-    weight = 6
 
 [markup.goldmark.renderer]
   unsafe = true  # allow inline HTML in content where needed

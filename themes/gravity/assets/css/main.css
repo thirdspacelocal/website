@@ -223,8 +223,8 @@ section { padding-block: clamp(3rem, 7vw, 5.5rem); }
 .map-embed { width: 100%; aspect-ratio: 16/9; border: 0; border-radius: 6px; }
 
 /* ---------- Dark interior pages (everything except Home) ---------- */
-/* The original site is dark on every page but Home; the Untappd + Storepoint
-   embeds are also designed for a dark background, so this keeps them readable. */
+/* The original site is dark on every page but Home; the Untappd embed is
+   also designed for a dark background, so this keeps it readable. */
 body.page-dark { background: var(--navy); color: #dbe3ea; }
 body.page-dark h1, body.page-dark h2, body.page-dark h3 { color: #f2f6f9; }
 body.page-dark .muted { color: #9fb0bd; }

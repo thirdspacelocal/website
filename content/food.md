@@ -10,5 +10,3 @@ description: "Double D's Sourdough Pizzeria at Gravity Brewing in Louisville, CO
 Menu and other details at the link below!
 
 <p><a class="btn btn-order" href="{{< param foodMenuUrl >}}" rel="noopener">Food Menu</a></p>
-
-Want to find Gravity Beer near you? [Find our beer](/find-our-beers/).
