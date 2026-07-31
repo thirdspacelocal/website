@@ -23,8 +23,8 @@ Three things here are deliberate and easy to get wrong later:
 {{- $feed := "" -}}
 {{- $source := "" -}}
 
+{{- $opts := dict "headers" (dict "Authorization" (printf "Bearer %s" $token)) -}}
 {{- if and $url $token -}}
-  {{- $opts := dict "headers" (dict "Authorization" (printf "Bearer %s" $token)) -}}
   {{- with try (resources.GetRemote $url $opts) -}}
     {{- with .Err -}}
       {{- warnf "events: feed fetch failed (%s) -- falling back to the last committed feed" . -}}
@@ -69,6 +69,7 @@ Three things here are deliberate and easy to get wrong later:
 {{- end -}}
 
 {{- range $items -}}
+  {{- $slug := .slug -}}
   {{- $tz := .timezone | default "America/Denver" -}}
   {{- $start := time.AsTime .starts_at -}}
   {{- $next := $start -}}
@@ -134,6 +135,31 @@ Three things here are deliberate and easy to get wrong later:
          excludes every future-dated page -- which on an events site is all of
          them, so the section renders empty. updated_at is when Kit actually
          published the item, so it is truthful and always in the past. */ -}}
+  {{- /* Download the poster and attach it to the page as a resource, so Hugo
+         fingerprints it and Netlify serves it from the brewery's own domain.
+         The public site must carry no link back to Kit: it should keep working
+         if Kit is down, and the pages should not depend on our uptime.
+         A failed fetch is a warning, not a build break -- the layout falls
+         back to house artwork. */ -}}
+  {{- $posterOK := false -}}
+  {{- with .image_url -}}
+    {{- with try (resources.GetRemote . $opts) -}}
+      {{- with .Err -}}
+        {{- warnf "events: poster fetch failed (%s)" . -}}
+      {{- else with .Value -}}
+        {{- /* Keep the real extension: the published file is served by
+               Netlify, which types it from the filename. An extensionless
+               "poster" gets guessed at, and browsers may refuse to render it. */ -}}
+        {{- $ext := .MediaType.FirstSuffix.Suffix | default "jpg" -}}
+        {{- $.AddResource (dict
+          "path"    (printf "%s/poster.%s" $slug $ext)
+          "content" (dict "mediaType" .MediaType.Type "value" .Content)
+        ) -}}
+        {{- $posterOK = true -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+
   {{- $.AddPage (dict
     "path"    .slug
     "kind"    "page"
@@ -141,6 +167,7 @@ Three things here are deliberate and easy to get wrong later:
     "content" (dict "mediaType" "text/markdown" "value" (.description | default ""))
     "dates"   (dict "date" $next "publishDate" (.updated_at | default "2000-01-01T00:00:00Z" | time.AsTime) "lastmod" (.updated_at | default "2000-01-01T00:00:00Z" | time.AsTime))
     "params"  (dict
+      "hasPoster"       $posterOK
       "kitID"           .id
       "eventType"       (.type | default "event")
       "summary"         (.summary | default "")

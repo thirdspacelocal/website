@@ -1,56 +1,78 @@
 {{ define "main" }}
-{{- if .Params.heroImage }}
-{{- partial "page-hero.html" . }}
+{{- /* Above the fold is the NEXT dated event, not a generic banner. On a page
+       whose whole job is "what's on", the most useful thing a visitor can see
+       first is the thing happening soonest -- with its poster, its date and a
+       way in. A standing weekly night makes a poor hero (it is always "this
+       week"), so the featured slot takes the next one-off; if there are no
+       dated events at all it falls back to the weekly regular rather than
+       showing an empty banner. */ -}}
+{{- $dated   := sort (where .Pages "Params.recurring" false) "Params.nextStart" -}}
+{{- $regular := sort (where .Pages "Params.recurring" true)  "Params.nextStart" -}}
+{{- $featured := index $dated 0 | default (index $regular 0) -}}
+{{- $rest := after 1 $dated -}}
+{{- if not (index $dated 0) }}{{ $rest = after 1 $regular }}{{ end -}}
+
+{{- with $featured }}
+{{- $bg := partial "event-image.html" (dict "page" . "fill" "1800x900 Center") }}
+<section class="event-hero"{{ with $bg }} style="--hero-img: url('{{ . }}')"{{ end }}>
+  <div class="wrap event-hero-inner">
+    <p class="eyebrow">Next up</p>
+    <h1>{{ .Title }}</h1>
+    <p class="event-hero-when">{{ .Params.whenLabel }}</p>
+    {{- with .Params.summary }}<p class="lead">{{ . }}</p>{{ end }}
+    <p class="event-hero-cta">
+      <a class="btn btn-light" href="{{ .RelPermalink }}">Details</a>
+      {{- with .Params.registrationURL }}
+      <a class="btn btn-light" href="{{ . }}">Book a place</a>
+      {{- end }}
+    </p>
+  </div>
+</section>
 {{- else }}
 <div class="page-head">
   <div class="wrap">
-    {{- with .Params.eyebrow }}<p class="eyebrow">{{ . }}</p>{{ end }}
+    <p class="eyebrow">{{ .Params.eyebrow }}</p>
     <h1>{{ .Title }}</h1>
-    {{- with .Params.subtitle }}<p class="lead">{{ . }}</p>{{ end }}
   </div>
 </div>
 {{- end }}
 
-{{- /* Weekly regulars are listed apart from one-off dates. A standing trivia
-       night sorted in among dated events either floats to the top forever or
-       sinks out of sight, and neither is what a visitor wants to know. */ -}}
-{{- $upcoming := where .Pages "Params.recurring" false -}}
-{{- $regular  := where .Pages "Params.recurring" true -}}
-
-<section>
-  <div class="wrap stack content">
-    {{ .Content }}
-  </div>
-</section>
-
-{{- with $regular }}
+{{- with $rest }}
 <section class="section-alt">
   <div class="wrap">
-    <p class="eyebrow">Every week</p>
-    <div class="grid grid-3">
-      {{- range sort . "Params.nextStart" }}
-      {{ partial "event-card.html" . }}
+    <h2 class="events-heading">Coming up</h2>
+    <ul class="agenda">
+      {{- range . }}
+      {{ partial "event-row.html" . }}
       {{- end }}
-    </div>
+    </ul>
   </div>
 </section>
 {{- end }}
 
+{{- with $regular }}
 <section>
   <div class="wrap">
-    <p class="eyebrow">Coming up</p>
-    {{- with $upcoming }}
-    <div class="grid grid-3">
-      {{- range sort . "Params.nextStart" }}
-      {{ partial "event-card.html" . }}
+    <h2 class="events-heading">Every week</h2>
+    <ul class="agenda">
+      {{- range . }}
+      {{- if ne . $featured }}
+      {{ partial "event-row.html" . }}
       {{- end }}
-    </div>
-    {{- else }}
-    <p class="muted">Nothing on the calendar just now — check back soon, or
-      follow us on <a href="{{ site.Params.social.instagram }}">Instagram</a>.</p>
-    {{- end }}
+      {{- end }}
+    </ul>
   </div>
 </section>
+{{- end }}
+
+{{- if and (not $dated) (not $regular) }}
+<section>
+  <div class="wrap">
+    <p class="lead">Nothing on the calendar just now — check back soon, or
+      follow us on <a href="{{ site.Params.social.instagram }}">Instagram</a>.</p>
+  </div>
+</section>
+{{- end }}
 
 {{- partial "visit.html" . }}
 {{ end }}
