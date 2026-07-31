@@ -1,0 +1,15 @@
+{{- /* One event in a list. Context = the event page.
+       whenLabel is computed once in the content adapter so this card and the
+       detail page can never disagree about when something happens. */ -}}
+<article class="card">
+  <div class="card-body">
+    <p class="eyebrow">{{ .Params.whenLabel }}</p>
+    <h3><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+    {{- with .Params.summary }}<p>{{ . }}</p>{{ end }}
+    <p class="muted event-meta">
+      {{- with .Params.location }}{{ . }}{{ end -}}
+      {{- with .Params.priceLabel }} · {{ . }}{{ end -}}
+      {{- if eq .Params.eventType "festival" }} · Off-site{{ end -}}
+    </p>
+  </div>
+</article>

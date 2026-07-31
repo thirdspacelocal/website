@@ -272,3 +272,10 @@ body.page-dark address a { color: #dbe3ea; }
 .social a { color: #eef2f6; font-size: .95rem; }
 .footer-legal { border-top: 1px solid var(--line-d); margin-top: 2.5rem; padding-block: 1.4rem; }
 .footer-legal p { margin: 0; color: #8f9ba7; font-size: .85rem; }
+
+/* ---- Events -------------------------------------------------------- */
+.event-meta { font-size: .85rem; margin: .6rem 0 0; }
+.event-facts { display: grid; grid-template-columns: max-content 1fr; gap: .5rem 1.4rem; margin: 0 0 2rem; }
+.event-facts dt { font-family: var(--display); font-size: .78rem; letter-spacing: .04em; text-transform: uppercase; color: var(--accent); }
+.event-facts dd { margin: 0; }
+@media (max-width: 480px) { .event-facts { grid-template-columns: 1fr; gap: .2rem 0; } .event-facts dt { margin-top: .8rem; } }

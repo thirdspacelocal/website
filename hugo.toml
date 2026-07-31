@@ -77,9 +77,28 @@ disableKinds = ["taxonomy", "term"]
     pageRef = "/food"
     weight = 4
   [[menus.main]]
+    name = "What's On"
+    pageRef = "/events"
+    weight = 5
+  [[menus.main]]
     name = "About Us"
     pageRef = "/about"
-    weight = 5
+    weight = 6
 
 [markup.goldmark.renderer]
   unsafe = true  # allow inline HTML in content where needed
+
+# The events content adapter reads the Kit feed URL and token from the build
+# environment. Hugo's getenv allowlist defaults to HUGO_/CI only, so the KIT_
+# pair has to be named explicitly.
+[security.funcs]
+  getenv = ['^HUGO_', '^CI$', '^KIT_EVENTS_']
+
+# Hugo caches remote resources FOREVER by default (maxAge -1), and Netlify
+# persists its build cache between deploys -- so without this the events page
+# would keep publishing whatever the feed said the first time it was ever
+# fetched, and no amount of editing in Kit would change the live site. The feed
+# is the one thing that must be fresh on every build.
+[caches.getresource]
+  dir = ':cacheDir/:project'
+  maxAge = 0
