@@ -20,14 +20,14 @@ Three things here are deliberate and easy to get wrong later:
 
 {{- $url := getenv "KIT_EVENTS_URL" -}}
 {{- $token := getenv "KIT_EVENTS_TOKEN" -}}
+{{- $opts := dict "headers" (dict "Authorization" (printf "Bearer %s" $token)) -}}
 {{- $feed := "" -}}
 {{- $source := "" -}}
 
-{{- $opts := dict "headers" (dict "Authorization" (printf "Bearer %s" $token)) -}}
 {{- if and $url $token -}}
   {{- with try (resources.GetRemote $url $opts) -}}
     {{- with .Err -}}
-      {{- warnf "events: feed fetch failed (%s) -- falling back to the last committed feed" . -}}
+      {{- warnf "events: feed fetch failed (%s) -- falling back to the last snapshot" . -}}
     {{- else with .Value -}}
       {{- $feed = .Content | transform.Unmarshal -}}
       {{- $source = "live feed" -}}
@@ -35,15 +35,15 @@ Three things here are deliberate and easy to get wrong later:
   {{- end -}}
 {{- end -}}
 
-{{- /* Fall back only to a NON-EMPTY committed feed. An empty one would let a
-       fetch failure quietly publish an empty events page, which looks exactly
-       like "nothing is on" -- whereas with no usable fallback a production
-       build fails loudly and someone fixes it. */ -}}
+{{- /* Fall back only to a NON-EMPTY snapshot. An empty one would let a fetch
+       failure quietly publish an empty events page, which looks exactly like
+       "nothing is on" -- whereas with no usable fallback a production build
+       fails loudly and someone fixes it. */ -}}
 {{- if not $feed -}}
   {{- with hugo.Data.events -}}
     {{- if .events -}}
       {{- $feed = . -}}
-      {{- $source = "last committed feed (data/events.json)" -}}
+      {{- $source = "snapshot (data/events.json)" -}}
       {{- warnf "events: feed unavailable -- publishing %s" $source -}}
     {{- end -}}
   {{- end -}}
@@ -51,11 +51,9 @@ Three things here are deliberate and easy to get wrong later:
 
 {{- if not $feed -}}
   {{- if eq (getenv "HUGO_ENV") "production" -}}
-    {{- errorf "events: no feed available and no committed fallback. Set KIT_EVENTS_URL and KIT_EVENTS_TOKEN in the Netlify build environment. Refusing to publish sample events." -}}
+    {{- errorf "events: no feed and no snapshot. Set KIT_EVENTS_URL and KIT_EVENTS_TOKEN in the build environment, or run `make snapshot`." -}}
   {{- else -}}
-    {{- $feed = hugo.Data.events_sample -}}
-    {{- $source = "SAMPLE DATA (data/events_sample.json)" -}}
-    {{- warnf "events: no feed configured -- rendering %s. Nothing here is real." $source -}}
+    {{- warnf "events: no feed configured and no snapshot -- the events page will be empty. Run `make dev-live`, or `make snapshot` once to work offline." -}}
   {{- end -}}
 {{- end -}}
 
@@ -142,7 +140,10 @@ Three things here are deliberate and easy to get wrong later:
          A failed fetch is a warning, not a build break -- the layout falls
          back to house artwork. */ -}}
   {{- $posterOK := false -}}
-  {{- with .image_url -}}
+  {{- /* Only attempt the download when there is a token to do it with.
+         Offline dev has none, and the fetch would fail once per event for a
+         reason that is expected rather than interesting. */ -}}
+  {{- with (and $token .image_url) -}}
     {{- with try (resources.GetRemote . $opts) -}}
       {{- with .Err -}}
         {{- warnf "events: poster fetch failed (%s)" . -}}

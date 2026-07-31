@@ -30,8 +30,8 @@ $(HUGO):
 setup: $(HUGO) ## Install the pinned Hugo into .bin/
 
 .PHONY: dev
-dev: $(HUGO) ## Serve locally with SAMPLE events (no network, no Kit needed)
-	@echo "Sample events — nothing on this page is real. Use 'make dev-live' for Kit data."
+dev: $(HUGO) ## Serve locally offline, from the last `make snapshot`
+	@test -s data/events.json || echo "No data/events.json — the events page will be empty. Run 'make snapshot' once, or use 'make dev-live'."
 	@env -u KIT_EVENTS_URL -u KIT_EVENTS_TOKEN $(HUGO) server --buildDrafts --disableFastRender
 
 .PHONY: dev-live
@@ -42,8 +42,8 @@ dev-live: $(HUGO) require-feed ## Serve locally against the real Kit events feed
 build: $(HUGO) require-feed ## Production build, exactly as Netlify runs it
 	@HUGO_ENV=production $(HUGO) --gc --minify --cleanDestinationDir
 
-.PHONY: build-sample
-build-sample: $(HUGO) ## Production-flag build against sample data (should FAIL — proves the guard)
+.PHONY: build-offline
+build-offline: $(HUGO) ## Production build with no feed (FAILS unless a snapshot exists — proves the guard)
 	@env -u KIT_EVENTS_URL -u KIT_EVENTS_TOKEN HUGO_ENV=production $(HUGO) --gc --minify --cleanDestinationDir
 
 .PHONY: feed
@@ -51,7 +51,7 @@ feed: require-feed ## Print the live feed Kit is serving
 	@curl -sS -H "Authorization: Bearer $(KIT_EVENTS_TOKEN)" "$(KIT_EVENTS_URL)"
 
 .PHONY: snapshot
-snapshot: require-feed ## Save the live feed as the committed last-good fallback
+snapshot: require-feed ## Save the live feed as the offline/last-good snapshot
 	@curl -sSf -H "Authorization: Bearer $(KIT_EVENTS_TOKEN)" "$(KIT_EVENTS_URL)" > data/events.json
 	@echo "Wrote data/events.json ($$(wc -c < data/events.json) bytes)"
 
