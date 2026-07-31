@@ -1,16 +1,17 @@
 {{ define "main" }}
-{{- /* Above the fold is the NEXT dated event, not a generic banner. On a page
-       whose whole job is "what's on", the most useful thing a visitor can see
-       first is the thing happening soonest -- with its poster, its date and a
-       way in. A standing weekly night makes a poor hero (it is always "this
-       week"), so the featured slot takes the next one-off; if there are no
-       dated events at all it falls back to the weekly regular rather than
-       showing an empty banner. */ -}}
-{{- $dated   := sort (where .Pages "Params.recurring" false) "Params.nextStart" -}}
-{{- $regular := sort (where .Pages "Params.recurring" true)  "Params.nextStart" -}}
-{{- $featured := index $dated 0 | default (index $regular 0) -}}
-{{- $rest := after 1 $dated -}}
-{{- if not (index $dated 0) }}{{ $rest = after 1 $regular }}{{ end -}}
+{{- /* Above the fold is the NEXT event, whatever kind it is. On a page whose
+       job is "what's on", the most useful first thing is what is happening
+       soonest.
+
+       Everything else is ONE list ordered by date. A repeating event sits in
+       it at its next occurrence like any other -- a weekly quiz night is
+       genuinely the thing happening on Wednesday, and filing it in a separate
+       "every week" box hid it from the answer people came for. It appears
+       once, not once per week, and its date rail says so. Nothing here knows
+       what any particular event is. */ -}}
+{{- $all := sort .Pages "Params.nextStart" -}}
+{{- $featured := index $all 0 -}}
+{{- $rest := after 1 $all -}}
 
 {{- with $featured }}
 {{- $bg := partial "event-image.html" (dict "page" . "fill" "1800x900 Center") }}
@@ -33,6 +34,8 @@
   <div class="wrap">
     <p class="eyebrow">{{ .Params.eyebrow }}</p>
     <h1>{{ .Title }}</h1>
+    <p class="lead">Nothing on the calendar just now — check back soon, or
+      follow us on <a href="{{ site.Params.social.instagram }}">Instagram</a>.</p>
   </div>
 </div>
 {{- end }}
@@ -46,30 +49,6 @@
       {{ partial "event-row.html" . }}
       {{- end }}
     </ul>
-  </div>
-</section>
-{{- end }}
-
-{{- with $regular }}
-<section>
-  <div class="wrap">
-    <h2 class="events-heading">Every week</h2>
-    <ul class="agenda">
-      {{- range . }}
-      {{- if ne . $featured }}
-      {{ partial "event-row.html" . }}
-      {{- end }}
-      {{- end }}
-    </ul>
-  </div>
-</section>
-{{- end }}
-
-{{- if and (not $dated) (not $regular) }}
-<section>
-  <div class="wrap">
-    <p class="lead">Nothing on the calendar just now — check back soon, or
-      follow us on <a href="{{ site.Params.social.instagram }}">Instagram</a>.</p>
   </div>
 </section>
 {{- end }}

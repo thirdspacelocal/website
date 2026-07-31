@@ -77,7 +77,7 @@ disableKinds = ["taxonomy", "term"]
     pageRef = "/food"
     weight = 4
   [[menus.main]]
-    name = "What's On"
+    name = "Events"
     pageRef = "/events"
     weight = 5
   [[menus.main]]
