@@ -22,59 +22,41 @@ Three things here are deliberate and easy to get wrong later:
 {{- $token := getenv "KIT_EVENTS_TOKEN" -}}
 {{- $opts := dict "headers" (dict "Authorization" (printf "Bearer %s" $token)) -}}
 {{- $feed := "" -}}
-{{- $source := "" -}}
 
-{{- /* A production build with no feed configured is a MISCONFIGURATION, not
-       an outage, and must fail loudly. The snapshot fallback below exists so a
-       Kit outage cannot blank the events page -- but if it also covered "never
-       configured", every build would faithfully rebuild the same frozen file
-       and Publish would appear to work while changing nothing. That is exactly
-       what happened: the site sat on a stale snapshot through repeated
-       deploys, looking healthy. Distinguish the two cases. */ -}}
-{{- $configured := and $url $token -}}
-{{- if $configured -}}
+{{- /* One source: Kit, fetched fresh on every build. There is deliberately no
+       committed copy to fall back on.
+
+       There used to be. It looked like insurance against a Kit outage, and in
+       practice it did the opposite: a build with no credentials configured
+       fell back to the stored file, succeeded, and republished frozen data.
+       The site looked healthy through repeated deploys while events edited in
+       Kit never appeared -- the worst kind of failure, because everything
+       reported success.
+
+       Failing the build is better. Netlify keeps serving the last good deploy,
+       so nothing goes down, and the build log says exactly what is wrong. */ -}}
+{{- if not (and $url $token) -}}
+  {{- errorf "events: KIT_EVENTS_URL and KIT_EVENTS_TOKEN are not set. The events section is built from Kit's feed on every deploy; there is no stored copy to fall back on, by design." -}}
+{{- else -}}
   {{- with try (resources.GetRemote $url $opts) -}}
     {{- with .Err -}}
-      {{- warnf "events: feed fetch failed (%s) -- falling back to the last snapshot" . -}}
+      {{- errorf "events: could not fetch the feed from Kit (%s). Refusing to build rather than republish whatever the site was last built with." . -}}
     {{- else with .Value -}}
-      {{- $feed = .Content | transform.Unmarshal -}}
-      {{- $source = "live feed" -}}
-    {{- end -}}
-  {{- end -}}
-{{- else if eq (getenv "HUGO_ENV") "production" -}}
-  {{- errorf "events: KIT_EVENTS_URL and KIT_EVENTS_TOKEN are not set in the build environment. Refusing to build: the site would silently republish the last snapshot, so events edited in Kit would never appear however often it is deployed." -}}
-{{- end -}}
-
-{{- /* Fall back only to a NON-EMPTY snapshot, and only when the feed was
-       configured but unreachable -- i.e. a real outage. */ -}}
-{{- if and $configured (not $feed) -}}
-  {{- with hugo.Data.events -}}
-    {{- if .events -}}
-      {{- $feed = . -}}
-      {{- $source = "snapshot (data/events.json)" -}}
-      {{- warnf "events: feed unavailable -- publishing %s" $source -}}
+      {{- /* A wrong path returns Kit's HTML error page with a 200, and
+             unmarshalling that yields an XML parse error naming a line number
+             in a file nobody has -- useless at 2am. Check the type first. */ -}}
+      {{- if not (in .MediaType.Type "json") -}}
+        {{- errorf "events: %s returned %s, not JSON. Check KIT_EVENTS_URL points at the feed (…/events/feed.json)." $url .MediaType.Type -}}
+      {{- else -}}
+        {{- $feed = .Content | transform.Unmarshal -}}
+      {{- end -}}
     {{- end -}}
   {{- end -}}
 {{- end -}}
 
-{{- if and (not $feed) (ne (getenv "HUGO_ENV") "production") -}}
-  {{- with hugo.Data.events -}}
-    {{- if .events -}}
-      {{- $feed = . -}}
-      {{- $source = "snapshot (data/events.json) -- offline dev" -}}
-      {{- warnf "events: no feed configured -- serving %s" $source -}}
-    {{- end -}}
-  {{- end -}}
-{{- end -}}
-
-{{- /* errorf flags the build but does not stop the template, so everything
-       below is guarded -- otherwise the real message is buried under a
-       "can't evaluate field events in type string" from the next line. */ -}}
 {{- $items := slice -}}
 {{- with $feed -}}{{- $items = .events | default slice -}}{{- end -}}
-{{- if $source -}}
-{{- warnf "events: building %d event page(s) from %s" (len $items) $source -}}
-{{- end -}}
+{{- warnf "events: building %d event page(s) from Kit" (len $items) -}}
 
 {{- range $items -}}
   {{- $slug := .slug -}}
