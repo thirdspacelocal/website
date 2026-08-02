@@ -24,7 +24,15 @@ Three things here are deliberate and easy to get wrong later:
 {{- $feed := "" -}}
 {{- $source := "" -}}
 
-{{- if and $url $token -}}
+{{- /* A production build with no feed configured is a MISCONFIGURATION, not
+       an outage, and must fail loudly. The snapshot fallback below exists so a
+       Kit outage cannot blank the events page -- but if it also covered "never
+       configured", every build would faithfully rebuild the same frozen file
+       and Publish would appear to work while changing nothing. That is exactly
+       what happened: the site sat on a stale snapshot through repeated
+       deploys, looking healthy. Distinguish the two cases. */ -}}
+{{- $configured := and $url $token -}}
+{{- if $configured -}}
   {{- with try (resources.GetRemote $url $opts) -}}
     {{- with .Err -}}
       {{- warnf "events: feed fetch failed (%s) -- falling back to the last snapshot" . -}}
@@ -33,13 +41,13 @@ Three things here are deliberate and easy to get wrong later:
       {{- $source = "live feed" -}}
     {{- end -}}
   {{- end -}}
+{{- else if eq (getenv "HUGO_ENV") "production" -}}
+  {{- errorf "events: KIT_EVENTS_URL and KIT_EVENTS_TOKEN are not set in the build environment. Refusing to build: the site would silently republish the last snapshot, so events edited in Kit would never appear however often it is deployed." -}}
 {{- end -}}
 
-{{- /* Fall back only to a NON-EMPTY snapshot. An empty one would let a fetch
-       failure quietly publish an empty events page, which looks exactly like
-       "nothing is on" -- whereas with no usable fallback a production build
-       fails loudly and someone fixes it. */ -}}
-{{- if not $feed -}}
+{{- /* Fall back only to a NON-EMPTY snapshot, and only when the feed was
+       configured but unreachable -- i.e. a real outage. */ -}}
+{{- if and $configured (not $feed) -}}
   {{- with hugo.Data.events -}}
     {{- if .events -}}
       {{- $feed = . -}}
@@ -49,11 +57,13 @@ Three things here are deliberate and easy to get wrong later:
   {{- end -}}
 {{- end -}}
 
-{{- if not $feed -}}
-  {{- if eq (getenv "HUGO_ENV") "production" -}}
-    {{- errorf "events: no feed and no snapshot. Set KIT_EVENTS_URL and KIT_EVENTS_TOKEN in the build environment, or run `make snapshot`." -}}
-  {{- else -}}
-    {{- warnf "events: no feed configured and no snapshot -- the events page will be empty. Run `make dev-live`, or `make snapshot` once to work offline." -}}
+{{- if and (not $feed) (ne (getenv "HUGO_ENV") "production") -}}
+  {{- with hugo.Data.events -}}
+    {{- if .events -}}
+      {{- $feed = . -}}
+      {{- $source = "snapshot (data/events.json) -- offline dev" -}}
+      {{- warnf "events: no feed configured -- serving %s" $source -}}
+    {{- end -}}
   {{- end -}}
 {{- end -}}
 
