@@ -23,19 +23,36 @@
        filtering on it would drop every instance. */ -}}
 
 {{- with $featured }}
-{{- $bg := partial "event-image.html" (dict "page" . "fill" "1800x900 Center") }}
-<section class="event-hero"{{ with $bg }} style="--hero-img: url('{{ . }}')"{{ end }}>
-  <div class="wrap event-hero-inner">
-    <p class="eyebrow">{{ if .Params.featured }}Don&rsquo;t miss{{ else }}Next up{{ end }}</p>
-    <h1>{{ .Title }}</h1>
-    <p class="event-hero-when">{{ .Params.whenLabel }}</p>
-    {{- with .Params.summary }}<p class="lead">{{ . }}</p>{{ end }}
-    <p class="event-hero-cta">
-      <a class="btn btn-light" href="{{ .RelPermalink }}">Details</a>
-      {{- with .Params.registrationURL }}
-      <a class="btn btn-light" href="{{ . }}">Book a place</a>
-      {{- end }}
-    </p>
+{{- $ev := . -}}
+{{- /* The graphic sits beside the title at full scale, not behind it. A poster
+       is designed art -- cropping it to a background band cuts off the very
+       thing it was made to say. */ -}}
+{{- $art := partial "event-image.html" (dict "page" . "fit" "700x700") }}
+<section class="event-hero">
+  <div class="wrap event-hero-grid">
+    {{- with $art }}
+    <div class="event-hero-art">
+      {{- /* $ is the SECTION page here, not the event -- alt="{{ $.Title }}"
+             renders "Events" on every hero. Capture the event instead.
+             A real poster carries information, so it is described; house
+             artwork is decoration and takes an empty alt. */ -}}
+      <img src="{{ . }}"
+           alt="{{ if $ev.Params.hasPoster }}Poster for {{ $ev.Title }}{{ end }}"
+           width="700" loading="eager">
+    </div>
+    {{- end }}
+    <div class="event-hero-text">
+      <p class="eyebrow">{{ if .Params.featured }}Don&rsquo;t miss{{ else }}Next up{{ end }}</p>
+      <h1>{{ .Title }}</h1>
+      <p class="event-hero-when">{{ .Params.whenLabel }}</p>
+      {{- with .Params.summary }}<p class="lead">{{ . }}</p>{{ end }}
+      <p class="event-hero-cta">
+        <a class="btn btn-light" href="{{ .RelPermalink }}">Details</a>
+        {{- with .Params.registrationURL }}
+        <a class="btn btn-light" href="{{ . }}">Book a place</a>
+        {{- end }}
+      </p>
+    </div>
   </div>
 </section>
 {{- else }}

@@ -281,14 +281,23 @@ body.page-dark address a { color: #dbe3ea; }
 :root { --subtle: #44515d; }
 .subtle { color: var(--subtle); }
 
-/* Featured next event. Same treatment as the page hero so it sits in the
-   existing visual language, but taller and carrying real content. */
-.event-hero {
-  position: relative; background: var(--navy) center/cover no-repeat;
-  background-image: linear-gradient(to right, rgba(20,34,45,.92), rgba(20,34,45,.55)), var(--hero-img);
-  color: #fff; padding: clamp(3rem, 9vw, 6rem) 0;
+/* Featured event. The artwork sits beside the words at full scale rather than
+   being cropped into a background band -- a poster is designed art, and
+   cropping it removes the part that was doing the work. The navy carries the
+   section instead. */
+.event-hero { background: var(--navy); color: #fff; padding: clamp(2.4rem, 6vw, 4.5rem) 0; }
+.event-hero-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 20rem) 1fr;
+  gap: clamp(1.6rem, 4vw, 3.2rem);
+  align-items: center;
 }
-.event-hero-inner { max-width: 44rem; }
+/* The art box has no fixed aspect: a portrait poster and a wide logo are both
+   whole, just scaled to fit the column. */
+.event-hero-art img {
+  width: 100%; height: auto; border-radius: 6px;
+  background: #fff; box-shadow: 0 6px 26px rgba(0,0,0,.28);
+}
 .event-hero h1 { margin: 0 0 .6rem; }
 .event-hero .lead { color: rgba(255,255,255,.9); }
 .event-hero-when {
@@ -296,6 +305,11 @@ body.page-dark address a { color: #dbe3ea; }
   font-size: clamp(1rem, 2.2vw, 1.35rem); color: #fff; margin: 0 0 .8rem;
 }
 .event-hero-cta { margin: 1.6rem 0 0; display: flex; gap: .8rem; flex-wrap: wrap; }
+@media (max-width: 760px) {
+  .event-hero-grid { grid-template-columns: 1fr; }
+  /* Art first on a phone: it is the thing that stops the scroll. */
+  .event-hero-art { max-width: 18rem; }
+}
 
 .events-heading { margin: 0 0 1.4rem; }
 

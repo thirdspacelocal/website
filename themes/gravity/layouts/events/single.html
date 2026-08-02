@@ -1,10 +1,22 @@
 {{ define "main" }}
-{{- $img := partial "event-image.html" (dict "page" . "fill" "1800x820 Center") }}
-<section class="hero page-hero"{{ with $img }} style="--hero-img: url('{{ . }}')"{{ end }}>
-  <div class="wrap">
-    <p class="eyebrow">{{ .Params.whenLabel }}</p>
-    <h1>{{ .Title }}</h1>
-    {{- with .Params.summary }}<p class="lead">{{ . }}</p>{{ end }}
+{{- $art := partial "event-image.html" (dict "page" . "fit" "800x800") }}
+{{- /* Matches the list hero: the graphic whole, beside the words. It used to
+       appear twice -- cropped as a banner and again full-size in the sidebar --
+       which is once too many for the same image. */ -}}
+<section class="event-hero">
+  <div class="wrap event-hero-grid">
+    {{- with $art }}
+    <div class="event-hero-art">
+      <img src="{{ . }}"
+           alt="{{ if $.Params.hasPoster }}Poster for {{ $.Title }}{{ end }}"
+           width="800" loading="eager">
+    </div>
+    {{- end }}
+    <div class="event-hero-text">
+      <p class="eyebrow">{{ .Params.whenLabel }}</p>
+      <h1>{{ .Title }}</h1>
+      {{- with .Params.summary }}<p class="lead">{{ . }}</p>{{ end }}
+    </div>
   </div>
 </section>
 
@@ -19,17 +31,6 @@
     </div>
 
     <aside class="event-detail-side">
-      {{- /* The poster at full aspect, not cropped — if someone made artwork
-             for this event, the detail page is where it should be readable.
-             Only shown when it is the event's OWN poster; house artwork is
-             already doing its job in the banner above. */ -}}
-      {{- if .Params.hasPoster }}
-      {{- with .Resources.GetMatch "poster*" }}
-      {{- $p := .Resize "600x" }}
-      <img class="event-poster" src="{{ $p.RelPermalink }}" alt="Poster for {{ $.Title }}"
-           width="{{ $p.Width }}" height="{{ $p.Height }}">
-      {{- end }}
-      {{- end }}
       <dl class="event-facts">
         <dt>When</dt>
         <dd>

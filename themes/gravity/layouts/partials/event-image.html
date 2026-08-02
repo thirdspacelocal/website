@@ -1,14 +1,21 @@
-{{- /* Resolves an event's artwork and returns a processed image resource.
+{{- /* Resolves an event's artwork and returns a processed image.
 
        Order: the event's own poster (downloaded from Kit at build time and
-       attached as a page resource) first, then house artwork chosen by event
-       type so a poster-less event still looks deliberate rather than broken.
+       attached as a page resource), then house artwork chosen by event type so
+       a poster-less event still looks deliberate rather than broken.
 
-       Context: dict "page" PAGE "fill" "WIDTHxHEIGHT Anchor".
-       Returns nothing if even the fallback is missing, so callers must
-       tolerate an empty result. */ -}}
+       Two modes, because posters and photographs want opposite treatment:
+
+         fit  — scale the WHOLE image inside a box. Correct for a poster:
+                someone designed it, and cropping it cuts off the title or the
+                date. Aspect ratio is whatever the artwork is.
+         fill — crop to exactly these dimensions. Correct for a photograph used
+                as decoration, where the subject survives a crop.
+
+       Context: dict "page" PAGE "fit"|"fill" "WIDTHxHEIGHT [Anchor]".
+       Returns "" if even the fallback is missing, so callers must tolerate an
+       empty result. */ -}}
 {{- $page := .page -}}
-{{- $fill := .fill | default "800x600 Center" -}}
 {{- $img := $page.Resources.GetMatch "poster*" -}}
 {{- if not $img -}}
   {{- $fallbacks := dict
@@ -17,4 +24,7 @@
   {{- $name := index $fallbacks ($page.Params.eventType | default "event") | default "images/tr-event.jpg" -}}
   {{- $img = resources.Get $name -}}
 {{- end -}}
-{{- with $img -}}{{- (.Fill $fill).RelPermalink -}}{{- end -}}
+{{- with $img -}}
+  {{- if $.fit -}}{{- (.Fit $.fit).RelPermalink -}}
+  {{- else -}}{{- (.Fill ($.fill | default "800x600 Center")).RelPermalink -}}{{- end -}}
+{{- end -}}
