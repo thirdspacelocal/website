@@ -1,0 +1,33 @@
+{{- /* One event as an agenda row: date rail, thumbnail, detail.
+
+       A month-grid calendar was the other option, but at four or five events a
+       month it is mostly empty boxes -- more whitespace, not less, which is
+       the opposite of what this page needed. A dense dated list reads faster
+       and works on a phone without a second layout. */ -}}
+{{- $img := partial "event-image.html" (dict "page" . "fill" "320x240 Center") -}}
+<li class="agenda-row">
+  <a class="agenda-link" href="{{ .RelPermalink }}">
+    <span class="agenda-date" aria-hidden="true">
+      {{- if .Params.recurring }}
+      <span class="agenda-dow">{{ substr (.Params.nextStart.Format "Monday") 0 3 }}</span>
+      <span class="agenda-weekly">weekly</span>
+      {{- else }}
+      <span class="agenda-mon">{{ .Params.nextStart.Format "Jan" }}</span>
+      <span class="agenda-day">{{ .Params.nextStart.Format "2" }}</span>
+      {{- end }}
+    </span>
+    {{- with $img }}
+    <span class="agenda-thumb"><img src="{{ . }}" alt="" loading="lazy" width="160" height="120"></span>
+    {{- end }}
+    <span class="agenda-body">
+      <span class="agenda-title">{{ $.Title }}</span>
+      <span class="agenda-when">{{ .Params.whenLabel }}</span>
+      {{- with .Params.summary }}<span class="agenda-summary">{{ . }}</span>{{ end }}
+      <span class="agenda-meta">
+        {{- with .Params.location }}{{ . }}{{ end -}}
+        {{- with .Params.priceLabel }} · {{ . }}{{ end -}}
+        {{- if eq .Params.eventType "festival" }} · Off-site{{ end -}}
+      </span>
+    </span>
+  </a>
+</li>

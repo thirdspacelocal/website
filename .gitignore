@@ -8,3 +8,7 @@
 
 # OS / editor
 .DS_Store
+
+# Local toolchain + secrets (see Makefile / .env.example)
+/.bin/
+.env

@@ -1,0 +1,20 @@
+{{- /* Resolves an event's artwork and returns a processed image resource.
+
+       Order: the event's own poster (downloaded from Kit at build time and
+       attached as a page resource) first, then house artwork chosen by event
+       type so a poster-less event still looks deliberate rather than broken.
+
+       Context: dict "page" PAGE "fill" "WIDTHxHEIGHT Anchor".
+       Returns nothing if even the fallback is missing, so callers must
+       tolerate an empty result. */ -}}
+{{- $page := .page -}}
+{{- $fill := .fill | default "800x600 Center" -}}
+{{- $img := $page.Resources.GetMatch "poster*" -}}
+{{- if not $img -}}
+  {{- $fallbacks := dict
+    "festival" "images/tr-crowd.jpg"
+    "event"    "images/tr-event.jpg" -}}
+  {{- $name := index $fallbacks ($page.Params.eventType | default "event") | default "images/tr-event.jpg" -}}
+  {{- $img = resources.Get $name -}}
+{{- end -}}
+{{- with $img -}}{{- (.Fill $fill).RelPermalink -}}{{- end -}}

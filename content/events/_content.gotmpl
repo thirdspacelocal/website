@@ -1,0 +1,192 @@
+{{- /*
+Content adapter: turns Kit's events feed into one Hugo page per event.
+
+Three things here are deliberate and easy to get wrong later:
+
+ 1. SAMPLE DATA CAN NEVER REACH THE LIVE SITE. A production build with no feed
+    URL configured is a build error, not a quiet fallback -- publishing
+    invented events on a real brewery's website is worse than publishing
+    nothing. The sample file exists so `hugo server` works offline.
+
+ 2. THE FALLBACK IS LAST-GOOD, NOT SAMPLE. If the feed is unreachable mid
+    build, we publish data/events.json (the last real feed we committed) and
+    warn. Kit being down should not blank the events page.
+
+ 3. RECURRENCE IS EXPANDED IN THE EVENT'S OWN NAMED ZONE. A weekly 7pm event
+    stays at 7pm across a DST change only if the next date is resolved in
+    America/Denver rather than by reusing the offset that happened to apply
+    when the series started. Same rule Kit follows on the calendar side.
+*/ -}}
+
+{{- $url := getenv "KIT_EVENTS_URL" -}}
+{{- $token := getenv "KIT_EVENTS_TOKEN" -}}
+{{- $opts := dict "headers" (dict "Authorization" (printf "Bearer %s" $token)) -}}
+{{- $feed := "" -}}
+{{- $source := "" -}}
+
+{{- if and $url $token -}}
+  {{- with try (resources.GetRemote $url $opts) -}}
+    {{- with .Err -}}
+      {{- warnf "events: feed fetch failed (%s) -- falling back to the last snapshot" . -}}
+    {{- else with .Value -}}
+      {{- $feed = .Content | transform.Unmarshal -}}
+      {{- $source = "live feed" -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+{{- /* Fall back only to a NON-EMPTY snapshot. An empty one would let a fetch
+       failure quietly publish an empty events page, which looks exactly like
+       "nothing is on" -- whereas with no usable fallback a production build
+       fails loudly and someone fixes it. */ -}}
+{{- if not $feed -}}
+  {{- with hugo.Data.events -}}
+    {{- if .events -}}
+      {{- $feed = . -}}
+      {{- $source = "snapshot (data/events.json)" -}}
+      {{- warnf "events: feed unavailable -- publishing %s" $source -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+{{- if not $feed -}}
+  {{- if eq (getenv "HUGO_ENV") "production" -}}
+    {{- errorf "events: no feed and no snapshot. Set KIT_EVENTS_URL and KIT_EVENTS_TOKEN in the build environment, or run `make snapshot`." -}}
+  {{- else -}}
+    {{- warnf "events: no feed configured and no snapshot -- the events page will be empty. Run `make dev-live`, or `make snapshot` once to work offline." -}}
+  {{- end -}}
+{{- end -}}
+
+{{- /* errorf flags the build but does not stop the template, so everything
+       below is guarded -- otherwise the real message is buried under a
+       "can't evaluate field events in type string" from the next line. */ -}}
+{{- $items := slice -}}
+{{- with $feed -}}{{- $items = .events | default slice -}}{{- end -}}
+{{- if $source -}}
+{{- warnf "events: building %d event page(s) from %s" (len $items) $source -}}
+{{- end -}}
+
+{{- range $items -}}
+  {{- $slug := .slug -}}
+  {{- $tz := .timezone | default "America/Denver" -}}
+  {{- $start := time.AsTime .starts_at -}}
+  {{- $next := $start -}}
+  {{- $recurring := hasPrefix (.recurrence | default "") "FREQ=WEEKLY" -}}
+
+  {{- if $recurring -}}
+    {{- /* Which weekday(s) does the series land on? BYDAY is optional; without
+           it RFC 5545 takes the weekday from DTSTART. */ -}}
+    {{- $names := dict "MO" "Monday" "TU" "Tuesday" "WE" "Wednesday" "TH" "Thursday" "FR" "Friday" "SA" "Saturday" "SU" "Sunday" -}}
+    {{- $targets := slice -}}
+    {{- range (split .recurrence ";") -}}
+      {{- if hasPrefix . "BYDAY=" -}}
+        {{- range (split (strings.TrimPrefix "BYDAY=" .) ",") -}}
+          {{- with index $names (trim . " ") -}}{{- $targets = $targets | append . -}}{{- end -}}
+        {{- end -}}
+      {{- end -}}
+    {{- end -}}
+    {{- if not $targets -}}{{- $targets = slice ($start.Format "Monday") -}}{{- end -}}
+
+    {{- /* First day from today whose weekday matches. Compared by NAME so no
+           weekday arithmetic is needed -- there is no int cast for
+           time.Weekday in templates, and a wrong one would silently shift the
+           whole series by a day. */ -}}
+    {{- $today := now -}}
+    {{- if lt ($start.Unix) ($today.Unix) -}}
+      {{- $wall := $start.Format "15:04:05" -}}
+      {{- range $i := seq 0 7 -}}
+        {{- $cand := $today.AddDate 0 0 $i -}}
+        {{- if and (in $targets ($cand.Format "Monday")) (eq $next $start) -}}
+          {{- $next = time.AsTime (printf "%sT%s" ($cand.Format "2006-01-02") $wall) $tz -}}
+        {{- end -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+
+  {{- /* One label, built once, used by both the list and the detail page --
+         so the two can never disagree about when something happens. */ -}}
+  {{- $when := "" -}}
+  {{- if $recurring -}}
+    {{- $when = printf "Every %s · %s" ($next.Format "Monday") ($next.Format "3:04pm") -}}
+  {{- else if .all_day -}}
+    {{- $when = $next.Format "Monday, January 2" -}}
+  {{- else -}}
+    {{- $when = printf "%s · %s" ($next.Format "Monday, January 2") ($next.Format "3:04pm") -}}
+  {{- end -}}
+
+  {{- /* A free event and an event with no price set are different things, and
+         `with` cannot tell them apart -- it treats 0 as empty, so every free
+         event silently loses its "Free" label. Kit omits the key entirely when
+         no price applies, so presence is the real signal. */ -}}
+  {{- $price := "" -}}
+  {{- if isset . "price_cents" -}}
+    {{- $cents := float .price_cents -}}
+    {{- if gt $cents 0.0 -}}
+      {{- $price = printf "$%.2f" (div $cents 100.0) -}}
+    {{- else -}}
+      {{- $price = "Free" -}}
+    {{- end -}}
+  {{- end -}}
+
+  {{- /* date drives sorting and display. publishDate MUST be a past instant:
+         Hugo derives publishDate from date when it is omitted and then
+         excludes every future-dated page -- which on an events site is all of
+         them, so the section renders empty. updated_at is when Kit actually
+         published the item, so it is truthful and always in the past. */ -}}
+  {{- /* Download the poster and attach it to the page as a resource, so Hugo
+         fingerprints it and Netlify serves it from the brewery's own domain.
+         The public site must carry no link back to Kit: it should keep working
+         if Kit is down, and the pages should not depend on our uptime.
+         A failed fetch is a warning, not a build break -- the layout falls
+         back to house artwork. */ -}}
+  {{- $posterOK := false -}}
+  {{- /* Only attempt the download when there is a token to do it with.
+         Offline dev has none, and the fetch would fail once per event for a
+         reason that is expected rather than interesting. */ -}}
+  {{- with (and $token .image_url) -}}
+    {{- with try (resources.GetRemote . $opts) -}}
+      {{- with .Err -}}
+        {{- warnf "events: poster fetch failed (%s)" . -}}
+      {{- else with .Value -}}
+        {{- /* Keep the real extension: the published file is served by
+               Netlify, which types it from the filename. An extensionless
+               "poster" gets guessed at, and browsers may refuse to render it. */ -}}
+        {{- $ext := .MediaType.FirstSuffix.Suffix | default "jpg" -}}
+        {{- $.AddResource (dict
+          "path"    (printf "%s/poster.%s" $slug $ext)
+          "content" (dict "mediaType" .MediaType.Type "value" .Content)
+        ) -}}
+        {{- $posterOK = true -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+
+  {{- $.AddPage (dict
+    "path"    .slug
+    "kind"    "page"
+    "title"   .title
+    "content" (dict "mediaType" "text/markdown" "value" (.description | default ""))
+    "dates"   (dict "date" $next "publishDate" (.updated_at | default "2000-01-01T00:00:00Z" | time.AsTime) "lastmod" (.updated_at | default "2000-01-01T00:00:00Z" | time.AsTime))
+    "params"  (dict
+      "hasPoster"       $posterOK
+      "kitID"           .id
+      "eventType"       (.type | default "event")
+      "summary"         (.summary | default "")
+      "startsAt"        $start
+      "nextStart"       $next
+      "endsAt"          (.ends_at | default "")
+      "allDay"          (.all_day | default false)
+      "timezone"        $tz
+      "recurring"       $recurring
+      "recurrence"      (.recurrence | default "")
+      "whenLabel"       $when
+      "location"        (.location | default "")
+      "priceLabel"      $price
+      "priceCents"      (.price_cents | default 0)
+      "currency"        (.currency | default "USD")
+      "capacity"        (.capacity | default 0)
+      "registrationURL" (.registration_url | default "")
+      "canonicalURL"    (.canonical_url | default "")
+    )
+  ) -}}
+{{- end -}}

@@ -1,0 +1,53 @@
+{{ define "main" }}
+{{- $img := partial "event-image.html" (dict "page" . "fill" "1800x820 Center") }}
+<section class="hero page-hero"{{ with $img }} style="--hero-img: url('{{ . }}')"{{ end }}>
+  <div class="wrap">
+    <p class="eyebrow">{{ .Params.whenLabel }}</p>
+    <h1>{{ .Title }}</h1>
+    {{- with .Params.summary }}<p class="lead">{{ . }}</p>{{ end }}
+  </div>
+</section>
+
+<section>
+  <div class="wrap event-detail">
+    <div class="event-detail-main stack content">
+      {{ .Content }}
+      {{- with .Params.registrationURL }}
+      <p><a class="btn" href="{{ . }}">Book a place</a></p>
+      {{- end }}
+      <p><a href="{{ "/events/" | relURL }}">← All events</a></p>
+    </div>
+
+    <aside class="event-detail-side">
+      {{- /* The poster at full aspect, not cropped — if someone made artwork
+             for this event, the detail page is where it should be readable.
+             Only shown when it is the event's OWN poster; house artwork is
+             already doing its job in the banner above. */ -}}
+      {{- if .Params.hasPoster }}
+      {{- with .Resources.GetMatch "poster*" }}
+      {{- $p := .Resize "600x" }}
+      <img class="event-poster" src="{{ $p.RelPermalink }}" alt="Poster for {{ $.Title }}"
+           width="{{ $p.Width }}" height="{{ $p.Height }}">
+      {{- end }}
+      {{- end }}
+      <dl class="event-facts">
+        <dt>When</dt>
+        <dd>
+          {{ .Params.whenLabel }}
+          {{- if .Params.recurring }}<br><span class="subtle">Every week — just turn up.</span>{{ end }}
+        </dd>
+        {{- with .Params.location }}
+        <dt>Where</dt>
+        <dd>{{ . }}{{ if eq $.Params.eventType "festival" }}<br><span class="subtle">Off-site — we're coming to you.</span>{{ end }}</dd>
+        {{- end }}
+        {{- with .Params.priceLabel }}
+        <dt>Cost</dt>
+        <dd>{{ . }}{{ with $.Params.capacity }}{{ if gt . 0 }} · {{ . }} seats{{ end }}{{ end }}</dd>
+        {{- end }}
+      </dl>
+    </aside>
+  </div>
+</section>
+
+{{- partial "visit.html" . }}
+{{ end }}

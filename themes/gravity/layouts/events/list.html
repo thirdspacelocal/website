@@ -1,0 +1,57 @@
+{{ define "main" }}
+{{- /* Above the fold is the NEXT event, whatever kind it is. On a page whose
+       job is "what's on", the most useful first thing is what is happening
+       soonest.
+
+       Everything else is ONE list ordered by date. A repeating event sits in
+       it at its next occurrence like any other -- a weekly quiz night is
+       genuinely the thing happening on Wednesday, and filing it in a separate
+       "every week" box hid it from the answer people came for. It appears
+       once, not once per week, and its date rail says so. Nothing here knows
+       what any particular event is. */ -}}
+{{- $all := sort .Pages "Params.nextStart" -}}
+{{- $featured := index $all 0 -}}
+{{- $rest := after 1 $all -}}
+
+{{- with $featured }}
+{{- $bg := partial "event-image.html" (dict "page" . "fill" "1800x900 Center") }}
+<section class="event-hero"{{ with $bg }} style="--hero-img: url('{{ . }}')"{{ end }}>
+  <div class="wrap event-hero-inner">
+    <p class="eyebrow">Next up</p>
+    <h1>{{ .Title }}</h1>
+    <p class="event-hero-when">{{ .Params.whenLabel }}</p>
+    {{- with .Params.summary }}<p class="lead">{{ . }}</p>{{ end }}
+    <p class="event-hero-cta">
+      <a class="btn btn-light" href="{{ .RelPermalink }}">Details</a>
+      {{- with .Params.registrationURL }}
+      <a class="btn btn-light" href="{{ . }}">Book a place</a>
+      {{- end }}
+    </p>
+  </div>
+</section>
+{{- else }}
+<div class="page-head">
+  <div class="wrap">
+    <p class="eyebrow">{{ .Params.eyebrow }}</p>
+    <h1>{{ .Title }}</h1>
+    <p class="lead">Nothing on the calendar just now — check back soon, or
+      follow us on <a href="{{ site.Params.social.instagram }}">Instagram</a>.</p>
+  </div>
+</div>
+{{- end }}
+
+{{- with $rest }}
+<section class="section-alt">
+  <div class="wrap">
+    <h2 class="events-heading">Coming up</h2>
+    <ul class="agenda">
+      {{- range . }}
+      {{ partial "event-row.html" . }}
+      {{- end }}
+    </ul>
+  </div>
+</section>
+{{- end }}
+
+{{- partial "visit.html" . }}
+{{ end }}
