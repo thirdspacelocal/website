@@ -168,6 +168,7 @@ Three things here are deliberate and easy to get wrong later:
     "content" (dict "mediaType" "text/markdown" "value" (.description | default ""))
     "dates"   (dict "date" $next "publishDate" (.updated_at | default "2000-01-01T00:00:00Z" | time.AsTime) "lastmod" (.updated_at | default "2000-01-01T00:00:00Z" | time.AsTime))
     "params"  (dict
+      "featured"        (.featured | default false)
       "hasPoster"       $posterOK
       "kitID"           .id
       "eventType"       (.type | default "event")
