@@ -305,6 +305,10 @@ body.page-dark address a { color: #dbe3ea; }
   font-size: clamp(1rem, 2.2vw, 1.35rem); color: #fff; margin: 0 0 .8rem;
 }
 .event-hero-cta { margin: 1.6rem 0 0; display: flex; gap: .8rem; flex-wrap: wrap; }
+/* The hero already has generous bottom padding; the next section adding its
+   own full top padding leaves a gap big enough to look like a mistake. Halve
+   it where the two meet. */
+.event-hero + section { padding-top: clamp(1.4rem, 3vw, 2.2rem); }
 @media (max-width: 760px) {
   .event-hero-grid { grid-template-columns: 1fr; }
   /* Art first on a phone: it is the thing that stops the scroll. */

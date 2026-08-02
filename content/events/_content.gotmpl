@@ -95,15 +95,45 @@ Three things here are deliberate and easy to get wrong later:
     {{- end -}}
   {{- end -}}
 
-  {{- /* One label, built once, used by both the list and the detail page --
-         so the two can never disagree about when something happens. */ -}}
+  {{- /* End time. For a repeat, carry the DURATION forward rather than the
+         stored end date -- the stored end belongs to the first occurrence,
+         which for a series that began in 2024 would print a date two years
+         ago next to this week's start. A two-hour quiz stays two hours. */ -}}
+  {{- $nextEnd := "" -}}
+  {{- with .ends_at -}}
+    {{- $end := time.AsTime . -}}
+    {{- $nextEnd = $next.Add ($end.Sub $start) -}}
+  {{- end -}}
+
+  {{- /* One label, built once, used by the list, the hero and the detail page
+         -- so they can never disagree about when something happens. */ -}}
   {{- $when := "" -}}
+  {{- $day := $next.Format "Monday, January 2" -}}
+  {{- $from := $next.Format "3:04pm" -}}
   {{- if $recurring -}}
-    {{- $when = printf "Every %s · %s" ($next.Format "Monday") ($next.Format "3:04pm") -}}
+    {{- $when = printf "Every %s · %s" ($next.Format "Monday") $from -}}
+    {{- with $nextEnd }}{{ $when = printf "%s–%s" $when (.Format "3:04pm") }}{{ end -}}
   {{- else if .all_day -}}
-    {{- $when = $next.Format "Monday, January 2" -}}
+    {{- $when = $day -}}
+    {{- /* An all-day span ends at midnight ON the following day, so the last
+           day people can actually turn up is the day before. */ -}}
+    {{- with $nextEnd -}}
+      {{- $last := .AddDate 0 0 -1 -}}
+      {{- if gt ($last.Format "2006-01-02") ($next.Format "2006-01-02") -}}
+        {{- $when = printf "%s – %s" $day ($last.Format "Monday, January 2") -}}
+      {{- end -}}
+    {{- end -}}
   {{- else -}}
-    {{- $when = printf "%s · %s" ($next.Format "Monday, January 2") ($next.Format "3:04pm") -}}
+    {{- $when = printf "%s · %s" $day $from -}}
+    {{- with $nextEnd -}}
+      {{- if eq (.Format "2006-01-02") ($next.Format "2006-01-02") -}}
+        {{- $when = printf "%s–%s" $when (.Format "3:04pm") -}}
+      {{- else -}}
+        {{- /* Spans midnight or several days: the end needs its own date or
+               "9:00pm–2:00am" reads as ending earlier than it started. */ -}}
+        {{- $when = printf "%s – %s · %s" $when (.Format "Monday, January 2") (.Format "3:04pm") -}}
+      {{- end -}}
+    {{- end -}}
   {{- end -}}
 
   {{- /* A free event and an event with no price set are different things, and
@@ -168,6 +198,7 @@ Three things here are deliberate and easy to get wrong later:
       "startsAt"        $start
       "nextStart"       $next
       "endsAt"          (.ends_at | default "")
+      "nextEnd"         $nextEnd
       "allDay"          (.all_day | default false)
       "timezone"        $tz
       "recurring"       $recurring
