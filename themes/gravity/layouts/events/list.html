@@ -14,13 +14,9 @@
        with whatever is soonest. Soonest is right most of the time and wrong
        exactly when it matters -- a weekly quiz night outranks the anniversary
        party by date alone. Several flagged: the soonest of those wins, so the
-       flag can be left on a run of events without reshuffling.
-       Order is preserved either way, so the hero is never also in the list. */ -}}
+       flag can be left on a run of events without reshuffling. */ -}}
 {{- $starred := where $all "Params.featured" true -}}
 {{- $featured := index $starred 0 | default (index $all 0) -}}
-{{- /* The remainder is "everything except the hero", compared by PAGE not by
-       title -- a monthly class repeats the same title several times, and
-       filtering on it would drop every instance. */ -}}
 
 {{- with $featured }}
 {{- $ev := . -}}
@@ -66,15 +62,18 @@
 </div>
 {{- end }}
 
-{{- if gt (len $all) 1 }}
+{{- /* The list is the whole calendar in date order, hero included. Leaving the
+       hero out made the list lie: someone scanning for "what's on this month"
+       found a gap where the biggest event should have been, and the hero above
+       reads as a highlight rather than as the first entry crossed off. Its row
+       is marked so the repeat is obviously the same event, not a second one. */ -}}
+{{- with $all }}
 <section class="section-alt">
   <div class="wrap">
     <h2 class="events-heading">Coming up</h2>
     <ul class="agenda">
-      {{- range $all }}
-      {{- if ne . $featured }}
-      {{ partial "event-row.html" . }}
-      {{- end }}
+      {{- range . }}
+      {{ partial "event-row.html" (dict "page" . "featured" (eq . $featured)) }}
       {{- end }}
     </ul>
   </div>

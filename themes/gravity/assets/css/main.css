@@ -338,6 +338,16 @@ body.page-dark address a { color: #dbe3ea; }
 
 .agenda-body { display: block; }
 .agenda-title { display: block; font-family: var(--display); text-transform: uppercase; font-size: 1.1rem; line-height: 1.2; }
+/* The hero event is in this list too, so the list stays a complete calendar.
+   The flag is what tells a reader the row above and the row here are one
+   event -- without it the repeat looks like a duplicate. */
+.agenda-flag {
+  display: inline-block; vertical-align: middle; margin-left: .5rem;
+  font-family: var(--sans); font-size: .62rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: .08em;
+  padding: .18rem .45rem; border-radius: 3px;
+  background: var(--accent); color: #fff;
+}
 .agenda-when { display: block; font-size: .85rem; color: var(--subtle); margin-top: .15rem; }
 .agenda-summary { display: block; margin-top: .4rem; }
 .agenda-meta { display: block; font-size: .85rem; color: var(--subtle); margin-top: .35rem; }

@@ -3,9 +3,15 @@
        A month-grid calendar was the other option, but at four or five events a
        month it is mostly empty boxes -- more whitespace, not less, which is
        the opposite of what this page needed. A dense dated list reads faster
-       and works on a phone without a second layout. */ -}}
-{{- $img := partial "event-image.html" (dict "page" . "fill" "320x240 Center") -}}
-<li class="agenda-row">
+       and works on a phone without a second layout.
+
+       Takes a dict: "page" is the event, "featured" says whether this row is
+       also the hero above -- the same event appearing twice on one screen needs
+       to say so, or it reads as two. */ -}}
+{{- $page := .page -}}
+{{- $img := partial "event-image.html" (dict "page" $page "fill" "320x240 Center") -}}
+{{- with $page }}
+<li class="agenda-row{{ if $.featured }} agenda-row-featured{{ end }}">
   <a class="agenda-link" href="{{ .RelPermalink }}">
     <span class="agenda-date" aria-hidden="true">
       {{- if .Params.recurring }}
@@ -20,7 +26,9 @@
     <span class="agenda-thumb"><img src="{{ . }}" alt="" loading="lazy" width="160" height="120"></span>
     {{- end }}
     <span class="agenda-body">
-      <span class="agenda-title">{{ $.Title }}</span>
+      <span class="agenda-title">{{ .Title }}
+        {{- if $.featured }} <span class="agenda-flag">{{ if .Params.featured }}Don&rsquo;t miss{{ else }}Next up{{ end }}</span>{{ end -}}
+      </span>
       <span class="agenda-when">{{ .Params.whenLabel }}</span>
       {{- with .Params.summary }}<span class="agenda-summary">{{ . }}</span>{{ end }}
       <span class="agenda-meta">
@@ -31,3 +39,4 @@
     </span>
   </a>
 </li>
+{{- end }}
