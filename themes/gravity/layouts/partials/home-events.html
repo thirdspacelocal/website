@@ -1,0 +1,71 @@
+{{- /* The taproom's calendar, on the home page.
+
+       Most people who land here never reach /events -- they came for hours and
+       a menu. But "there is something on this week" is the single most
+       persuasive thing this site can say, and it decays: an event nobody heard
+       about before it happened may as well not have run.
+
+       So: the lead event at full size, then the next few dates as a strip.
+       The strip is what makes the band worth its space -- one event reads as a
+       one-off, three reads as "there is always something on here", which is
+       the actual claim.
+
+       Deliberately not the page hero. The hero's job is to tell a first-time
+       visitor what this place is, and it has to work on the week the calendar
+       is empty. This band can vanish; the hero cannot. */ -}}
+{{- $data := partial "featured-event.html" . -}}
+{{- with $data.featured }}
+{{- $ev := . -}}
+{{- $art := partial "event-image.html" (dict "page" . "fit" "560x560") -}}
+{{- /* Everything except the lead, soonest first. Filtered rather than sliced
+       off the front: the lead is usually but not always the first by date. */ -}}
+{{- $rest := slice -}}
+{{- range $data.all }}{{ if ne . $ev }}{{ $rest = $rest | append . }}{{ end }}{{ end -}}
+{{- $rest = first 3 $rest -}}
+<section class="section-navy home-events">
+  <div class="wrap">
+    <div class="home-events-grid">
+      <div class="home-events-text">
+        <p class="eyebrow">{{ if .Params.featured }}Don&rsquo;t miss{{ else }}Next up{{ end }}</p>
+        <h2>{{ .Title }}</h2>
+        <p class="home-events-when">{{ .Params.whenLabel }}</p>
+        {{- with .Params.summary }}<p class="home-events-summary">{{ . }}</p>{{ end }}
+        <p class="home-events-cta">
+          <a class="btn btn-light" href="{{ .RelPermalink }}">Event details</a>
+          {{- with .Params.registrationURL }}
+          <a class="btn btn-light" href="{{ . }}">Book a place</a>
+          {{- end }}
+        </p>
+      </div>
+      {{- with $art }}
+      <div class="home-events-art">
+        {{- /* A real poster carries information, so it is described; house
+               artwork is decoration and takes an empty alt. $ is the home
+               page here, not the event -- alt="{{ $.Title }}" would print the
+               site's home title on every poster. */ -}}
+        <img src="{{ . }}"
+             alt="{{ if $ev.Params.hasPoster }}Poster for {{ $ev.Title }}{{ end }}"
+             width="560" loading="lazy">
+      </div>
+      {{- end }}
+    </div>
+
+    {{- with $rest }}
+    <ul class="home-events-more">
+      {{- range . }}
+      <li>
+        <a href="{{ .RelPermalink }}">
+          <span class="home-events-date">
+            {{- if .Params.recurring }}Every {{ substr (.Params.nextStart.Format "Monday") 0 3 }}
+            {{- else }}{{ .Params.nextStart.Format "Jan 2" }}{{ end -}}
+          </span>
+          <span class="home-events-name">{{ .Title }}</span>
+        </a>
+      </li>
+      {{- end }}
+      <li class="home-events-all"><a href="{{ "/events/" | relURL }}">All events &rarr;</a></li>
+    </ul>
+    {{- end }}
+  </div>
+</section>
+{{- end }}

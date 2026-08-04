@@ -189,6 +189,54 @@ section { padding-block: clamp(3rem, 7vw, 5.5rem); }
 .value h3 { margin: .3rem 0 .5rem; }
 .value p { font-size: .95rem; }
 
+/* ---------- What's on (home page) ---------- */
+/* Same navy and same art-at-full-scale treatment as the events page hero, so
+   the two read as one thing seen twice -- but mirrored (art right, words left)
+   and pitched at h2, because on the home page this is a section, not the
+   headline. */
+.home-events-grid {
+  display: grid;
+  grid-template-columns: 1fr minmax(0, 20rem);
+  gap: clamp(1.6rem, 4vw, 3.2rem);
+  align-items: center;
+}
+.home-events-text > * + * { margin-top: 1rem; }
+.home-events h2 { margin: 0; }
+.home-events-when {
+  font-family: var(--mono); font-size: .9rem; letter-spacing: .06em;
+  text-transform: uppercase; color: #ffb4a3;
+}
+.home-events-summary { color: rgba(255,255,255,.9); max-width: 52ch; }
+.home-events-cta { display: flex; gap: .8rem; flex-wrap: wrap; margin-top: 1.6rem; }
+.home-events-art img {
+  width: 100%; height: auto; border-radius: 6px;
+  background: #fff; box-shadow: 0 6px 26px rgba(0,0,0,.28);
+}
+
+/* The next few dates. One event reads as a one-off; three reads as a calendar. */
+.home-events-more {
+  list-style: none; margin: clamp(2rem, 4vw, 3rem) 0 0; padding: clamp(1.4rem, 3vw, 1.8rem) 0 0;
+  border-top: 1px solid var(--line-d);
+  display: flex; flex-wrap: wrap; gap: .6rem 2.2rem; align-items: baseline;
+}
+.home-events-more a { color: #fff; display: flex; gap: .7rem; align-items: baseline; }
+.home-events-more a:hover { color: #ffb4a3; text-decoration: none; }
+.home-events-date {
+  font-family: var(--mono); font-size: .75rem; letter-spacing: .08em;
+  text-transform: uppercase; color: #ffb4a3; white-space: nowrap;
+}
+.home-events-name { font-size: .95rem; }
+.home-events-all { margin-left: auto; }
+.home-events-all a { font-family: var(--display); font-size: .78rem; letter-spacing: .02em; text-transform: uppercase; color: #ffb4a3; }
+
+@media (max-width: 760px) {
+  /* Art first on a phone: it is the thing that stops a thumb. */
+  .home-events-grid { grid-template-columns: 1fr; }
+  .home-events-art { order: -1; max-width: 16rem; }
+  .home-events-more { flex-direction: column; gap: .8rem; }
+  .home-events-all { margin-left: 0; }
+}
+
 /* ---------- Quick links ---------- */
 .quicklinks { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.4rem; }
 @media (max-width: 760px) { .quicklinks { grid-template-columns: 1fr; } }

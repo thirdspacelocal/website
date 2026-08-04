@@ -1,0 +1,33 @@
+{{- /* Which event leads? One answer, used by both the events page and the home
+       page, because two pages disagreeing about "don't miss this" is worse
+       than either choice alone.
+
+       Lead with an event Kit flagged as featured; otherwise with whatever is
+       soonest. Soonest is right most of the time and wrong exactly when it
+       matters -- a weekly quiz night outranks the anniversary party by date
+       alone. Several flagged: the soonest of those wins, so the flag can be
+       left on a run of events without reshuffling.
+
+       Returns a dict:
+         all      -- every event, in date order (empty slice if the section
+                     is missing or empty)
+         featured -- the lead event, or nil when there are no events at all.
+                     Callers must handle nil: the taproom calendar does empty
+                     out, and a template that assumes an event exists takes the
+                     whole site down with it on the quiet week. */ -}}
+{{- $all := slice -}}
+{{- with site.GetPage "/events" -}}
+  {{- $all = sort .RegularPages "Params.nextStart" -}}
+{{- end -}}
+
+{{- $featured := false -}}
+{{- with $all -}}
+  {{- $starred := where . "Params.featured" true -}}
+  {{- if $starred -}}
+    {{- $featured = index $starred 0 -}}
+  {{- else -}}
+    {{- $featured = index . 0 -}}
+  {{- end -}}
+{{- end -}}
+
+{{- return (dict "all" $all "featured" $featured) -}}

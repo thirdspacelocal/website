@@ -9,14 +9,12 @@
        "every week" box hid it from the answer people came for. It appears
        once, not once per week, and its date rail says so. Nothing here knows
        what any particular event is. */ -}}
-{{- $all := sort .Pages "Params.nextStart" -}}
-{{- /* Lead with an event Kit flagged as featured, if there is one; otherwise
-       with whatever is soonest. Soonest is right most of the time and wrong
-       exactly when it matters -- a weekly quiz night outranks the anniversary
-       party by date alone. Several flagged: the soonest of those wins, so the
-       flag can be left on a run of events without reshuffling. */ -}}
-{{- $starred := where $all "Params.featured" true -}}
-{{- $featured := index $starred 0 | default (index $all 0) -}}
+{{- /* Which event leads lives in a partial, because the home page leads with
+       the same one and the two pages contradicting each other is the bug this
+       prevents. */ -}}
+{{- $data := partial "featured-event.html" . -}}
+{{- $all := $data.all -}}
+{{- $featured := $data.featured -}}
 
 {{- with $featured }}
 {{- $ev := . -}}

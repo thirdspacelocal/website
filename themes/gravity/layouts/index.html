@@ -26,6 +26,10 @@
   {{ partial "carousel.html" (dict "images" site.Data.gallery "title" "A Look Around Gravity" "autoplay" 4500) }}
 </section>
 
+{{/* What's on, before the story. An event has a deadline; "why we're here"
+     keeps. Renders nothing at all on a week with an empty calendar. */}}
+{{ partial "home-events.html" . }}
+
 <section>
   <div class="wrap split">
     <div class="split-text stack">
