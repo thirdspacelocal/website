@@ -42,6 +42,15 @@
         <li><a href="{{ $p.social.instagram }}" rel="noopener">Instagram</a></li>
         <li><a href="{{ $p.social.twitter }}" rel="noopener">Twitter</a></li>
         <li><a href="{{ $p.social.untappd }}" rel="noopener">Untappd</a></li>
+        {{- /* Named for what it does, not for its format: "subscribe to what's
+               on" is the thing anyone wants, and RSS is an implementation
+               detail. The <head> already carries an autodiscovery link for
+               readers that hunt for one, but nothing visible pointed at it. */ -}}
+        {{- with site.GetPage "/events" }}
+        {{- with .OutputFormats.Get "rss" }}
+        <li><a href="{{ .Permalink }}" type="{{ .MediaType.Type }}">Events feed</a></li>
+        {{- end }}
+        {{- end }}
       </ul>
     </div>
 

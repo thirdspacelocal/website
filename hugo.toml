@@ -1,4 +1,11 @@
-baseURL = "https://www.thegravitybrewing.com/"
+# The apex, NOT www: Netlify serves this host and 301s www to it. baseURL is
+# what every canonical tag, og:url, JSON-LD url/@id and sitemap <loc> is built
+# from, so pointing it at www published a whole site of URLs that redirect --
+# a sitemap Search Console flags as "page with redirect", and a
+# self-referencing canonical aimed at a redirect, which is a good way to leave
+# Google guessing which host to index. Change this only alongside Netlify's
+# primary domain setting; the two have to name the same host.
+baseURL = "https://thegravitybrewing.com/"
 languageCode = "en-us"
 title = "Gravity Brewing"
 theme = "gravity"

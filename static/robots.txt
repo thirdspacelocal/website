@@ -25,4 +25,6 @@ Allow: /
 User-agent: Google-Extended
 Allow: /
 
-Sitemap: https://www.thegravitybrewing.com/sitemap.xml
+# Apex host, matching baseURL in hugo.toml. www 301s here, and a sitemap
+# announced on the redirecting host is one Search Console reports as errors.
+Sitemap: https://thegravitybrewing.com/sitemap.xml
