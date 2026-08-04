@@ -1,0 +1,48 @@
+{{- /* Structured data for the events section.
+
+       Two shapes, because Google reads the two page kinds differently:
+
+         detail page — the Event itself, plus a breadcrumb so the result shows
+                       "Gravity Brewing › Events › Bike Night" rather than a
+                       bare URL.
+         list page   — an ItemList pointing at the detail pages. This is the
+                       documented pattern for a summary page: the list tells
+                       Google the set exists and in what order, and each detail
+                       page carries the actual Event. Repeating the full Event
+                       objects here would just be two sources to disagree. */ -}}
+
+{{- if eq .Kind "page" -}}
+{{- $event := partial "event-jsonld.html" (dict "page" .) -}}
+<script type="application/ld+json">
+{{ $event | jsonify (dict "indent" "  ") | safeJS }}
+</script>
+{{- $crumbs := slice
+    (dict "@type" "ListItem" "position" 1 "name" site.Title "item" site.BaseURL)
+    (dict "@type" "ListItem" "position" 2 "name" "Events" "item" (printf "%sevents/" site.BaseURL))
+    (dict "@type" "ListItem" "position" 3 "name" .Title "item" .Permalink) -}}
+<script type="application/ld+json">
+{{ dict "@context" "https://schema.org" "@type" "BreadcrumbList" "itemListElement" $crumbs | jsonify (dict "indent" "  ") | safeJS }}
+</script>
+
+{{- else if eq .Kind "section" -}}
+{{- $items := slice -}}
+{{- range $i, $e := (sort .Pages "Params.nextStart") -}}
+  {{- $items = $items | append (dict
+      "@type" "ListItem"
+      "position" (add $i 1)
+      "name" $e.Title
+      "url" $e.Permalink) -}}
+{{- end -}}
+{{- with $items -}}
+<script type="application/ld+json">
+{{ dict
+    "@context" "https://schema.org"
+    "@type" "ItemList"
+    "name" (printf "Upcoming events at %s" site.Title)
+    "url" $.Permalink
+    "numberOfItems" (len .)
+    "itemListOrder" "https://schema.org/ItemListOrderAscending"
+    "itemListElement" . | jsonify (dict "indent" "  ") | safeJS }}
+</script>
+{{- end -}}
+{{- end -}}

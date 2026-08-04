@@ -65,11 +65,16 @@ Three things here are deliberate and easy to get wrong later:
   {{- $next := $start -}}
   {{- $recurring := hasPrefix (.recurrence | default "") "FREQ=WEEKLY" -}}
 
+  {{- /* Declared out here rather than inside the branch below, because the
+         JSON-LD needs the weekday list too: schema.org describes a weekly
+         series by its byDay, and a variable scoped to the `if` would be out of
+         scope by the time AddPage runs. */ -}}
+  {{- $targets := slice -}}
+
   {{- if $recurring -}}
     {{- /* Which weekday(s) does the series land on? BYDAY is optional; without
            it RFC 5545 takes the weekday from DTSTART. */ -}}
     {{- $names := dict "MO" "Monday" "TU" "Tuesday" "WE" "Wednesday" "TH" "Thursday" "FR" "Friday" "SA" "Saturday" "SU" "Sunday" -}}
-    {{- $targets := slice -}}
     {{- range (split .recurrence ";") -}}
       {{- if hasPrefix . "BYDAY=" -}}
         {{- range (split (strings.TrimPrefix "BYDAY=" .) ",") -}}
@@ -203,6 +208,7 @@ Three things here are deliberate and easy to get wrong later:
       "timezone"        $tz
       "recurring"       $recurring
       "recurrence"      (.recurrence | default "")
+      "byDay"           $targets
       "whenLabel"       $when
       "location"        (.location | default "")
       "priceLabel"      $price

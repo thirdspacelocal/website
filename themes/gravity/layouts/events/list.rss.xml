@@ -1,0 +1,65 @@
+{{- /* RSS for the events section.
+
+       Hugo's built-in RSS template is written for a blog: it orders by
+       publication date and puts the body in the description. On an events feed
+       that loses the only things a subscriber actually wants -- when it is,
+       where it is, and what it costs -- so this builds the item description
+       from those first and the body after.
+
+       Order is chronological, earliest first, so the feed reads as a schedule
+       for anything that respects document order. pubDate stays the real
+       publication instant rather than the event date: readers sort by it, and
+       a subscriber wants newly announced events to surface, not whichever
+       event happens to be furthest into the future.
+
+       A repeating event appears once, at its next occurrence, exactly as it
+       does on the page. */ -}}
+{{- $pages := sort .Pages "Params.nextStart" -}}
+{{- printf `<?xml version="1.0" encoding="utf-8" standalone="yes"?>` | safeHTML }}
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Events · {{ site.Title }}</title>
+    <link>{{ .Permalink }}</link>
+    <description>What&#39;s coming up at {{ site.Title }} in {{ site.Params.addressLocality }}, {{ site.Params.addressRegion }} — live music, trivia, classes and parties in the taproom and bier garten.</description>
+    <generator>Hugo</generator>
+    <language>{{ site.Language.Locale | default "en-us" }}</language>
+    <copyright>© {{ now.Format "2006" }} {{ site.Title }}</copyright>
+    {{- with .Lastmod }}
+    <lastBuildDate>{{ .Format "Mon, 02 Jan 2006 15:04:05 -0700" | safeHTML }}</lastBuildDate>
+    {{- end }}
+    {{- with .OutputFormats.Get "rss" }}
+    {{ printf `<atom:link href=%q rel="self" type=%q/>` .Permalink .MediaType.Type | safeHTML }}
+    {{- end }}
+    {{- with resources.Get "images/logo.png" }}
+    <image>
+      <url>{{ .Permalink }}</url>
+      <title>{{ site.Title }}</title>
+      <link>{{ site.BaseURL }}</link>
+    </image>
+    {{- end }}
+    {{- range $pages }}
+    {{- /* The facts line: the same when/where/cost the page shows, so the feed
+           and the site can never quietly disagree about a start time. */ -}}
+    {{- $facts := slice .Params.whenLabel -}}
+    {{- with .Params.location }}{{ $facts = $facts | append . }}{{ end -}}
+    {{- if eq .Params.eventType "festival" }}{{ $facts = $facts | append "Off-site" }}{{ end -}}
+    {{- with .Params.priceLabel }}{{ $facts = $facts | append . }}{{ end -}}
+    {{- $img := partial "event-image.html" (dict "page" . "fit" "800x800" "abs" true) -}}
+    {{- $body := "" -}}
+    {{- with $img }}{{ $body = printf `<p><img src=%q alt="" width="480"></p>` . }}{{ end -}}
+    {{- $body = printf `%s<p><strong>%s</strong></p>%s` $body (delimit $facts " · ") .Content -}}
+    {{- with .Params.registrationURL }}{{ $body = printf `%s<p><a href=%q>Book a place</a></p>` $body . }}{{ end -}}
+    <item>
+      <title>{{ .Title }}</title>
+      <link>{{ .Permalink }}</link>
+      <pubDate>{{ .Lastmod.Format "Mon, 02 Jan 2006 15:04:05 -0700" | safeHTML }}</pubDate>
+      <guid isPermaLink="true">{{ .Permalink }}</guid>
+      <category>Events</category>
+      {{- if .Params.recurring }}
+      <category>Weekly</category>
+      {{- end }}
+      <description>{{ $body | html }}</description>
+    </item>
+    {{- end }}
+  </channel>
+</rss>

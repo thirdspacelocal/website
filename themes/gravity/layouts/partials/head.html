@@ -6,9 +6,33 @@
   {{- $title := .Title | default site.Title }}
   {{- $isHome := .IsHome }}
   <title>{{ if $isHome }}{{ site.Title }} · {{ site.Params.tagline }}{{ else }}{{ .Title }} · {{ site.Title }}{{ end }}</title>
+  {{- $isEvent := and (eq .Section "events") (eq .Kind "page") }}
   {{- $desc := .Description | default .Summary | default site.Params.description }}
+  {{- /* An event's description leads with when it happens. It is the first
+         thing anyone searching wants to know, it is what tells five identical
+         "Pottery and Sips" results apart, and it is the sentence an AI
+         assistant quotes back when asked what's on this weekend. */ -}}
+  {{- if $isEvent }}
+    {{- $body := .Params.summary | default .Content | plainify | htmlUnescape | strings.TrimSpace }}
+    {{- if $body }}
+      {{- $desc = printf "%s · %s" .Params.whenLabel $body }}
+    {{- else }}
+      {{- /* Some events are just a name and a time -- Kit does not force a
+             description, and a real one on the site right now has neither.
+             Falling through to "When · " left a dangling separator and told a
+             searcher nothing, so say the plainly true thing instead. */ -}}
+      {{- $desc = printf "%s · %s at %s in %s, %s." .Params.whenLabel .Title site.Title site.Params.addressLocality site.Params.addressRegion }}
+    {{- end }}
+  {{- end }}
   <meta name="description" content="{{ $desc | plainify | truncate 300 }}">
   <link rel="canonical" href="{{ .Permalink }}">
+
+  {{- /* Feed autodiscovery. The RSS has always been generated, but nothing
+         linked to it, so no reader could find it without being handed the URL
+         in person. */ -}}
+  {{- range .AlternativeOutputFormats }}
+  <link rel="{{ .Rel }}" type="{{ .MediaType.Type }}" href="{{ .Permalink }}" title="{{ if $isHome }}{{ site.Title }}{{ else }}{{ $title }} · {{ site.Title }}{{ end }}">
+  {{- end }}
 
   <!-- Open Graph / Twitter -->
   <meta property="og:type" content="{{ if $isHome }}website{{ else }}article{{ end }}">
@@ -16,11 +40,23 @@
   <meta property="og:description" content="{{ $desc | plainify | truncate 300 }}">
   <meta property="og:url" content="{{ .Permalink }}">
   <meta property="og:site_name" content="{{ site.Title }}">
-  {{- with resources.Get "images/taproom-bar.jpg" }}
-  {{- $og := .Fill "1200x630 Center" }}
-  <meta property="og:image" content="{{ $og.Permalink }}">
+  {{- /* An event shares as its own poster, not as the house photograph: the
+         poster is what someone designed to advertise that night, and it is
+         what makes the link worth clicking in a Facebook or Slack preview.
+         Fit, not Fill -- cropping a poster to a 1.91:1 banner cuts off the
+         title and the date, which is the entire message. */ -}}
+  {{- $og := "" }}
+  {{- if $isEvent }}
+    {{- $og = partial "event-image.html" (dict "page" . "fit" "1200x1200" "abs" true) }}
+  {{- end }}
+  {{- if not $og }}
+    {{- with resources.Get "images/taproom-bar.jpg" }}{{ $og = (.Fill "1200x630 Center").Permalink }}{{ end }}
+  {{- end }}
+  {{- with $og }}
+  <meta property="og:image" content="{{ . }}">
+  <meta property="og:image:alt" content="{{ if $isEvent }}{{ $.Title }} at {{ site.Title }}{{ else }}The taproom at {{ site.Title }}{{ end }}">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:image" content="{{ $og.Permalink }}">
+  <meta name="twitter:image" content="{{ . }}">
   {{- end }}
 
   {{- $css := resources.Get "css/main.css" | resources.Minify | resources.Fingerprint }}
@@ -36,4 +72,9 @@
   {{- end }}
 
   {{- partial "schema.html" . -}}
+  {{- /* The site-wide Brewery node above says who we are; this says what is
+         happening. Without it an event page carries no machine-readable trace
+         that it is about an event at all, which is why none of them can reach
+         Google's event results. */ -}}
+  {{- if eq .Section "events" }}{{ partial "event-schema.html" . }}{{ end -}}
 </head>

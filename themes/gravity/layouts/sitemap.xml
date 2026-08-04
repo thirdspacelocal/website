@@ -1,0 +1,26 @@
+{{- /* Overrides Hugo's built-in sitemap for one reason: to stop emitting
+       <priority>.
+
+       Pages created by a content adapter come out with Sitemap.Priority 0
+       rather than the -1 that means "unset", so the built-in template printed
+       <priority>0</priority> on every single event URL -- the lowest possible
+       value, on precisely the pages this site most wants crawled. Google
+       ignores <priority> either way, so the fix is to drop the element rather
+       than to invent a better number for it.
+
+       lastmod is real and worth keeping: it comes from Kit's updated_at, so it
+       genuinely moves when an event is edited, which is the signal that gets a
+       changed event recrawled. */ -}}
+{{ printf `<?xml version="1.0" encoding="utf-8" standalone="yes"?>` | safeHTML }}
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  {{- range .Pages }}
+  {{- if .Permalink }}
+  <url>
+    <loc>{{ .Permalink }}</loc>
+    {{- if not .Lastmod.IsZero }}
+    <lastmod>{{ .Lastmod.Format "2006-01-02T15:04:05-07:00" | safeHTML }}</lastmod>
+    {{- end }}
+  </url>
+  {{- end }}
+  {{- end }}
+</urlset>

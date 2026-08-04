@@ -1,0 +1,151 @@
+{{- /* Builds the schema.org Event object for one event, and returns it as a
+       dict for the caller to render.
+
+       This is the markup Google reads to put an event into the events
+       carousel, and that AI assistants read to answer "what's on at Gravity
+       this weekend". The page's visible HTML says the same things, but only
+       to a human -- everything a machine acts on has to be here too.
+
+       Context: dict "page" PAGE. Returns a dict.
+
+       Kit only ever feeds published, public, future events, so everything
+       here is EventScheduled. If Kit ever starts sending cancelled events so
+       their pages can survive a cancellation, eventStatus is the field that
+       has to start varying -- see the note in the events README. */ -}}
+{{- $p := site.Params -}}
+{{- $ev := .page -}}
+
+{{- $start := $ev.Params.nextStart -}}
+{{- $end := $ev.Params.nextEnd -}}
+{{- $allDay := $ev.Params.allDay -}}
+
+{{- /* An all-day event is a DATE, not a datetime. Emitting
+       "2026-08-12T00:00:00-06:00" tells Google the party starts at midnight,
+       which is both wrong and the kind of wrong that shows up in a search
+       result. */ -}}
+{{- $layout := "2006-01-02T15:04:05-07:00" -}}
+{{- if $allDay -}}{{- $layout = "2006-01-02" -}}{{- end -}}
+
+{{- $startStr := $start.Format $layout -}}
+{{- $endStr := "" -}}
+{{- with $end -}}
+  {{- if $allDay -}}
+    {{- /* An all-day span ends at midnight ON the following day, so the last
+           day it actually runs is the day before -- the same correction the
+           visible date label makes. */ -}}
+    {{- $endStr = (.AddDate 0 0 -1).Format $layout -}}
+  {{- else -}}
+    {{- $endStr = .Format $layout -}}
+  {{- end -}}
+{{- end -}}
+
+{{- /* Description: prefer the real body Kit wrote, fall back to the summary.
+       Plainified, because this is a JSON string and the body is HTML. */ -}}
+{{- $desc := $ev.Content | plainify | htmlUnescape | strings.TrimSpace -}}
+{{- if not $desc -}}{{- $desc = $ev.Params.summary | default "" -}}{{- end -}}
+{{- if not $desc -}}
+  {{- /* An event with no body text at all is a real case: Kit does not require
+         a description. Rather than omit the field, state the facts the event
+         does have -- truthful, and enough for an assistant to answer with. */ -}}
+  {{- $desc = printf "%s at %s in %s, %s. %s." $ev.Title site.Title $p.addressLocality $p.addressRegion $ev.Params.whenLabel -}}
+{{- end -}}
+
+{{- /* Absolute image URL -- a crawler has no origin to resolve a relative one
+       against. Falls back to house artwork, which is still a truthful picture
+       of the venue. */ -}}
+{{- $img := partial "event-image.html" (dict "page" $ev "fit" "1200x1200" "abs" true) -}}
+
+{{- /* Where. On-site events happen at the brewery, so they carry its full
+       postal address and geo and link to the LocalBusiness node by @id --
+       that consolidation is what lets Google treat the venue and the business
+       as one entity. Off-site ("festival") events only have the free-text
+       location Kit holds, so that becomes both the name and the address. */ -}}
+{{- $onsite := ne ($ev.Params.eventType | default "event") "festival" -}}
+{{- $place := dict -}}
+{{- if $onsite -}}
+  {{- $place = dict
+      "@type" "Place"
+      "@id" (printf "%s#brewery" site.BaseURL)
+      "name" site.Title
+      "url" site.BaseURL
+      "hasMap" $p.mapUrl
+      "address" (dict
+        "@type" "PostalAddress"
+        "streetAddress" $p.streetAddress
+        "addressLocality" $p.addressLocality
+        "addressRegion" $p.addressRegion
+        "postalCode" $p.postalCode
+        "addressCountry" $p.addressCountry)
+      "geo" (dict
+        "@type" "GeoCoordinates"
+        "latitude" $p.latitude
+        "longitude" $p.longitude) -}}
+{{- else -}}
+  {{- with $ev.Params.location -}}
+    {{- $place = dict "@type" "Place" "name" . "address" . -}}
+  {{- end -}}
+{{- end -}}
+
+{{- $data := dict
+    "@context" "https://schema.org"
+    "@type" "Event"
+    "@id" (printf "%s#event" $ev.Permalink)
+    "name" $ev.Title
+    "url" $ev.Permalink
+    "inLanguage" "en-US"
+    "startDate" $startStr
+    "eventStatus" "https://schema.org/EventScheduled"
+    "eventAttendanceMode" "https://schema.org/OfflineEventAttendanceMode"
+    "organizer" (dict
+      "@type" "Organization"
+      "@id" (printf "%s#brewery" site.BaseURL)
+      "name" site.Title
+      "url" site.BaseURL) -}}
+
+{{- with $desc }}{{ $data = merge $data (dict "description" (. | truncate 900)) }}{{ end -}}
+{{- with $endStr }}{{ $data = merge $data (dict "endDate" .) }}{{ end -}}
+{{- with $img }}{{ $data = merge $data (dict "image" (slice .)) }}{{ end -}}
+{{- if $place }}{{ $data = merge $data (dict "location" $place) }}{{ end -}}
+
+{{- /* Cost. A free event and an event with no price set are different things:
+       Kit omits the price entirely when none applies, and the adapter turns
+       that distinction into priceLabel being empty vs "Free". Emitting an
+       Offer with a made-up price would be worse than emitting none, and an
+       Offer with no price at all is invalid and can suppress the whole rich
+       result -- so an unpriced event simply gets no offers. */ -}}
+{{- $priceLabel := $ev.Params.priceLabel | default "" -}}
+{{- if $priceLabel -}}
+  {{- $cents := float ($ev.Params.priceCents | default 0) -}}
+  {{- $offer := dict
+      "@type" "Offer"
+      "price" (printf "%.2f" (div $cents 100.0))
+      "priceCurrency" ($ev.Params.currency | default "USD")
+      "availability" "https://schema.org/InStock"
+      "url" ($ev.Params.registrationURL | default $ev.Permalink)
+      "validFrom" (($ev.Lastmod).Format "2006-01-02T15:04:05-07:00") -}}
+  {{- $data = merge $data (dict "offers" (slice $offer) "isAccessibleForFree" (eq $priceLabel "Free")) -}}
+{{- end -}}
+
+{{- with $ev.Params.capacity -}}
+  {{- if gt . 0 }}{{ $data = merge $data (dict "maximumAttendeeCapacity" .) }}{{ end -}}
+{{- end -}}
+
+{{- /* A weekly series is one page showing its next occurrence, so startDate
+       alone would tell Google about exactly one Wednesday. eventSchedule is
+       how schema.org says "and every week after that" -- byDay in the event's
+       own named zone, so the series survives a DST change. */ -}}
+{{- if $ev.Params.recurring -}}
+  {{- $sched := dict
+      "@type" "Schedule"
+      "repeatFrequency" "P1W"
+      "startDate" ($start.Format "2006-01-02")
+      "startTime" ($start.Format "15:04:05")
+      "scheduleTimezone" ($ev.Params.timezone | default "America/Denver") -}}
+  {{- $days := slice -}}
+  {{- range $ev.Params.byDay }}{{ $days = $days | append (printf "https://schema.org/%s" .) }}{{ end -}}
+  {{- with $days }}{{ $sched = merge $sched (dict "byDay" .) }}{{ end -}}
+  {{- with $end }}{{ $sched = merge $sched (dict "endTime" (.Format "15:04:05")) }}{{ end -}}
+  {{- $data = merge $data (dict "eventSchedule" (slice $sched)) -}}
+{{- end -}}
+
+{{- return $data -}}
