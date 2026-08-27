@@ -37,6 +37,26 @@
           {{ .Params.whenLabel }}
           {{- if .Params.recurring }}<br><span class="subtle">Every week — just turn up.</span>{{ end }}
         </dd>
+        {{- /* A series on set dates, or a monthly one, has no cadence that can
+               be stated in a phrase -- so list the dates. Weekly is excluded:
+               "Every Tuesday" above already says it, and printing the next
+               twelve Tuesdays underneath adds nothing.
+
+               Kit expands these; the site never derives them. */ -}}
+        {{- if and (not .Params.recurring) (gt (.Params.dateCount | default 0) 1) }}
+        <dt>Dates</dt>
+        <dd>
+          <ul class="event-dates">
+            {{- range .Params.upcoming }}
+            <li>
+              <time datetime="{{ .Format "2006-01-02T15:04:05Z07:00" }}">
+                {{ .Format "Monday, January 2" }}{{ if not $.Params.allDay }} · {{ .Format "3:04pm" }}{{ end }}
+              </time>
+            </li>
+            {{- end }}
+          </ul>
+        </dd>
+        {{- end }}
         {{- with .Params.location }}
         <dt>Where</dt>
         <dd>{{ . }}{{ if eq $.Params.eventType "festival" }}<br><span class="subtle">Off-site — we're coming to you.</span>{{ end }}</dd>

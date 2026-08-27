@@ -8,8 +8,33 @@
 HUGO_VERSION := $(shell sed -n 's/.*HUGO_VERSION = "\(.*\)".*/\1/p' netlify.toml)
 HUGO_DIR     := .bin
 HUGO         := $(HUGO_DIR)/hugo
-HUGO_TARBALL := hugo_extended_$(HUGO_VERSION)_linux-amd64.tar.gz
-HUGO_URL     := https://github.com/gohugoio/hugo/releases/download/v$(HUGO_VERSION)/$(HUGO_TARBALL)
+# Netlify builds on linux-amd64; a developer machine may not be. Resolve the
+# platform rather than hardcoding Netlify's, or `make setup` fetches a binary
+# that cannot execute here and every target dies with "exec format error".
+#
+# The VERSION stays pinned to netlify.toml regardless: matching Netlify's Hugo
+# is the point, matching its CPU is not.
+#
+# The two platforms are packaged DIFFERENTLY by upstream -- Linux ships a
+# tarball, macOS ships only a .pkg (there is no darwin tar.gz to fetch) -- so
+# the download and the unpack both vary. Hence a per-platform archive name and
+# a per-platform extract command rather than one rule with a substituted URL.
+HUGO_UNAME_S := $(shell uname -s)
+HUGO_UNAME_M := $(shell uname -m)
+
+ifeq ($(HUGO_UNAME_S),Darwin)
+  HUGO_PLATFORM := darwin-universal
+  HUGO_ARCHIVE  := hugo_extended_$(HUGO_VERSION)_$(HUGO_PLATFORM).pkg
+else
+  ifeq ($(HUGO_UNAME_M),aarch64)
+    HUGO_PLATFORM := linux-arm64
+  else
+    HUGO_PLATFORM := linux-amd64
+  endif
+  HUGO_ARCHIVE := hugo_extended_$(HUGO_VERSION)_$(HUGO_PLATFORM).tar.gz
+endif
+
+HUGO_URL := https://github.com/gohugoio/hugo/releases/download/v$(HUGO_VERSION)/$(HUGO_ARCHIVE)
 
 # .env holds KIT_EVENTS_URL and KIT_EVENTS_TOKEN for the live-feed targets.
 # Optional: the default `make dev` deliberately runs without it.
@@ -19,11 +44,23 @@ export
 .DEFAULT_GOAL := help
 
 $(HUGO):
-	@echo "Fetching Hugo $(HUGO_VERSION) (extended)..."
+	@echo "Fetching Hugo $(HUGO_VERSION) (extended, $(HUGO_PLATFORM))..."
 	@mkdir -p $(HUGO_DIR)
-	@curl -sSfL $(HUGO_URL) -o $(HUGO_DIR)/hugo.tar.gz
-	@tar xzf $(HUGO_DIR)/hugo.tar.gz -C $(HUGO_DIR) hugo
-	@rm -f $(HUGO_DIR)/hugo.tar.gz
+	@curl -sSfL $(HUGO_URL) -o $(HUGO_DIR)/$(HUGO_ARCHIVE)
+ifeq ($(HUGO_UNAME_S),Darwin)
+	@# The macOS build is only published as an installer package. Expanding it
+	@# in place keeps the binary in .bin/ alongside the Linux one instead of
+	@# installing Hugo system-wide, so the pinned version cannot leak out of
+	@# this repo or collide with a Hugo the developer already has.
+	@rm -rf $(HUGO_DIR)/pkg
+	@pkgutil --expand-full $(HUGO_DIR)/$(HUGO_ARCHIVE) $(HUGO_DIR)/pkg
+	@cp $(HUGO_DIR)/pkg/Payload/hugo $(HUGO)
+	@chmod +x $(HUGO)
+	@rm -rf $(HUGO_DIR)/pkg
+else
+	@tar xzf $(HUGO_DIR)/$(HUGO_ARCHIVE) -C $(HUGO_DIR) hugo
+endif
+	@rm -f $(HUGO_DIR)/$(HUGO_ARCHIVE)
 	@$(HUGO) version
 
 .PHONY: setup

@@ -63,6 +63,9 @@ Three things here are deliberate and easy to get wrong later:
   {{- $tz := .timezone | default "America/Denver" -}}
   {{- $start := time.AsTime .starts_at -}}
   {{- $next := $start -}}
+  {{- /* Weekly specifically: it is the only cadence that reads naturally as
+         "Every Tuesday". Monthly rules and date lists are described by their
+         actual dates instead. */ -}}
   {{- $recurring := hasPrefix (.recurrence | default "") "FREQ=WEEKLY" -}}
 
   {{- /* Declared out here rather than inside the branch below, because the
@@ -98,6 +101,30 @@ Three things here are deliberate and easy to get wrong later:
         {{- end -}}
       {{- end -}}
     {{- end -}}
+  {{- end -}}
+
+  {{- /* Kit ships the next occurrences ALREADY EXPANDED, so prefer them over
+         anything worked out here.
+
+         The weekday walk above only ever handled FREQ=WEEKLY, which was the
+         only cadence Kit could store when it was written. It now also stores
+         monthly rules ("the first Friday") and hand-picked date lists, and
+         neither can be derived by walking forward to a matching weekday --
+         "the first Friday of next month" is not a weekday offset, and a list
+         of dates has no pattern at all. Both would have fallen through to the
+         one-off branch and published a start date that may be months past.
+
+         Expanding in Hugo would mean reimplementing RFC 5545 -- short months,
+         fifth weekdays, DST -- in a template language, alongside the tested
+         implementation Kit already has. So Kit expands once and sends the
+         answer. The list starts at today, so the first entry is the next
+         occurrence. */ -}}
+  {{- $upcoming := slice -}}
+  {{- range (.upcoming | default slice) -}}
+    {{- $upcoming = $upcoming | append (time.AsTime .) -}}
+  {{- end -}}
+  {{- with $upcoming -}}
+    {{- $next = index . 0 -}}
   {{- end -}}
 
   {{- /* End time. For a repeat, carry the DURATION forward rather than the
@@ -215,6 +242,8 @@ Three things here are deliberate and easy to get wrong later:
       "priceCents"      (.price_cents | default 0)
       "currency"        (.currency | default "USD")
       "capacity"        (.capacity | default 0)
+      "upcoming"        $upcoming
+      "dateCount"       (len $upcoming)
       "registrationURL" (.registration_url | default "")
       "canonicalURL"    (.canonical_url | default "")
     )
