@@ -1,4 +1,7 @@
 {{ define "main" }}
+{{- /* Side effect, no output: writes the three .ics files into the build.
+       Called from the events section because that page always exists. */ -}}
+{{- partial "publish-ics.html" . -}}
 {{- /* Above the fold is the NEXT event, whatever kind it is. On a page whose
        job is "what's on", the most useful first thing is what is happening
        soonest.
@@ -77,6 +80,8 @@
   </div>
 </section>
 {{- end }}
+
+{{- partial "event-feeds.html" . }}
 
 {{- partial "visit.html" . }}
 {{ end }}

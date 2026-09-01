@@ -9,13 +9,27 @@
                        documented pattern for a summary page: the list tells
                        Google the set exists and in what order, and each detail
                        page carries the actual Event. Repeating the full Event
-                       objects here would just be two sources to disagree. */ -}}
+                       objects here would just be two sources to disagree.
+
+       PROMINENCE GATES THE EVENT MARKUP. Only `normal` and `featured` are
+       events. `background` is a standing offer -- the weekly pizza deal,
+       happy hour, kids eat free -- and Google's Event guidelines forbid
+       marking those up: "Don't mark business hours as events", "Don't mark
+       coupons or vouchers as events". The penalty is a manual action, and a
+       Spammy Structured Markup action discounts the structured data on EVERY
+       page, so one pizza deal can cost the real events their rich results.
+
+       Nothing is emitted in its place. Google has no rich result for a
+       recurring happy hour, and a bare Offer with no product or price context
+       would be a different kind of wrong. A background page is just a page. */ -}}
 
 {{- if eq .Kind "page" -}}
+{{- if ne .Params.prominence "background" -}}
 {{- $event := partial "event-jsonld.html" (dict "page" .) -}}
 <script type="application/ld+json">
 {{ $event | jsonify (dict "indent" "  ") | safeJS }}
 </script>
+{{- end -}}
 {{- $crumbs := slice
     (dict "@type" "ListItem" "position" 1 "name" site.Title "item" site.BaseURL)
     (dict "@type" "ListItem" "position" 2 "name" "Events" "item" (printf "%sevents/" site.BaseURL))
@@ -25,8 +39,14 @@
 </script>
 
 {{- else if eq .Kind "section" -}}
+{{- /* Background pages are excluded here too. Not for the same reason as
+       above -- these entries are plain ListItems and are never typed Event,
+       so this is not a guidelines violation. It is simply that a list called
+       "Upcoming events" should not point at a permanent pizza deal. Filter
+       before enumerating so `position` stays contiguous from 1. */ -}}
+{{- $visible := where .Pages "Params.prominence" "!=" "background" -}}
 {{- $items := slice -}}
-{{- range $i, $e := (sort .Pages "Params.nextStart") -}}
+{{- range $i, $e := (sort $visible "Params.nextStart") -}}
   {{- $items = $items | append (dict
       "@type" "ListItem"
       "position" (add $i 1)

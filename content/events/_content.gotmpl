@@ -215,6 +215,14 @@ Three things here are deliberate and easy to get wrong later:
     {{- end -}}
   {{- end -}}
 
+  {{- /* `prominence` is the full editorial axis, not just the featured
+         boolean. Kit has sent it all along and the site ignored it, which is
+         why a standing happy-hour offer was emitting schema.org Event markup.
+         Google forbids that outright -- "Don't mark business hours as events",
+         "Don't mark coupons or vouchers as events" -- and answers it with a
+         manual action that discounts the structured data on EVERY page, not
+         just the offending one. Only normal and featured are events; the gate
+         itself lives in event-schema.html. */ -}}
   {{- $.AddPage (dict
     "path"    .slug
     "kind"    "page"
@@ -223,6 +231,7 @@ Three things here are deliberate and easy to get wrong later:
     "dates"   (dict "date" $next "publishDate" (.updated_at | default "2000-01-01T00:00:00Z" | time.AsTime) "lastmod" (.updated_at | default "2000-01-01T00:00:00Z" | time.AsTime))
     "params"  (dict
       "featured"        (.featured | default false)
+      "prominence"      (.prominence | default "normal")
       "hasPoster"       $posterOK
       "kitID"           .id
       "eventType"       (.type | default "event")

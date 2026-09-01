@@ -1,0 +1,69 @@
+{{- /* Republishes Kit's calendar feeds as public files on this site.
+
+       WHY THIS EXISTS AT ALL. Kit's feeds are behind a bearer token, on
+       purpose. But the whole point of an ICS feed is that somebody else
+       SUBSCRIBES to it -- a chamber of commerce calendar, a regional events
+       platform, a regular's phone -- and none of those can send an
+       Authorization header. So the build fetches the authenticated copy once
+       and republishes it here, token-free, on our own domain. That also means
+       the address we hand out is one we control, not whatever Kit hostname
+       happened to get pasted into an email.
+
+       WHY THREE. What a subscriber wants differs. A town calendar wants the
+       anniversary party and would not thank us for NFL Sundays; a regular
+       subscribing on their phone wants the lot. The tiers are nested
+       supersets, so handing an org a narrower feed is a URL change and never a
+       reconfiguration.
+
+       WHY NOT GENERATE THE ICS HERE. RFC 5545 wants text escaping, 75-octet
+       line folding, CRLF endings and stable UIDs, and Kit already has a
+       library that does all of it. The content adapter next door compares
+       weekdays by NAME because templates have no int cast for time.Weekday --
+       that is the standard of ergonomics a hand-rolled serialiser would be
+       fighting.
+
+       The URLs are derived from KIT_EVENTS_URL rather than configured
+       separately, so the feeds cannot drift onto a different Kit than the
+       events themselves. */ -}}
+
+{{- $json := getenv "KIT_EVENTS_URL" -}}
+{{- $token := getenv "KIT_EVENTS_TOKEN" -}}
+
+{{- if and $json $token -}}
+  {{- $base := replace $json "feed.json" "feed.ics" -}}
+  {{- $opts := dict "headers" (dict "Authorization" (printf "Bearer %s" $token)) -}}
+
+  {{- /* target path -> tier. Nested: featured is a subset of highlights is a
+         subset of all. */ -}}
+  {{- $tiers := slice
+      (dict "path" "/events.ics"            "tier" "all")
+      (dict "path" "/events-highlights.ics" "tier" "highlights")
+      (dict "path" "/events-featured.ics"   "tier" "featured") -}}
+
+  {{- range $tiers -}}
+    {{- /* Captured before the `with` blocks below rebind the dot. */ -}}
+    {{- $path := .path -}}
+    {{- $tier := .tier -}}
+    {{- $url := printf "%s?tier=%s" $base $tier -}}
+    {{- with try (resources.GetRemote $url $opts) -}}
+      {{- with .Err -}}
+        {{- /* Same rule the events content adapter follows: fail the build
+               rather than republish whatever was there last time. A calendar
+               feed that silently freezes is worse than one that is briefly
+               missing -- subscribers keep showing up for cancelled events and
+               nothing anywhere says the feed went stale. Netlify keeps serving
+               the last good deploy, so nothing goes down. */ -}}
+        {{- errorf "events: could not fetch the %s calendar feed from Kit (%s). Refusing to build rather than publish a stale calendar." $tier . -}}
+      {{- else with .Value -}}
+        {{- /* A wrong path returns Kit's HTML error page with a 200, which
+               would publish cheerfully as a .ics nobody can parse. */ -}}
+        {{- if not (in .MediaType.Type "calendar") -}}
+          {{- errorf "events: %s returned %s, not text/calendar. Check KIT_EVENTS_URL points at the JSON feed (…/events/feed.json)." $url .MediaType.Type -}}
+        {{- else -}}
+          {{- $out := resources.Copy $path . -}}
+          {{- $out.Publish -}}
+        {{- end -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}

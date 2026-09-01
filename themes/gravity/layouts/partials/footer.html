@@ -51,6 +51,11 @@
         <li><a href="{{ .Permalink }}" type="{{ .MediaType.Type }}">Events feed</a></li>
         {{- end }}
         {{- end }}
+        {{- /* Points at the explanation, not straight at the .ics. A bare
+               link to the file downloads a dead snapshot, which is exactly
+               the mistake the section it lands on talks people out of. Also
+               the URL we send a chamber, so it wants to be linkable. */ -}}
+        <li><a href="{{ "events/#feeds" | absURL }}">Add to your calendar</a></li>
       </ul>
     </div>
 

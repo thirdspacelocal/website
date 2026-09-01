@@ -33,6 +33,12 @@
   {{- range .AlternativeOutputFormats }}
   <link rel="{{ .Rel }}" type="{{ .MediaType.Type }}" href="{{ .Permalink }}" title="{{ if $isHome }}{{ site.Title }}{{ else }}{{ $title }} · {{ site.Title }}{{ end }}">
   {{- end }}
+  {{- /* The calendar. ONLY the everything tier is advertised: two
+         text/calendar alternates would leave anything sniffing for one with
+         no way to choose between them. The narrower tiers exist for calendar
+         editors, who are sent /events#feeds rather than left to discover
+         them. */ -}}
+  <link rel="alternate" type="text/calendar" href="{{ "events.ics" | absURL }}" title="Events · {{ site.Title }}">
 
   <!-- Open Graph / Twitter -->
   <meta property="og:type" content="{{ if $isHome }}website{{ else }}article{{ end }}">
