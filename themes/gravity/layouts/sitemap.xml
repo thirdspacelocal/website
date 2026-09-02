@@ -14,7 +14,10 @@
 {{ printf `<?xml version="1.0" encoding="utf-8" standalone="yes"?>` | safeHTML }}
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   {{- range .Pages }}
-  {{- if .Permalink }}
+  {{- /* sitemap_exclude drops the pages that head.html marks noindex. Listing
+         a URL here while telling Google not to index it is a contradiction,
+         and Search Console reports it as one. */ -}}
+  {{- if and .Permalink (not .Params.sitemap_exclude) }}
   <url>
     <loc>{{ .Permalink }}</loc>
     {{- if not .Lastmod.IsZero }}

@@ -26,6 +26,15 @@
   {{- end }}
   <meta name="description" content="{{ $desc | plainify | truncate 300 }}">
   <link rel="canonical" href="{{ .Permalink }}">
+  {{- /* Opt-out for pages that exist for one visitor at a time -- a form's
+         thank-you page, say. Indexed, they compete with the real page for the
+         same words and answer nobody's question. Set `noindex: true` in front
+         matter, and set `sitemap_exclude: true` beside it: a URL that is both
+         announced in the sitemap and marked noindex is a contradiction Search
+         Console reports as an error. */ -}}
+  {{- if .Params.noindex }}
+  <meta name="robots" content="noindex, follow">
+  {{- end }}
 
   {{- /* Feed autodiscovery. The RSS has always been generated, but nothing
          linked to it, so no reader could find it without being handed the URL

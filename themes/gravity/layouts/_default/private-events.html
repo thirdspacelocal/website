@@ -1,0 +1,85 @@
+{{ define "main" }}
+{{- /* The buyout page. One job: turn "could we have our thing here?" into a
+       filled-in form in somebody's inbox.
+
+       Kept deliberately thin. An earlier draft enumerated two buyout tiers with
+       bullet lists, six things "you get either way", eight occasions and a
+       three-step process -- and most of that was detail nobody here had
+       actually fixed yet. What the room can do is still being worked out, so
+       the page says the few true things and hands over to a conversation. Add
+       back only what someone has confirmed. */ -}}
+
+{{- $hero := "" -}}
+{{- with resources.Get .Params.heroImage }}{{ $b := .Fill "1800x820 Center" }}{{ $hero = $b.RelPermalink }}{{ end -}}
+<section class="hero page-hero"{{ with $hero }} style="--hero-img: url('{{ . }}')"{{ end }}>
+  <div class="wrap">
+    {{- with .Params.eyebrow }}<p class="eyebrow">{{ . }}</p>{{ end }}
+    {{- /* The <title> and the H1 differ on purpose. "Private Events" is what
+           somebody types into Google; "Book your event with us" is what
+           somebody wants to read once they have arrived. */ -}}
+    <h1>{{ .Params.heading | default .Title }}</h1>
+    {{- with .Params.subtitle }}<p class="lead">{{ . }}</p>{{ end }}
+    <p class="hero-cta">
+      <a class="btn btn-order" href="#enquire">Send us the details</a>
+    </p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap split">
+    <div class="split-text stack content">
+      {{ .Content }}
+    </div>
+    <div class="split-media">
+      {{- with resources.Get .Params.splitImage }}
+      {{- $img := .Fill "760x600 Center" }}
+      <img src="{{ $img.RelPermalink }}" width="{{ $img.Width }}" height="{{ $img.Height }}" alt="{{ $.Params.splitAlt }}" loading="lazy">
+      {{- end }}
+    </div>
+  </div>
+</section>
+
+<section class="section-alt">
+  <div class="wrap">
+    <p class="eyebrow">What we can do</p>
+    <h2>Three things worth knowing.</h2>
+    {{- with .Params.can }}
+    <div class="values-grid mt-2">
+      {{- range . }}
+      <article class="value card">
+        <div class="card-body">
+          <h3>{{ .title | markdownify }}</h3>
+          <p class="muted">{{ .body | markdownify }}</p>
+        </div>
+      </article>
+      {{- end }}
+    </div>
+    {{- end }}
+
+    {{- /* "How much" is the second question every visitor has. A page that
+           dodges it reads as though it has something to hide, so we say why
+           there is no number rather than saying nothing. */ -}}
+    <div class="cost stack">
+      <p class="eyebrow">What it costs</p>
+      <p>There is no price list, because no single number would be true. A Tuesday
+      in February and a Saturday in December are not the same night.</p>
+      <p class="muted">Tell us the date, the rough headcount, and the hours you
+      want, and we&rsquo;ll come back with a real number. Asking costs nothing.</p>
+    </div>
+  </div>
+</section>
+
+<section id="enquire">
+  <div class="wrap booking-wrap">
+    <p class="eyebrow">Book it</p>
+    <h2>Tell us about your night.</h2>
+    <p class="lead">Nothing here books anything. No date is held until we have
+    both said so.</p>
+    {{ partial "booking-form.html" . }}
+  </div>
+</section>
+
+{{- if .Params.visit }}
+{{- partial "visit.html" . }}
+{{- end }}
+{{ end }}

@@ -49,6 +49,13 @@ Now featuring **Double D's Sourdough Pizzeria**, fresh sourdough pizza right in 
 
 <p><a class="btn btn-order" href="{{< param foodMenuUrl >}}" rel="noopener">Food Menu</a></p>
 
+### Book the room
+
+We can hold part of the tasting room or the bier garten for a group, or the
+whole place if you need it. The building holds 88.
+
+<p><a class="btn" href="/private-events/">Private Events</a></p>
+
 ### Gravity Gear
 
 Choose from a wide array of stylish Gravity Gear at the tasting room: t-shirts, long sleeve

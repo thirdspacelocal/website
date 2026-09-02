@@ -1,0 +1,128 @@
+{{- /* The buyout enquiry form. Netlify Forms, which works by scanning the
+       DEPLOYED HTML at build time for a <form data-netlify="true"> -- so this
+       has to render into the static page (it does; Hugo prerenders it) and the
+       hidden form-name input has to match the form's name attribute exactly.
+       Get either wrong and the form posts to a 404 with no other symptom.
+
+       No JavaScript, no third-party embed, no iframe: a form that cannot fail
+       to load is the right shape for the one page whose entire job is to
+       capture a lead.
+
+       Deliberately NOT a booking engine. There is no calendar, no availability
+       check and no price. A buyout is a conversation, and every field here
+       exists to make the FIRST reply of that conversation a useful one rather
+       than to close the deal in the browser. */ -}}
+{{- /* Context = the page: the occasion list comes from its front matter. */ -}}
+{{- $p := site.Params -}}
+{{- $thanks := "/private-events/thanks/" -}}
+<form class="booking-form"
+      name="private-event"
+      method="POST"
+      action="{{ $thanks | relURL }}"
+      data-netlify="true"
+      data-netlify-honeypot="bot-field">
+
+  {{- /* Netlify routes the submission by this, not by the form element's
+         name attribute. They must agree. */ -}}
+  <input type="hidden" name="form-name" value="private-event">
+
+  {{- /* Honeypot. Hidden from people, irresistible to bots. Kept out of the
+         tab order and off screen rather than display:none, which some bots
+         check for. */ -}}
+  <p class="hp" aria-hidden="true">
+    <label>Leave this field empty<input name="bot-field" tabindex="-1" autocomplete="off"></label>
+  </p>
+
+  <fieldset>
+    <legend>Who you are</legend>
+    <div class="form-grid">
+      <p class="field">
+        <label for="bf-name">Your name <span class="req" aria-hidden="true">*</span></label>
+        <input id="bf-name" name="name" type="text" autocomplete="name" required>
+      </p>
+      <p class="field">
+        <label for="bf-email">Email <span class="req" aria-hidden="true">*</span></label>
+        <input id="bf-email" name="email" type="email" autocomplete="email" required>
+      </p>
+      <p class="field">
+        <label for="bf-phone">Phone</label>
+        <input id="bf-phone" name="phone" type="tel" autocomplete="tel">
+        <span class="hint">The fastest way to sort out a date is usually a two-minute call.</span>
+      </p>
+      <p class="field">
+        <label for="bf-org">Company or organization</label>
+        <input id="bf-org" name="organization" type="text" autocomplete="organization">
+      </p>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>The event</legend>
+
+    {{- /* Radios, not a select: three options that the copy above has just
+           spent a whole section explaining deserve to be visible together,
+           and "not sure" is a real and common answer we would rather have
+           than a guess. */ -}}
+    <div class="field">
+      <span class="label-as-legend">What you&rsquo;re after</span>
+      <div class="choices">
+        <label class="choice"><input type="radio" name="buyout" value="Part of the room"> <span>Part of the room</span></label>
+        <label class="choice"><input type="radio" name="buyout" value="The whole place"> <span>The whole place</span></label>
+        <label class="choice"><input type="radio" name="buyout" value="Not sure yet" checked> <span>Not sure yet</span></label>
+      </div>
+    </div>
+
+    <div class="form-grid">
+      <p class="field">
+        <label for="bf-occasion">Occasion</label>
+        <select id="bf-occasion" name="occasion">
+          <option value="">Choose one…</option>
+          {{- /* Same list the "Good for" band renders, read from the page's
+                 front matter rather than restated here -- two copies would
+                 drift the first time someone adds an occasion to one of
+                 them. */ -}}
+          {{- range .Params.occasions }}
+          <option value="{{ . }}">{{ . }}</option>
+          {{- end }}
+          <option value="Something else">Something else</option>
+        </select>
+      </p>
+      <p class="field">
+        <label for="bf-guests">Roughly how many people? <span class="req" aria-hidden="true">*</span></label>
+        <input id="bf-guests" name="guests" type="number" min="1" step="1" inputmode="numeric" required>
+        {{- /* The building's capacity, said here rather than left to be
+               discovered in the reply. Not enforced with max=88: a group of
+               100 asking what is possible is a conversation we want, not a
+               validation error. */ -}}
+        <span class="hint">A ballpark is fine. The building holds 88.</span>
+      </p>
+      <p class="field">
+        <label for="bf-date">Preferred date</label>
+        <input id="bf-date" name="preferred-date" type="date">
+        <span class="hint">If you&rsquo;re still picking a date, leave this blank and tell us the window below.</span>
+      </p>
+      <p class="field">
+        <label for="bf-date-alt">A second date that would work</label>
+        <input id="bf-date-alt" name="alternate-date" type="date">
+      </p>
+      <p class="field">
+        <label for="bf-window">Rough hours</label>
+        <input id="bf-window" name="time-window" type="text" placeholder="e.g. 6 to 9pm">
+      </p>
+    </div>
+
+    <p class="field">
+      <label for="bf-details">Tell us about it</label>
+      <textarea id="bf-details" name="details" rows="5" placeholder="What you&rsquo;re celebrating, and anything you want the room to do. A toast, a slideshow, your own playlist, a look around the brewery."></textarea>
+    </p>
+  </fieldset>
+
+  <div class="form-actions">
+    <button class="btn btn-order" type="submit">Send it over</button>
+    <p class="form-note muted">
+      You can also email
+      <a href="mailto:{{ $p.bookingEmail }}?subject=Private%20event%20at%20Gravity">{{ $p.bookingEmail }}</a>
+      or call <a href="tel:{{ $p.phoneRaw }}">{{ $p.phone }}</a>.
+    </p>
+  </div>
+</form>

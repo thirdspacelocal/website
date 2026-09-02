@@ -27,6 +27,11 @@ disableKinds = ["taxonomy", "term"]
   email = "info@thegravitybrewing.com"
   salesContactName = "C.K. Lichenstein"
   salesEmail = "ck@thegravitybrewing.com"
+  # Where a buyout enquiry lands. A ROLE address, not a person: Erin owns this
+  # inbox today, and publishing a name means every printed flyer, cached page
+  # and forwarded email has to be chased the day that changes. Deliberately
+  # separate from salesEmail, which is wholesale and distribution.
+  bookingEmail = "events@thegravitybrewing.com"
   # approximate coords for Louisville, CO downtown — VERIFY before relying on for maps
   latitude = "39.9783"
   longitude = "-105.1319"
@@ -87,10 +92,17 @@ disableKinds = ["taxonomy", "term"]
     name = "Events"
     pageRef = "/events"
     weight = 5
+  # Next to Events on purpose: someone who came looking for "what's on" is one
+  # thought away from "could we have OUR thing here", and that is the whole
+  # journey this page exists to catch.
+  [[menus.main]]
+    name = "Private Events"
+    pageRef = "/private-events"
+    weight = 6
   [[menus.main]]
     name = "About Us"
     pageRef = "/about"
-    weight = 6
+    weight = 7
 
 [markup.goldmark.renderer]
   unsafe = true  # allow inline HTML in content where needed

@@ -33,6 +33,14 @@
       <p class="contact-label">Sales · {{ $p.salesContactName }}</p>
       <p><a href="mailto:{{ $p.salesEmail }}">{{ $p.salesEmail }}</a><br>
          <a href="tel:{{ $p.phoneRaw }}">{{ $p.phone }}</a></p>
+      {{- /* Anyone wondering "can we book this place" looks under Get In Touch
+             before they look in the nav. Points at the page rather than
+             straight at the mailbox: the page answers the two questions that
+             would otherwise be the first email, and its form arrives with the
+             date and the headcount already in it. */ -}}
+      <p class="contact-label">Private Events</p>
+      <p><a href="{{ "private-events/" | absURL }}">Book your event with us</a><br>
+         <a href="mailto:{{ $p.bookingEmail }}">{{ $p.bookingEmail }}</a></p>
     </div>
 
     <div class="footer-col">
