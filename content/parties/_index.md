@@ -39,15 +39,13 @@ occasions:
   - "Milestone birthday"
   - "Company gathering or offsite"
   - "Holiday party"
-  - "Celebration of life"
   - "Nonprofit fundraiser"
   - "Club night or meetup"
   - "Reunion"
 ---
 
-Gravity has been Louisville's living room since 2012. People come here for
-birthdays, for the end of a long week, and for the nights that turn out to
-matter. Yours can be one of them.
+Gravity has been bringing people together since 2012. Birthdays, work drinks,
+or local meetups. Yours can be one of them.
 
 This page is short on purpose. Every event is a bit different, so rather than
 list packages, we'd sooner hear what you're planning and tell you straight away
