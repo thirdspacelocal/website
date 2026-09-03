@@ -30,12 +30,14 @@
       <p class="contact-label">Tasting Room</p>
       <p><a href="mailto:{{ $p.email }}">{{ $p.email }}</a><br>
          <a href="tel:{{ $p.phoneRaw }}">{{ $p.phone }}</a></p>
-      {{- /* No phone here on purpose. This block used to repeat the taproom
-             number printed two lines above, which implied a direct wholesale
-             line: a buyer who dialled it got a bartender mid-shift. Email
-             until there is a real number to publish. */ -}}
+      {{- /* Yes, this is the same taproom number printed two lines above, and
+             yes, it reaches a bartender rather than C.K. That is the trade we
+             want: a buyer who would rather talk to somebody gets a person who
+             can take a message, which beats an inbox and a wait. Swap it the
+             day there is a real wholesale line. */ -}}
       <p class="contact-label">Wholesale · {{ $p.wholesaleContactName }}</p>
-      <p><a href="mailto:{{ $p.wholesaleEmail }}">{{ $p.wholesaleEmail }}</a></p>
+      <p><a href="mailto:{{ $p.wholesaleEmail }}">{{ $p.wholesaleEmail }}</a><br>
+         <a href="tel:{{ $p.phoneRaw }}">{{ $p.phone }}</a></p>
       {{- /* Anyone wondering "can we book this place" looks under Get In Touch
              before they look in the nav. Points at the page rather than
              straight at the mailbox: the page answers the two questions that
