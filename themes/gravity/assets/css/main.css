@@ -38,13 +38,19 @@
   --accent:  #d9a03c;   /* the logo's flame gold, taken down from #fccc0c */
   --accent-d:#bb8629;
   --accent-2:#93b3c4;   /* pale petrol: the tint used on the blue bands */
-  /* The logo's third colour, the hop cone. It is STRUCTURAL here and nowhere
-     else: band edges, card hover, the footer rule, the caption tick. It never
-     sets type. Green words beside gold words fight; a green line under gold
-     words does not, and that is the whole reason the dose is drawn this
-     narrowly. */
-  --hop:     #8fae5c;
-  --line-hop:rgba(143, 174, 92, .40);
+  /* Structure has its own colour, and it is deliberately NOT the gold. Gold
+     marks what you can act on -- buttons, links, hover. If it also drew every
+     band edge and caption tick it would stop meaning anything, so the rules
+     are simply light.
+
+     No third hue, and that is the point. The logo's hop green was tried here
+     and pulled: the caption tick renders inside .section-navy (home-events)
+     and on the events hero, so a structural colour cannot avoid sitting on
+     the petrol band -- and green on that blue is exactly the clash. Light
+     rules also happen to be the period-correct answer: an agency document
+     rules its plates in ink, not in colour. */
+  --rule:     #8c96a2;                  /* caption ticks, carousel marker */
+  --line-rule:rgba(227, 231, 234, .18); /* band edges, footer rule */
   --panel:   #0f1a22;   /* cards and callouts */
   --line:    rgba(227, 231, 234, .14);
   --line-d:  rgba(255, 255, 255, .18);
@@ -219,7 +225,7 @@ section { padding-block: clamp(3rem, 7vw, 5.5rem); }
 .carousel-prev { left: 8px; } .carousel-next { right: 8px; }
 .carousel-dots { display: flex; gap: .5rem; justify-content: center; margin-top: 1.2rem; }
 .carousel-dots button { width: 10px; height: 10px; border-radius: 50%; border: 0; background: var(--line); cursor: pointer; padding: 0; }
-.carousel-dots button[aria-current="true"] { background: var(--hop); }
+.carousel-dots button[aria-current="true"] { background: var(--rule); }
 /* Tighten the carousel band so it doesn't leave a big empty gap before the next section */
 .carousel-band { padding-top: clamp(2rem, 4vw, 3rem); padding-bottom: 0; }
 
@@ -604,7 +610,7 @@ body .lead, body.page-dark .lead { color: var(--ink); }
   color: var(--accent-2); display: flex; align-items: center; gap: .8em;
 }
 .eyebrow::before {
-  content: ""; flex: none; width: 22px; height: 1px; background: var(--hop);
+  content: ""; flex: none; width: 22px; height: 1px; background: var(--rule);
 }
 .section-navy .eyebrow { color: var(--accent-2); }
 
@@ -612,9 +618,9 @@ body .lead, body.page-dark .lead { color: var(--ink); }
    Slightly translucent so the starfield carries through the page rather than
    stopping at the first section edge, and ruled top and bottom so each band
    reads as a plate on the page. */
-.section-alt { background: rgba(12, 22, 29, .84); border-block: 1px solid var(--line-hop); }
-.section-navy { background: rgba(22, 50, 64, .88); border-block: 1px solid var(--line-hop); }
-.page-head { background: rgba(12, 22, 29, .84); border-bottom-color: var(--line-hop); }
+.section-alt { background: rgba(12, 22, 29, .84); border-block: 1px solid var(--line-rule); }
+.section-navy { background: rgba(22, 50, 64, .88); border-block: 1px solid var(--line-rule); }
+.page-head { background: rgba(12, 22, 29, .84); border-bottom-color: var(--line-rule); }
 body.page-dark .page-head { background: rgba(12, 22, 29, .84); }
 body.page-dark .section-alt { background: rgba(12, 22, 29, .84); }
 
@@ -629,7 +635,7 @@ body.page-dark .section-alt { background: rgba(12, 22, 29, .84); }
    The hover state is a hairline changing colour. That is the whole
    interaction: no lift, no shadow, no glow. */
 .card, .quicklink { transition: border-color .18s; }
-.card:hover, .quicklink:hover { border-color: rgba(143, 174, 92, .75); }
+.card:hover, .quicklink:hover { border-color: rgba(227, 231, 234, .45); }
 .quicklink { border: 1px solid var(--line); }
 .quicklink span { font-weight: 700; letter-spacing: .1em; }
 
@@ -661,7 +667,7 @@ body.page-dark .section-alt { background: rgba(12, 22, 29, .84); }
 .event-hero-when { color: var(--accent-2); letter-spacing: .04em; }
 
 /* ---------- Footer ---------- */
-.site-footer { border-top: 1px solid var(--line-hop); }
+.site-footer { border-top: 1px solid var(--line-rule); }
 .footer-col h2 { font-weight: 700; letter-spacing: .16em; }
 
 
