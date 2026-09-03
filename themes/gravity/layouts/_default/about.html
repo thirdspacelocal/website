@@ -63,6 +63,32 @@
 {{- end }}
 {{- end }}
 
+{{/* Bartenders who have moved on. A separate block rather than a third entry
+     in $groups above, because that loop renders full cards with a title and a
+     bio and this wants neither -- just the face and the name. */}}
+{{- with $t.alumni }}
+<section>
+  <div class="wrap">
+    <p class="eyebrow">Alumni</p>
+    <h2>Past bartenders.</h2>
+    <ul class="alumni-grid mt-2">
+      {{- range . }}
+      {{- $m := . }}
+      <li class="alum">
+        {{- with resources.Get .image }}
+        {{- $i := .Fill "220x220 Center" }}<img src="{{ $i.RelPermalink }}" width="{{ $i.Width }}" height="{{ $i.Height }}" alt="{{ $m.name }}" loading="lazy">
+        {{- else }}
+        {{- $parts := split $m.name " " }}{{ $ini := "" }}{{ range first 2 $parts }}{{ $ini = printf "%s%s" $ini (substr . 0 1) }}{{ end }}
+        <span class="monogram" aria-hidden="true">{{ $ini }}</span>
+        {{- end }}
+        <span class="alum-name">{{ .name }}</span>
+      </li>
+      {{- end }}
+    </ul>
+  </div>
+</section>
+{{- end }}
+
 {{- if .Params.visit }}
 {{- partial "visit.html" . }}
 {{- end }}

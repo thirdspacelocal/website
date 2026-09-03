@@ -256,6 +256,24 @@ section { padding-block: clamp(3rem, 7vw, 5.5rem); }
 .signoff { margin-top: 2rem; }
 .signoff-name { display: block; font-family: var(--display); font-size: 1rem; letter-spacing: .02em; color: var(--accent); }
 
+/* Past bartenders. A face and a name at thumbnail size, in a row that wraps.
+   Small on purpose: the point is that they were here, not their CV. */
+.alumni-grid { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 1.5rem 1.7rem; }
+.alum { width: 92px; text-align: center; }
+.alum img, .alum .monogram {
+  width: 92px; height: 92px; display: block;
+  border: 1px solid var(--line); object-fit: cover;
+}
+/* Same fallback as the crew cards, so a missing photo reads as deliberate
+   rather than broken -- and dropping the file in later needs no other edit. */
+.alum .monogram {
+  display: grid; place-items: center; background: var(--bg-alt);
+  color: var(--accent-2); font-family: var(--display);
+  font-size: 1.4rem; letter-spacing: .04em;
+}
+.alum img { background: #d9dbe1; }
+.alum-name { display: block; margin-top: .55rem; font-size: .82rem; line-height: 1.3; color: var(--muted); }
+
 /* Five-values grid */
 .values-grid { display: grid; gap: 1.4rem; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
 .value .card-body { position: relative; }
