@@ -1,26 +1,46 @@
-/* Gravity Brewing theme — light, image-forward. Dependency-free (one tiny vanilla-JS carousel). */
+/* Gravity Brewing theme — "MISSION": dark, typographic, image-forward.
+   Dependency-free (one tiny vanilla-JS carousel).
 
-/* Bungee — the original's display font, self-hosted (no external dependency). */
+   The look is drawn from NASA's own printed material of the 1990s rather than
+   from science fiction: neutral grotesque set in caps, square corners,
+   hairline rules, monospace data, and photographs sitting on black the way
+   plates do in a press kit.
+
+   The agency palette is quoted at low volume. NASA blue and NASA red are the
+   reference, but both are pulled well down in saturation -- the structure is
+   what reads as NASA, not the colour. Nothing here glows or gradients. */
+
+/* Archivo — a neo-grotesque in the Helvetica line NASA actually set its
+   documents in. Uppercase and tracked out it reads as agency signage; the
+   squared "computer" faces people reach for instead are science fiction, not
+   NASA. Self-hosted: no CDN, no external request. It is the only webfont
+   here -- data and captions run on the system monospace. */
 @font-face {
-  font-family: "Bungee";
-  src: url("/fonts/bungee.woff2") format("woff2");
-  font-weight: 400;
+  font-family: "Archivo";
+  src: url("/fonts/archivo.woff2") format("woff2");
+  font-weight: 400 700;
   font-style: normal;
   font-display: swap;
 }
 
 :root {
-  --display: "Bungee", var(--sans);
-  --bg:      #ffffff;
-  --bg-alt:  #f4efe7;   /* warm cream section band */
-  --navy:    #1b2b38;   /* dark bands + footer — matches the original's section color exactly */
-  --navy-2:  #14222d;
-  --ink:     #1c242c;
-  --muted:   #62707c;
-  --accent:  #e8543a;   /* coral */
-  --accent-d:#cf4327;
-  --line:    rgba(0,0,0,.12);
-  --line-d:  rgba(255,255,255,.14);
+  --display: "Archivo", var(--sans);
+  /* Muted agency colour. NASA blue (0B3D91) and NASA red (FC3D21) desaturated
+     until they read as slate and brick, on the near-black every Hubble and
+     Voyager plate was printed against. At full strength the pair shouts; at
+     this volume the typography and the rules carry the reference instead. */
+  --bg:      #08090d;   /* plate black */
+  --bg-alt:  #0e111a;   /* one shade up, for banded sections */
+  --navy:    #182640;   /* agency blue, taken right down: a slate band */
+  --navy-2:  #131e33;
+  --ink:     #e4e5e9;   /* neutral off-white; NASA is not warm */
+  --muted:   #878d9c;
+  --accent:  #c85f45;   /* agency red, taken down to brick */
+  --accent-d:#ab4c35;
+  --accent-2:#9fb0cd;   /* pale slate: the tint used on the blue bands */
+  --panel:   #10131c;   /* cards and callouts */
+  --line:    rgba(228, 229, 233, .14);
+  --line-d:  rgba(255, 255, 255, .18);
   --wrap:    1160px;
   --mono:    ui-monospace, "SF Mono", Menlo, Consolas, monospace;
   --sans:    system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -59,7 +79,7 @@ h3 { font-size: 1.15rem; }
 /* ---------- Header ---------- */
 .site-header {
   position: sticky; top: 0; z-index: 50;
-  background: #fff; border-bottom: 1px solid var(--line);
+  background: rgba(8, 9, 13, .95); border-bottom: 1px solid var(--line);
 }
 .header-inner { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding-block: .6rem; }
 .brand { display: flex; align-items: center; gap: .7rem; color: var(--ink); }
@@ -72,15 +92,14 @@ h3 { font-size: 1.15rem; }
 .site-nav a[aria-current="page"] { border-bottom-color: var(--accent); color: var(--accent); }
 .nav-toggle, .nav-toggle-label { display: none; }
 
-/* 1024, not 860: Bungee is a WIDE display face, and a seventh nav item
-   ("Private Events") pushed the row into the logo somewhere around 1000px.
-   A hamburger on a 900px tablet is unremarkable; a nav overlapping the brand
-   is not. */
+/* 1024, not 860: a seventh nav item ("Private Events") set in tracked-out
+   caps pushes the row into the logo somewhere around 1000px. A hamburger on a
+   900px tablet is unremarkable; a nav overlapping the brand is not. */
 @media (max-width: 1024px) {
   .nav-toggle-label { display: block; cursor: pointer; width: 30px; height: 24px; position: relative; }
   .nav-toggle-label span, .nav-toggle-label span::before, .nav-toggle-label span::after { content:""; position:absolute; left:0; width:100%; height:2px; background: var(--ink); transition:.2s; }
   .nav-toggle-label span { top: 11px; } .nav-toggle-label span::before { top: -8px; } .nav-toggle-label span::after { top: 8px; }
-  .site-nav { position: absolute; top: 100%; left: 0; right: 0; background: #fff; border-bottom: 1px solid var(--line); max-height: 0; overflow: hidden; transition: max-height .25s ease; }
+  .site-nav { position: absolute; top: 100%; left: 0; right: 0; background: #08090d; border-bottom: 1px solid var(--line); max-height: 0; overflow: hidden; transition: max-height .25s ease; }
   .site-nav ul { flex-direction: column; gap: 0; padding: .5rem 0; }
   .site-nav li { padding-inline: clamp(1.1rem, 4vw, 2.5rem); }
   .site-nav a { display: block; padding-block: .7rem; border-bottom: 1px solid var(--line); }
@@ -89,24 +108,23 @@ h3 { font-size: 1.15rem; }
 
 /* ---------- Buttons ---------- */
 .btn { display: inline-block; font-family: var(--display); font-size: .78rem; letter-spacing: .02em; text-transform: uppercase; font-weight: 400; padding: .85rem 1.5rem; border-radius: 3px; border: 2px solid var(--accent); color: var(--accent); transition: .15s; background: transparent; }
-.btn:hover { background: var(--accent); color: #fff; text-decoration: none; }
+.btn:hover { background: var(--accent); color: #ffffff; text-decoration: none; }
 .btn-order { background: var(--accent); color: #fff; }
 .btn-order:hover { background: var(--accent-d); border-color: var(--accent-d); color: #fff; }
 .btn-light { border-color: #fff; color: #fff; }
-.btn-light:hover { background: #fff; color: var(--navy); }
+.btn-light:hover { background: var(--ink); color: #08090d; }
 
 /* ---------- Sections ---------- */
 section { padding-block: clamp(3rem, 7vw, 5.5rem); }
 .section-alt { background: var(--bg-alt); }
 .section-navy { background: var(--navy); color: #fff; }
-.section-navy .eyebrow { color: #ffb4a3; }
-.section-navy .muted { color: #b9c4cf; }
+.section-navy .eyebrow { color: var(--accent-2); }
+.section-navy .muted { color: var(--accent-2); }
 
 /* ---------- Hero (image + overlay + text/logo/CTA) ---------- */
 .hero { position: relative; color: #fff; display: grid; align-items: center; min-height: 74vh; padding-block: 5rem; overflow: hidden; }
-.hero::before { content:""; position:absolute; inset:0; z-index:0; background: linear-gradient(180deg, rgba(18,26,36,.62), rgba(18,26,36,.78)), var(--hero-img) center/cover no-repeat; }
+.hero::before { content:""; position:absolute; inset:0; z-index:0; background: linear-gradient(180deg, rgba(8,9,13,.70), rgba(8,9,13,.88)), var(--hero-img) center/cover no-repeat; }
 .hero .wrap { position: relative; z-index: 1; }
-.hero-logo { width: 96px; height: auto; margin-bottom: 1.2rem; filter: drop-shadow(0 2px 8px rgba(0,0,0,.4)); }
 .hero h1 { max-width: 18ch; }
 .hero .lead { color: #f3f0ea; }
 .hero-cta { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 2rem; }
@@ -117,17 +135,56 @@ section { padding-block: clamp(3rem, 7vw, 5.5rem); }
   margin-bottom: 1.4rem; padding: .5rem .95rem .5rem .8rem;
   background: var(--accent); color: #fff;
   border-radius: 999px; font-size: .84rem; line-height: 1.25;
-  box-shadow: 0 6px 22px rgba(232,84,58,.4);
+  box-shadow: none;
   animation: badge-in .6s ease both;
 }
 .hero-badge:hover { background: var(--accent-d); color: #fff; text-decoration: none; }
 .hero-badge strong { font-weight: 700; }
 .hero-badge-cta { opacity: .9; white-space: nowrap; }
 .hero-badge-star { font-size: .95rem; animation: badge-twinkle 2.6s ease-in-out infinite; }
-@keyframes badge-twinkle { 0%,100% { opacity: .55; transform: scale(.9) rotate(0); } 50% { opacity: 1; transform: scale(1.15) rotate(90deg); } }
+/* The badge star fades rather than spinning: against this palette a rotation
+   reads as a widget, a fade reads as a star. */
+@keyframes badge-twinkle { 0%, 100% { opacity: .5; } 50% { opacity: 1; } }
 @keyframes badge-in { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: none; } }
 @media (max-width: 520px) { .hero-badge { font-size: .78rem; } .hero-badge-cta { display: none; } }
 @media (prefers-reduced-motion: reduce) { .hero-badge, .hero-badge-star { animation: none; } }
+
+/* The lead event, beside the pitch. The artwork sits at its own scale rather
+   than being cropped into a band: a poster is designed art, and cropping it
+   removes the part doing the work -- the same reasoning as the events page.
+   The column only exists when there is an event to put in it; on an empty
+   week the wrap loses .hero-grid and the hero is a single column again. */
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1fr minmax(0, 24rem);
+  gap: clamp(1.6rem, 4vw, 3.2rem);
+  align-items: center;
+}
+.hero-event { display: block; color: #fff; }
+.hero-event:hover { text-decoration: none; }
+.hero-event img {
+  width: 100%; height: auto; border-radius: 4px;
+  background: #fff; box-shadow: 0 8px 30px rgba(0,0,0,.45);
+}
+.hero-event-meta { display: block; margin-top: .85rem; }
+.hero-event-label {
+  display: block; font-family: var(--display); font-size: .68rem;
+  letter-spacing: .04em; text-transform: uppercase; color: var(--accent);
+}
+.hero-event-title { display: block; font-weight: 700; margin-top: .2rem; line-height: 1.3; }
+.hero-event:hover .hero-event-title { text-decoration: underline; }
+.hero-event-when {
+  display: block; font-family: var(--mono); font-size: .74rem;
+  letter-spacing: .06em; text-transform: uppercase;
+  color: rgba(255,255,255,.82); margin-top: .2rem;
+}
+/* Stacked on a phone the artwork goes BELOW the pitch, not above it as it
+   does in the events band. Here the headline is the thing a first-time
+   visitor needs first; the poster is the second thing. */
+@media (max-width: 860px) {
+  .hero-grid { grid-template-columns: 1fr; }
+  .hero-event { max-width: 17rem; margin-top: 2rem; }
+}
 
 /* Compact page hero (interior pages) */
 .page-hero { min-height: 42vh; padding-block: 3.5rem; }
@@ -150,7 +207,7 @@ section { padding-block: clamp(3rem, 7vw, 5.5rem); }
   .carousel-slide { min-width: 33.3333%; padding-inline: 6px; }
   .carousel-slide img { height: 300px; border-radius: 4px; }
 }
-.carousel-btn { position: absolute; top: 50%; transform: translateY(-50%); z-index: 3; width: 46px; height: 46px; border-radius: 50%; border: 0; background: rgba(27,42,58,.82); color: #fff; font-size: 1.4rem; cursor: pointer; display: grid; place-items: center; }
+.carousel-btn { position: absolute; top: 50%; transform: translateY(-50%); z-index: 3; width: 46px; height: 46px; border-radius: 0; border: 1px solid var(--line); background: rgba(8,9,13,.88); color: #fff; font-size: 1.4rem; cursor: pointer; display: grid; place-items: center; }
 .carousel-btn:hover { background: var(--accent); }
 .carousel-prev { left: 8px; } .carousel-next { right: 8px; }
 .carousel-dots { display: flex; gap: .5rem; justify-content: center; margin-top: 1.2rem; }
@@ -166,7 +223,7 @@ section { padding-block: clamp(3rem, 7vw, 5.5rem); }
 @media (max-width: 900px) { .grid-3, .grid-4 { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 560px) { .grid-3, .grid-4 { grid-template-columns: 1fr; } }
 
-.card { background: #fff; border: 1px solid var(--line); border-radius: 6px; overflow: hidden; box-shadow: 0 4px 18px rgba(0,0,0,.05); }
+.card { background: var(--panel); border: 1px solid var(--line); border-radius: 0; overflow: hidden; box-shadow: none; }
 .card-body { padding: 1.3rem; }
 .card h3 { margin: 0 0 .3rem; }
 .beer .beer-img { background: var(--navy); aspect-ratio: 4/3; display: grid; place-items: center; padding: 1.1rem; }
@@ -174,7 +231,7 @@ section { padding-block: clamp(3rem, 7vw, 5.5rem); }
 .member img { aspect-ratio: 1/1; object-fit: cover; width: 100%; }
 .member .title { font-family: var(--mono); font-size: .78rem; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); }
 .member .bio { font-size: .95rem; color: var(--muted); }
-.member .monogram { aspect-ratio: 1/1; display: grid; place-items: center; background: var(--bg-alt); color: var(--navy); font-family: var(--display); font-size: 2.6rem; letter-spacing: .05em; }
+.member .monogram { aspect-ratio: 1/1; display: grid; place-items: center; background: var(--bg-alt); color: var(--accent-2); font-family: var(--display); font-size: 2.6rem; letter-spacing: .05em; }
 
 /* Team groups on the About page — centered cards, capped width */
 .team-grid { display: grid; gap: 1.6rem; grid-template-columns: repeat(auto-fit, minmax(220px, 300px)); justify-content: center; }
@@ -208,7 +265,7 @@ section { padding-block: clamp(3rem, 7vw, 5.5rem); }
 .home-events h2 { margin: 0; }
 .home-events-when {
   font-family: var(--mono); font-size: .9rem; letter-spacing: .06em;
-  text-transform: uppercase; color: #ffb4a3;
+  text-transform: uppercase; color: var(--accent-2);
 }
 .home-events-summary { color: rgba(255,255,255,.9); max-width: 52ch; }
 .home-events-cta { display: flex; gap: .8rem; flex-wrap: wrap; margin-top: 1.6rem; }
@@ -224,14 +281,14 @@ section { padding-block: clamp(3rem, 7vw, 5.5rem); }
   display: flex; flex-wrap: wrap; gap: .6rem 2.2rem; align-items: baseline;
 }
 .home-events-more a { color: #fff; display: flex; gap: .7rem; align-items: baseline; }
-.home-events-more a:hover { color: #ffb4a3; text-decoration: none; }
+.home-events-more a:hover { color: var(--accent-2); text-decoration: none; }
 .home-events-date {
   font-family: var(--mono); font-size: .75rem; letter-spacing: .08em;
-  text-transform: uppercase; color: #ffb4a3; white-space: nowrap;
+  text-transform: uppercase; color: var(--accent-2); white-space: nowrap;
 }
 .home-events-name { font-size: .95rem; }
 .home-events-all { margin-left: auto; }
-.home-events-all a { font-family: var(--display); font-size: .78rem; letter-spacing: .02em; text-transform: uppercase; color: #ffb4a3; }
+.home-events-all a { font-family: var(--display); font-size: .78rem; letter-spacing: .02em; text-transform: uppercase; color: var(--accent-2); }
 
 @media (max-width: 760px) {
   /* Art first on a phone: it is the thing that stops a thumb. */
@@ -246,7 +303,7 @@ section { padding-block: clamp(3rem, 7vw, 5.5rem); }
 @media (max-width: 760px) { .quicklinks { grid-template-columns: 1fr; } }
 .quicklink { position: relative; min-height: 260px; border-radius: 6px; overflow: hidden; color: #fff; display: grid; align-items: end; isolation: isolate; }
 .quicklink img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; transition: transform .4s; }
-.quicklink::after { content:""; position:absolute; inset:0; z-index:1; background: linear-gradient(180deg, rgba(18,26,36,.1) 20%, rgba(18,26,36,.85)); }
+.quicklink::after { content:""; position:absolute; inset:0; z-index:1; background: linear-gradient(180deg, rgba(8,9,13,.12) 20%, rgba(8,9,13,.9)); }
 .quicklink span { position: relative; z-index: 2; padding: 1.2rem 1.3rem; font-weight: 800; text-transform: uppercase; letter-spacing: .04em; font-size: 1.2rem; }
 .quicklink:hover { text-decoration: none; }
 .quicklink:hover img { transform: scale(1.05); }
@@ -267,31 +324,31 @@ section { padding-block: clamp(3rem, 7vw, 5.5rem); }
 @media (max-width: 560px) { .gear-grid { grid-template-columns: 1fr; } }
 
 /* ---------- Callout / hours / map ---------- */
-.callout { background: #fff; border: 1px solid var(--line); border-radius: 6px; padding: clamp(1.4rem, 4vw, 2.2rem); box-shadow: 0 4px 18px rgba(0,0,0,.05); }
+.callout { background: var(--panel); border: 1px solid var(--line); border-radius: 0; padding: clamp(1.4rem, 4vw, 2.2rem); box-shadow: none; }
 .hours { margin: 0; }
 .hours-row { display: flex; justify-content: space-between; gap: 1rem; padding-block: .35rem; border-bottom: 1px dashed var(--line); }
 .hours-row:last-child { border-bottom: 0; }
 .hours dt { color: var(--muted); } .hours dd { margin: 0; font-variant-numeric: tabular-nums; }
-.map-embed { width: 100%; aspect-ratio: 16/9; border: 0; border-radius: 6px; }
+.map-embed { width: 100%; aspect-ratio: 16/9; border: 1px solid var(--line); border-radius: 0; filter: invert(.92) hue-rotate(180deg) saturate(.5) brightness(.95); }
 
 /* ---------- Dark interior pages (everything except Home) ---------- */
 /* The original site is dark on every page but Home; the Untappd embed is
    also designed for a dark background, so this keeps it readable. */
-body.page-dark { background: var(--navy); color: #dbe3ea; }
-body.page-dark h1, body.page-dark h2, body.page-dark h3 { color: #f2f6f9; }
-body.page-dark .muted { color: #9fb0bd; }
+body.page-dark { background: transparent; color: var(--ink); }
+body.page-dark h1, body.page-dark h2, body.page-dark h3 { color: var(--ink); }
+body.page-dark .muted { color: var(--muted); }
 /* White cards on dark interior pages keep light-theme (dark) text for contrast */
 body.page-dark .card h3 { color: var(--ink); }
 body.page-dark .card .muted { color: var(--muted); }
-body.page-dark .lead { color: #dbe3ea; }
-body.page-dark .section-alt { background: var(--navy); }
+body.page-dark .lead { color: var(--ink); }
+body.page-dark .section-alt { background: var(--bg-alt); }
 body.page-dark .page-head { background: var(--navy); border-bottom-color: var(--line-d); }
 body.page-dark .content a:not(.btn) { color: var(--accent); }
 body.page-dark .callout { background: var(--navy-2); border-color: var(--line-d); box-shadow: none; }
 body.page-dark .hours-row { border-bottom-color: var(--line-d); }
-body.page-dark .hours dt { color: #9fb0bd; }
-body.page-dark .hours dd { color: #f2f6f9; }
-body.page-dark address a { color: #dbe3ea; }
+body.page-dark .hours dt { color: var(--muted); }
+body.page-dark .hours dd { color: var(--ink); }
+body.page-dark address a { color: var(--ink); }
 
 /* Minimal featured-beers list (Our Beers) */
 .featured-beers { list-style: none; margin: 1.4rem 0 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.4rem; }
@@ -310,20 +367,20 @@ body.page-dark address a { color: #dbe3ea; }
 .retailers span { color: var(--muted); font-size: .92rem; }
 
 /* ---------- Footer (dark navy) ---------- */
-.site-footer { background: var(--navy); color: #cdd6df; padding-top: clamp(2.5rem, 6vw, 4rem); }
+.site-footer { background: var(--navy); color: #c6cbd8; padding-top: clamp(2.5rem, 6vw, 4rem); }
 .footer-grid { display: grid; grid-template-columns: 1.3fr 1fr 1fr 1fr; gap: 2rem; }
 @media (max-width: 860px) { .footer-grid { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 480px) { .footer-grid { grid-template-columns: 1fr; } }
-.footer-col h2 { font-size: .82rem; letter-spacing: .04em; text-transform: uppercase; color: #ffb4a3; font-family: var(--display); font-weight: 400; margin: 0 0 .9rem; }
+.footer-col h2 { font-size: .82rem; letter-spacing: .04em; text-transform: uppercase; color: var(--accent-2); font-family: var(--display); font-weight: 400; margin: 0 0 .9rem; }
 .footer-col p, .footer-col address { margin: 0 0 .5rem; font-style: normal; font-size: .95rem; }
-.footer-col a { color: #eef2f6; }
+.footer-col a { color: var(--ink); }
 .footer-name { font-weight: 700; }
-.footer-map { width: 100%; aspect-ratio: 4/3; border: 0; border-radius: 6px; margin-top: .3rem; filter: grayscale(.2); }
-.contact-label { font-family: var(--mono); font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; color: #ffb4a3 !important; margin-top: 1rem !important; }
+.footer-map { width: 100%; aspect-ratio: 4/3; border: 1px solid var(--line); border-radius: 0; margin-top: .3rem; filter: invert(.92) hue-rotate(180deg) saturate(.5) brightness(.95); }
+.contact-label { font-family: var(--mono); font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; color: var(--accent-2) !important; margin-top: 1rem !important; }
 .social { list-style: none; margin: 0 0 1.2rem; padding: 0; display: flex; flex-wrap: wrap; gap: .4rem 1.1rem; }
-.social a { color: #eef2f6; font-size: .95rem; }
+.social a { color: var(--ink); font-size: .95rem; }
 .footer-legal { border-top: 1px solid var(--line-d); margin-top: 2.5rem; padding-block: 1.4rem; }
-.footer-legal p { margin: 0; color: #8f9ba7; font-size: .85rem; }
+.footer-legal p { margin: 0; color: #79808f; font-size: .85rem; }
 
 /* ---- Events ---------------------------------------------------------- */
 
@@ -447,9 +504,9 @@ body.page-dark address a { color: #dbe3ea; }
 /* A full-width field following a two-column grid would otherwise sit flush
    against it, reading as part of the last row. */
 .form-grid + .field { margin-top: 1.1rem; }
-.field label, .label-as-legend { font-size: .88rem; font-weight: 600; color: #f2f6f9; }
+.field label, .label-as-legend { font-size: .88rem; font-weight: 600; color: var(--ink); }
 .req { color: var(--accent); }
-.hint { font-size: .82rem; color: #9fb0bd; }
+.hint { font-size: .82rem; color: var(--muted); }
 
 .booking-form input[type="text"],
 .booking-form input[type="email"],
@@ -458,14 +515,14 @@ body.page-dark address a { color: #dbe3ea; }
 .booking-form input[type="number"],
 .booking-form select,
 .booking-form textarea {
-  width: 100%; font: inherit; font-size: 1rem; color: #f2f6f9;
+  width: 100%; font: inherit; font-size: 1rem; color: var(--ink);
   background: var(--navy-2); border: 1px solid var(--line-d); border-radius: 4px;
   padding: .7rem .8rem; transition: border-color .15s, box-shadow .15s;
 }
 .booking-form textarea { resize: vertical; min-height: 7rem; }
-.booking-form ::placeholder { color: #7c8b98; }
+.booking-form ::placeholder { color: #6d7383; }
 .booking-form :is(input, select, textarea):focus-visible {
-  outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(232,84,58,.28);
+  outline: none; border-color: var(--accent); box-shadow: 0 0 0 2px rgba(200,95,69,.5);
 }
 /* Safari and Chrome render the native date/number pickers as dark glyphs on
    dark, which makes them invisible here. */
@@ -474,7 +531,7 @@ body.page-dark address a { color: #dbe3ea; }
 .choices { display: grid; gap: .5rem; margin-top: .2rem; }
 .choice { display: flex; align-items: flex-start; gap: .6rem; font-weight: 400; font-size: .95rem; cursor: pointer; }
 .choice input { accent-color: var(--accent); margin-top: .25rem; flex: none; }
-.choice span { color: #dbe3ea; }
+.choice span { color: var(--ink); }
 
 .form-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem 1.5rem; }
 .booking-form button.btn { cursor: pointer; font-family: var(--display); }
@@ -483,3 +540,140 @@ body.page-dark address a { color: #dbe3ea; }
 /* The honeypot. Off-screen rather than display:none -- a bot that skips
    hidden inputs would sail straight past a display:none trap. */
 .hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+
+/* ======================================================================
+   PLATE DETAILS
+   Structure is above; what follows is the small amount of decoration that
+   makes the page read as a 1990s agency document rather than as dark mode.
+   The rule for all of it: nothing glows, nothing gradients, nothing moves.
+   ====================================================================== */
+
+html { background: var(--bg); }
+body { background: transparent; }
+
+/* ---------- Square corners ----------
+   The single most period-accurate change in the file, and the quietest.
+   Rounded corners are a 2010s habit; nothing NASA printed, and nothing on the
+   web in 1995, had them. */
+.card, .callout, .split-media img, .fig img, .carousel-viewport,
+.quicklink, .agenda-thumb img, .event-poster, .home-events-art img,
+.event-hero-art img, .featured-beers a, .btn, .booking-form input,
+.booking-form select, .booking-form textarea, .carousel-slide img {
+  border-radius: 0;
+}
+.carousel-dots button { border-radius: 0; width: 22px; height: 3px; }
+
+/* ---------- Starfield ----------
+   Tiled radial-gradients rather than an image: no request, no asset to keep
+   in sync, and it scales to any viewport. Deliberately almost invisible --
+   four dim points per 260px tile, no drift and no twinkle. It is texture on
+   the black, not an effect; you should have to look to be sure it is there. */
+body::before {
+  content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+  background-image:
+    radial-gradient(1px 1px at 38px 52px,   rgba(228,229,233,.42), transparent),
+    radial-gradient(1px 1px at 174px 118px, rgba(159,176,205,.32), transparent),
+    radial-gradient(1px 1px at 96px 206px,  rgba(228,229,233,.24), transparent),
+    radial-gradient(1px 1px at 232px 24px,  rgba(228,229,233,.30), transparent);
+  background-size: 260px 260px;
+}
+
+/* ---------- Type ----------
+   Archivo set in caps and tracked out. Letterforms and spacing do the work
+   here -- no gradient fills, no shadows. Weight carries the display sizes. */
+h1, h2 { font-weight: 700; letter-spacing: .02em; }
+h3 { font-weight: 600; letter-spacing: .03em; }
+body h1, body.page-dark h1,
+body h2, body.page-dark h2,
+body h3, body.page-dark h3 { color: var(--ink); }
+body .lead, body.page-dark .lead { color: var(--ink); }
+
+/* ---------- Plate captions ----------
+   Eyebrows move off the display face onto the monospace and pick up a short
+   rule, which is how every figure in an agency document is labelled. This is
+   the one flourish in the skin, and it is 20 pixels of line. */
+.eyebrow {
+  font-family: var(--mono); font-size: .72rem; letter-spacing: .2em;
+  color: var(--accent-2); display: flex; align-items: center; gap: .8em;
+}
+.eyebrow::before {
+  content: ""; flex: none; width: 22px; height: 1px; background: var(--accent);
+}
+.section-navy .eyebrow { color: var(--accent-2); }
+
+/* ---------- Bands ----------
+   Slightly translucent so the starfield carries through the page rather than
+   stopping at the first section edge, and ruled top and bottom so each band
+   reads as a plate on the page. */
+.section-alt { background: rgba(14, 17, 26, .84); border-block: 1px solid var(--line); }
+.section-navy { background: rgba(24, 38, 64, .88); border-block: 1px solid var(--line); }
+.page-head { background: rgba(14, 17, 26, .84); border-bottom-color: var(--line); }
+body.page-dark .page-head { background: rgba(14, 17, 26, .84); }
+body.page-dark .section-alt { background: rgba(14, 17, 26, .84); }
+
+/* ---------- Header / nav ---------- */
+.brand-name { font-weight: 700; letter-spacing: .1em; color: var(--ink); }
+.site-nav a { font-weight: 600; letter-spacing: .1em; color: var(--ink); }
+
+/* ---------- Buttons ---------- */
+.btn { font-weight: 700; letter-spacing: .14em; }
+
+/* ---------- Cards / panels ----------
+   The hover state is a hairline changing colour. That is the whole
+   interaction: no lift, no shadow, no glow. */
+.card, .quicklink { transition: border-color .18s; }
+.card:hover, .quicklink:hover { border-color: rgba(200, 95, 69, .6); }
+.quicklink { border: 1px solid var(--line); }
+.quicklink span { font-weight: 700; letter-spacing: .1em; }
+
+/* Data -- job titles, dates, hours, event metadata -- runs on the monospace,
+   tracked out. It is what makes the page read as a document rather than a
+   menu. */
+.member .title, .contact-label, .home-events-when, .home-events-date,
+.agenda-when, .agenda-meta, .footer-legal p, .hero-event-when { letter-spacing: .14em; }
+/* The hero's lead-event line joins the readouts: monospace label, same
+   tracking as the dates and job titles elsewhere. */
+.hero-event-label { font-family: var(--mono); letter-spacing: .2em; }
+.value-num { font-family: var(--mono); letter-spacing: .18em; }
+.hours dd, .event-dates li { font-family: var(--mono); font-size: .95rem; }
+
+/* ---------- Photography ----------
+   House photographs are warm interiors; against a neutral black they were
+   reading slightly hot. A touch of desaturation settles them onto the page
+   without turning them grey -- the treatment a plate gets, not a filter. */
+.card img, .quicklink img, .carousel-slide img, .split-media img, .fig img,
+.circle-img, .member img { filter: saturate(.85) brightness(.95); }
+
+/* Posters and beer artwork are excluded: they are designed art, and dimming
+   them would be editing someone's work rather than framing it. */
+.home-events-art img, .event-hero-art img, .event-poster,
+.beer .beer-img img, .featured-beers a img { filter: none; }
+
+/* ---------- Events ---------- */
+.agenda-flag { background: var(--accent); color: #ffffff; font-weight: 700; border-radius: 0; }
+.event-hero-when { color: var(--accent-2); letter-spacing: .04em; }
+
+/* ---------- Footer ---------- */
+.site-footer { border-top: 1px solid var(--line); }
+.footer-col h2 { font-weight: 700; letter-spacing: .16em; }
+
+
+/* Two of the team portraits are cut-out PNGs with a transparent background.
+   They are invisible on a dark card. A pale mount behind every portrait fixes
+   those two and is inert behind the opaque JPEGs -- and a photo dropped onto a
+   light plate is what an agency biography page did anyway. */
+.member img { background: #d9dbe1; }
+
+/* ---------- Header bands ----------
+   A 42vh banner on About or Our Beers is a 420px photograph holding an eyebrow
+   and one line of title -- the min-height, not the content, setting the size.
+   An agency document opens with a masthead, not a splash screen, so interior
+   banners are sized by what is in them, and the front door is trimmed to
+   match. */
+/* :not(.page-hero) matters -- the interior banners carry BOTH classes, so an
+   unscoped .hero rule here would win on source order and put the front door's
+   height straight back onto them. */
+.hero:not(.page-hero) { min-height: 56vh; padding-block: clamp(2.8rem, 6vw, 4rem); }
+.page-hero { min-height: 0; padding-block: clamp(1.6rem, 3.5vw, 2.5rem); }
+.page-head { padding-block: clamp(1.6rem, 3.5vw, 2.2rem) clamp(1rem, 2.5vw, 1.4rem); }
+.event-hero { padding-block: clamp(1.8rem, 4vw, 2.8rem); }
