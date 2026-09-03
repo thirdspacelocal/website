@@ -25,12 +25,17 @@ disableKinds = ["taxonomy", "term"]
   phone = "(303) 544-0746"
   phoneRaw = "+13035440746"
   email = "info@thegravitybrewing.com"
-  salesContactName = "C.K. Lichenstein"
-  salesEmail = "ck@thegravitybrewing.com"
+  # WHOLESALE AND DISTRIBUTION ONLY. Named "wholesale", not "sales", because
+  # "sales" reads as a catch-all and invited exactly that: the calendar-feeds
+  # help text routed broken-website reports here. C.K. sells kegs and cans to
+  # bars and shops. He is not the general contact, not the events contact, and
+  # not the person to email when a page is broken.
+  wholesaleContactName = "C.K. Lichenstein"
+  wholesaleEmail = "ck@thegravitybrewing.com"
   # Where a buyout enquiry lands. A ROLE address, not a person: Erin owns this
   # inbox today, and publishing a name means every printed flyer, cached page
   # and forwarded email has to be chased the day that changes. Deliberately
-  # separate from salesEmail, which is wholesale and distribution.
+  # separate from wholesaleEmail, which is kegs and cans to the trade.
   bookingEmail = "events@thegravitybrewing.com"
   # approximate coords for Louisville, CO downtown — VERIFY before relying on for maps
   latitude = "39.9783"

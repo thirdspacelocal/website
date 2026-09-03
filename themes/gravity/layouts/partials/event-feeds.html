@@ -82,9 +82,12 @@
       </p>
 
       <p>
+        {{- /* info@, not a named person. A broken feed is a website problem,
+               not a wholesale enquiry, and this page is handed to calendar
+               editors who will forward it on -- so it wants the role address
+               that survives someone changing jobs. */ -}}
         Something not working, or need a format we do not publish? Email
-        {{ with site.Params.salesEmail }}<a href="mailto:{{ . }}">{{ . }}</a>{{ end }}
-        {{- with site.Params.salesContactName }} ({{ . }}){{ end }}.
+        {{ with site.Params.email }}<a href="mailto:{{ . }}">{{ . }}</a>{{ end }}.
       </p>
     </details>
   </div>
