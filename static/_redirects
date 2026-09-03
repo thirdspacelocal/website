@@ -1,3 +1,10 @@
 # Old Squarespace URLs → new structure. Homepage moved from /home to /.
 /home              /                 301
 /cart              https://gravitybrewing.square.site   301
+
+# "Private Events" was renamed to "Parties". The old paths are indexed and
+# linked from elsewhere, so they redirect rather than 404. Order matters:
+# the more specific thanks page has to come before the section.
+/private-events/thanks/  /parties/thanks/  301
+/private-events/*        /parties/:splat   301
+/private-events          /parties          301

@@ -14,9 +14,14 @@
 <section class="hero page-hero"{{ with $hero }} style="--hero-img: url('{{ . }}')"{{ end }}>
   <div class="wrap">
     {{- with .Params.eyebrow }}<p class="eyebrow">{{ . }}</p>{{ end }}
-    {{- /* The <title> and the H1 differ on purpose. "Private Events" is what
-           somebody types into Google; "Book your event with us" is what
-           somebody wants to read once they have arrived. */ -}}
+    {{- /* The <title> and the H1 differ on purpose. The title is the search
+           target; "Book your event with us" is what somebody wants to read
+           once they have arrived.
+
+           The nav label is "Parties" because it is shorter and plainer, but
+           "private events" is the phrase people actually type into Google
+           when looking for a venue, so it is kept in the page description
+           rather than dropped along with the label. */ -}}
     <h1>{{ .Params.heading | default .Title }}</h1>
     {{- with .Params.subtitle }}<p class="lead">{{ . }}</p>{{ end }}
     <p class="hero-cta">

@@ -2,7 +2,7 @@
 title: "Thanks, we've got it"
 eyebrow: "Message received"
 subtitle: "Your note is in, and a person will read it."
-description: "Your private event inquiry has reached Gravity Brewing."
+description: "Your party enquiry has reached Gravity Brewing."
 # Netlify lands people here after a successful post. It is a destination for
 # exactly one person at a time and has no business in search results or the
 # sitemap -- indexed, it would compete with the real page for the same words

@@ -1,16 +1,16 @@
 ---
-title: "Private Events"
-layout: private-events
+title: "Parties"
+layout: parties
 heading: "Book your event with us."
-eyebrow: "Private events"
+eyebrow: "Parties"
 subtitle: "We can hold part of the taproom or the bier garten for your group, or the whole place if you need it. Tell us what you have in mind."
-description: "Private events at Gravity Brewing in Louisville, CO. Reserve part of the taproom or the bier garten for your group, or the whole place. The building holds 88. Tell us your date and we'll get back to you."
+description: "Parties and private events at Gravity Brewing in Louisville, CO. Reserve part of the taproom or the bier garten for your group, or the whole place. The building holds 88. Tell us your date and we'll get back to you."
 heroImage: images/tr-event.jpg
 splitImage: images/tr-crowd.jpg
 splitAlt: "The bier garten at Gravity Brewing"
 visit: true
 # HTML only. This is a section purely so the thank-you page can live at
-# /private-events/thanks/ -- there is no stream of posts here, and the default
+# /parties/thanks/ -- there is no stream of posts here, and the default
 # section RSS had head.html advertising a feed whose sole item was the
 # thank-you page.
 outputs: ["HTML"]

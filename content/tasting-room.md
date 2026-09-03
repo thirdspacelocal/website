@@ -54,7 +54,7 @@ Now featuring **Double D's Sourdough Pizzeria**, fresh sourdough pizza right in 
 We can hold part of the tasting room or the bier garten for a group, or the
 whole place if you need it. The building holds 88.
 
-<p><a class="btn" href="/private-events/">Private Events</a></p>
+<p><a class="btn" href="/parties/">Parties</a></p>
 
 ### Gravity Gear
 
