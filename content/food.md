@@ -8,6 +8,7 @@ description: "Double D's Sourdough Pizzeria at Gravity Brewing in Louisville, CO
 # Double D's Sourdough Pizzeria
 
 Sourdough pizza, made right here in the tasting room. Double D's has been at it
-in Colorado since 2006. Pizza, calzones, wings and more.
+in Colorado since 2006. Pizza, calzones, wings, plus a few things they only
+make here.
 
 <p><a class="btn btn-order" href="{{< param foodMenuUrl >}}" rel="noopener">Food Menu</a></p>
