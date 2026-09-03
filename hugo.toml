@@ -66,9 +66,9 @@ disableKinds = ["taxonomy", "term"]
     closes = "22:00"
   [[params.hours]]
     days = "Sunday"
-    display = "12 – 7pm"
+    display = "11 – 7pm"
     dow = ["Sunday"]
-    opens = "12:00"
+    opens = "11:00"
     closes = "19:00"
 
 [menus]
