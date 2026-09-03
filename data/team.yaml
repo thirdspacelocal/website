@@ -24,10 +24,6 @@ crew:
       Sales Representative to Sales Manager, and he's still constantly trying new styles,
       beers and breweries.
 
-  - name: Ashley Luke
-    title: Bartender
-    image: images/team-ashley-luke.jpg
-
   - name: Justin Prosolow
     title: Bartender
     image: images/team-justin-prosolow.jpg
@@ -36,13 +32,17 @@ crew:
     title: Bartender
     image: images/team-sean-stewart.jpg
 
+  - name: Coleridge Gollata
+    title: Delivery & Bartender
+    image: images/team-coleridge-gollata.jpg
+
   - name: Michaela Murphy
     title: Bartender
     image: images/team-michaela-murphy.jpg
 
-  - name: Coleridge Gollata
-    title: Delivery & Bartender
-    image: images/team-coleridge-gollata.jpg
+  - name: Ashley Luke
+    title: Bartender
+    image: images/team-ashley-luke.jpg
 
   - name: Julie Brown
     title: Financial Controller
