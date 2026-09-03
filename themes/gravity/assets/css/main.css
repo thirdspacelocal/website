@@ -29,17 +29,24 @@
      until they read as slate and brick, on the near-black every Hubble and
      Voyager plate was printed against. At full strength the pair shouts; at
      this volume the typography and the rules carry the reference instead. */
-  --bg:      #08090d;   /* plate black */
-  --bg-alt:  #0e111a;   /* one shade up, for banded sections */
-  --navy:    #182640;   /* agency blue, taken right down: a slate band */
-  --navy-2:  #131e33;
-  --ink:     #e4e5e9;   /* neutral off-white; NASA is not warm */
-  --muted:   #878d9c;
-  --accent:  #c85f45;   /* agency red, taken down to brick */
-  --accent-d:#ab4c35;
-  --accent-2:#9fb0cd;   /* pale slate: the tint used on the blue bands */
-  --panel:   #10131c;   /* cards and callouts */
-  --line:    rgba(228, 229, 233, .14);
+  --bg:      #070d12;   /* plate black, carrying a trace of the logo's blue */
+  --bg-alt:  #0c161d;   /* one shade up, for banded sections */
+  --navy:    #163240;   /* the logo's petrol blue, taken down for a band */
+  --navy-2:  #1d4254;
+  --ink:     #e3e7ea;   /* neutral off-white; NASA is not warm */
+  --muted:   #8695a0;
+  --accent:  #d9a03c;   /* the logo's flame gold, taken down from #fccc0c */
+  --accent-d:#bb8629;
+  --accent-2:#93b3c4;   /* pale petrol: the tint used on the blue bands */
+  /* The logo's third colour, the hop cone. It is STRUCTURAL here and nowhere
+     else: band edges, card hover, the footer rule, the caption tick. It never
+     sets type. Green words beside gold words fight; a green line under gold
+     words does not, and that is the whole reason the dose is drawn this
+     narrowly. */
+  --hop:     #8fae5c;
+  --line-hop:rgba(143, 174, 92, .40);
+  --panel:   #0f1a22;   /* cards and callouts */
+  --line:    rgba(227, 231, 234, .14);
   --line-d:  rgba(255, 255, 255, .18);
   --wrap:    1160px;
   --mono:    ui-monospace, "SF Mono", Menlo, Consolas, monospace;
@@ -73,13 +80,13 @@ h3 { font-size: 1.15rem; }
 .center { text-align: center; }
 .mt-2 { margin-top: 2rem; }
 
-.skip-link { position: absolute; left: -999px; top: 0; background: var(--accent); color: #fff; padding: .6rem 1rem; z-index: 100; }
+.skip-link { position: absolute; left: -999px; top: 0; background: var(--accent); color: #17110a; padding: .6rem 1rem; z-index: 100; }
 .skip-link:focus { left: .5rem; top: .5rem; }
 
 /* ---------- Header ---------- */
 .site-header {
   position: sticky; top: 0; z-index: 50;
-  background: rgba(8, 9, 13, .95); border-bottom: 1px solid var(--line);
+  background: rgba(7, 13, 18, .95); border-bottom: 1px solid var(--line);
 }
 .header-inner { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding-block: .6rem; }
 .brand { display: flex; align-items: center; gap: .7rem; color: var(--ink); }
@@ -99,7 +106,7 @@ h3 { font-size: 1.15rem; }
   .nav-toggle-label { display: block; cursor: pointer; width: 30px; height: 24px; position: relative; }
   .nav-toggle-label span, .nav-toggle-label span::before, .nav-toggle-label span::after { content:""; position:absolute; left:0; width:100%; height:2px; background: var(--ink); transition:.2s; }
   .nav-toggle-label span { top: 11px; } .nav-toggle-label span::before { top: -8px; } .nav-toggle-label span::after { top: 8px; }
-  .site-nav { position: absolute; top: 100%; left: 0; right: 0; background: #08090d; border-bottom: 1px solid var(--line); max-height: 0; overflow: hidden; transition: max-height .25s ease; }
+  .site-nav { position: absolute; top: 100%; left: 0; right: 0; background: #070d12; border-bottom: 1px solid var(--line); max-height: 0; overflow: hidden; transition: max-height .25s ease; }
   .site-nav ul { flex-direction: column; gap: 0; padding: .5rem 0; }
   .site-nav li { padding-inline: clamp(1.1rem, 4vw, 2.5rem); }
   .site-nav a { display: block; padding-block: .7rem; border-bottom: 1px solid var(--line); }
@@ -108,11 +115,11 @@ h3 { font-size: 1.15rem; }
 
 /* ---------- Buttons ---------- */
 .btn { display: inline-block; font-family: var(--display); font-size: .78rem; letter-spacing: .02em; text-transform: uppercase; font-weight: 400; padding: .85rem 1.5rem; border-radius: 3px; border: 2px solid var(--accent); color: var(--accent); transition: .15s; background: transparent; }
-.btn:hover { background: var(--accent); color: #ffffff; text-decoration: none; }
-.btn-order { background: var(--accent); color: #fff; }
+.btn:hover { background: var(--accent); color: #17110a; text-decoration: none; }
+.btn-order { background: var(--accent); color: #17110a; }
 .btn-order:hover { background: var(--accent-d); border-color: var(--accent-d); color: #fff; }
 .btn-light { border-color: #fff; color: #fff; }
-.btn-light:hover { background: var(--ink); color: #08090d; }
+.btn-light:hover { background: var(--ink); color: #070d12; }
 
 /* ---------- Sections ---------- */
 section { padding-block: clamp(3rem, 7vw, 5.5rem); }
@@ -123,7 +130,7 @@ section { padding-block: clamp(3rem, 7vw, 5.5rem); }
 
 /* ---------- Hero (image + overlay + text/logo/CTA) ---------- */
 .hero { position: relative; color: #fff; display: grid; align-items: center; min-height: 74vh; padding-block: 5rem; overflow: hidden; }
-.hero::before { content:""; position:absolute; inset:0; z-index:0; background: linear-gradient(180deg, rgba(8,9,13,.70), rgba(8,9,13,.88)), var(--hero-img) center/cover no-repeat; }
+.hero::before { content:""; position:absolute; inset:0; z-index:0; background: linear-gradient(180deg, rgba(7,13,18,.70), rgba(7,13,18,.88)), var(--hero-img) center/cover no-repeat; }
 .hero .wrap { position: relative; z-index: 1; }
 .hero h1 { max-width: 18ch; }
 .hero .lead { color: #f3f0ea; }
@@ -133,12 +140,12 @@ section { padding-block: clamp(3rem, 7vw, 5.5rem); }
 .hero-badge {
   display: inline-flex; align-items: center; gap: .6rem;
   margin-bottom: 1.4rem; padding: .5rem .95rem .5rem .8rem;
-  background: var(--accent); color: #fff;
+  background: var(--accent); color: #17110a;
   border-radius: 999px; font-size: .84rem; line-height: 1.25;
   box-shadow: none;
   animation: badge-in .6s ease both;
 }
-.hero-badge:hover { background: var(--accent-d); color: #fff; text-decoration: none; }
+.hero-badge:hover { background: var(--accent-d); color: #17110a; text-decoration: none; }
 .hero-badge strong { font-weight: 700; }
 .hero-badge-cta { opacity: .9; white-space: nowrap; }
 .hero-badge-star { font-size: .95rem; animation: badge-twinkle 2.6s ease-in-out infinite; }
@@ -207,12 +214,12 @@ section { padding-block: clamp(3rem, 7vw, 5.5rem); }
   .carousel-slide { min-width: 33.3333%; padding-inline: 6px; }
   .carousel-slide img { height: 300px; border-radius: 4px; }
 }
-.carousel-btn { position: absolute; top: 50%; transform: translateY(-50%); z-index: 3; width: 46px; height: 46px; border-radius: 0; border: 1px solid var(--line); background: rgba(8,9,13,.88); color: #fff; font-size: 1.4rem; cursor: pointer; display: grid; place-items: center; }
+.carousel-btn { position: absolute; top: 50%; transform: translateY(-50%); z-index: 3; width: 46px; height: 46px; border-radius: 0; border: 1px solid var(--line); background: rgba(7,13,18,.88); color: #fff; font-size: 1.4rem; cursor: pointer; display: grid; place-items: center; }
 .carousel-btn:hover { background: var(--accent); }
 .carousel-prev { left: 8px; } .carousel-next { right: 8px; }
 .carousel-dots { display: flex; gap: .5rem; justify-content: center; margin-top: 1.2rem; }
 .carousel-dots button { width: 10px; height: 10px; border-radius: 50%; border: 0; background: var(--line); cursor: pointer; padding: 0; }
-.carousel-dots button[aria-current="true"] { background: var(--accent); }
+.carousel-dots button[aria-current="true"] { background: var(--hop); }
 /* Tighten the carousel band so it doesn't leave a big empty gap before the next section */
 .carousel-band { padding-top: clamp(2rem, 4vw, 3rem); padding-bottom: 0; }
 
@@ -303,7 +310,7 @@ section { padding-block: clamp(3rem, 7vw, 5.5rem); }
 @media (max-width: 760px) { .quicklinks { grid-template-columns: 1fr; } }
 .quicklink { position: relative; min-height: 260px; border-radius: 6px; overflow: hidden; color: #fff; display: grid; align-items: end; isolation: isolate; }
 .quicklink img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; transition: transform .4s; }
-.quicklink::after { content:""; position:absolute; inset:0; z-index:1; background: linear-gradient(180deg, rgba(8,9,13,.12) 20%, rgba(8,9,13,.9)); }
+.quicklink::after { content:""; position:absolute; inset:0; z-index:1; background: linear-gradient(180deg, rgba(7,13,18,.12) 20%, rgba(7,13,18,.9)); }
 .quicklink span { position: relative; z-index: 2; padding: 1.2rem 1.3rem; font-weight: 800; text-transform: uppercase; letter-spacing: .04em; font-size: 1.2rem; }
 .quicklink:hover { text-decoration: none; }
 .quicklink:hover img { transform: scale(1.05); }
@@ -455,7 +462,7 @@ body.page-dark address a { color: var(--ink); }
   font-family: var(--sans); font-size: .62rem; font-weight: 700;
   text-transform: uppercase; letter-spacing: .08em;
   padding: .18rem .45rem; border-radius: 3px;
-  background: var(--accent); color: #fff;
+  background: var(--accent); color: #17110a;
 }
 .agenda-when { display: block; font-size: .85rem; color: var(--subtle); margin-top: .15rem; }
 .agenda-summary { display: block; margin-top: .4rem; }
@@ -522,7 +529,7 @@ body.page-dark address a { color: var(--ink); }
 .booking-form textarea { resize: vertical; min-height: 7rem; }
 .booking-form ::placeholder { color: #6d7383; }
 .booking-form :is(input, select, textarea):focus-visible {
-  outline: none; border-color: var(--accent); box-shadow: 0 0 0 2px rgba(200,95,69,.5);
+  outline: none; border-color: var(--accent); box-shadow: 0 0 0 2px rgba(217,160,60,.55);
 }
 /* Safari and Chrome render the native date/number pickers as dark glyphs on
    dark, which makes them invisible here. */
@@ -571,10 +578,10 @@ body { background: transparent; }
 body::before {
   content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
   background-image:
-    radial-gradient(1px 1px at 38px 52px,   rgba(228,229,233,.42), transparent),
-    radial-gradient(1px 1px at 174px 118px, rgba(159,176,205,.32), transparent),
-    radial-gradient(1px 1px at 96px 206px,  rgba(228,229,233,.24), transparent),
-    radial-gradient(1px 1px at 232px 24px,  rgba(228,229,233,.30), transparent);
+    radial-gradient(1px 1px at 38px 52px,   rgba(227,231,234,.42), transparent),
+    radial-gradient(1px 1px at 174px 118px, rgba(147,179,196,.32), transparent),
+    radial-gradient(1px 1px at 96px 206px,  rgba(227,231,234,.24), transparent),
+    radial-gradient(1px 1px at 232px 24px,  rgba(227,231,234,.30), transparent);
   background-size: 260px 260px;
 }
 
@@ -597,7 +604,7 @@ body .lead, body.page-dark .lead { color: var(--ink); }
   color: var(--accent-2); display: flex; align-items: center; gap: .8em;
 }
 .eyebrow::before {
-  content: ""; flex: none; width: 22px; height: 1px; background: var(--accent);
+  content: ""; flex: none; width: 22px; height: 1px; background: var(--hop);
 }
 .section-navy .eyebrow { color: var(--accent-2); }
 
@@ -605,11 +612,11 @@ body .lead, body.page-dark .lead { color: var(--ink); }
    Slightly translucent so the starfield carries through the page rather than
    stopping at the first section edge, and ruled top and bottom so each band
    reads as a plate on the page. */
-.section-alt { background: rgba(14, 17, 26, .84); border-block: 1px solid var(--line); }
-.section-navy { background: rgba(24, 38, 64, .88); border-block: 1px solid var(--line); }
-.page-head { background: rgba(14, 17, 26, .84); border-bottom-color: var(--line); }
-body.page-dark .page-head { background: rgba(14, 17, 26, .84); }
-body.page-dark .section-alt { background: rgba(14, 17, 26, .84); }
+.section-alt { background: rgba(12, 22, 29, .84); border-block: 1px solid var(--line-hop); }
+.section-navy { background: rgba(22, 50, 64, .88); border-block: 1px solid var(--line-hop); }
+.page-head { background: rgba(12, 22, 29, .84); border-bottom-color: var(--line-hop); }
+body.page-dark .page-head { background: rgba(12, 22, 29, .84); }
+body.page-dark .section-alt { background: rgba(12, 22, 29, .84); }
 
 /* ---------- Header / nav ---------- */
 .brand-name { font-weight: 700; letter-spacing: .1em; color: var(--ink); }
@@ -622,7 +629,7 @@ body.page-dark .section-alt { background: rgba(14, 17, 26, .84); }
    The hover state is a hairline changing colour. That is the whole
    interaction: no lift, no shadow, no glow. */
 .card, .quicklink { transition: border-color .18s; }
-.card:hover, .quicklink:hover { border-color: rgba(200, 95, 69, .6); }
+.card:hover, .quicklink:hover { border-color: rgba(143, 174, 92, .75); }
 .quicklink { border: 1px solid var(--line); }
 .quicklink span { font-weight: 700; letter-spacing: .1em; }
 
@@ -650,11 +657,11 @@ body.page-dark .section-alt { background: rgba(14, 17, 26, .84); }
 .beer .beer-img img, .featured-beers a img { filter: none; }
 
 /* ---------- Events ---------- */
-.agenda-flag { background: var(--accent); color: #ffffff; font-weight: 700; border-radius: 0; }
+.agenda-flag { background: var(--accent); color: #17110a; font-weight: 700; border-radius: 0; }
 .event-hero-when { color: var(--accent-2); letter-spacing: .04em; }
 
 /* ---------- Footer ---------- */
-.site-footer { border-top: 1px solid var(--line); }
+.site-footer { border-top: 1px solid var(--line-hop); }
 .footer-col h2 { font-weight: 700; letter-spacing: .16em; }
 
 
