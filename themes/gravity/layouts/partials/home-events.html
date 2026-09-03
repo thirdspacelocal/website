@@ -10,9 +10,11 @@
        one-off, three reads as "there is always something on here", which is
        the actual claim.
 
-       Deliberately not the page hero. The hero's job is to tell a first-time
-       visitor what this place is, and it has to work on the week the calendar
-       is empty. This band can vanish; the hero cannot. */ -}}
+       The hero carries a one-line pointer to the same lead event, and this is
+       the full treatment: poster, summary, and the next few dates. Both are
+       wrapped in `with` and both vanish on an empty week -- the hero's own
+       job is to tell a first-time visitor what this place is, and it still
+       has to do that on a week with nothing on. */ -}}
 {{- $data := partial "featured-event.html" . -}}
 {{- with $data.featured }}
 {{- $ev := . -}}
