@@ -79,10 +79,13 @@ founders:
       Ryan brought a background in mechanical and process engineering to the science and
       craft of brewing, shaped like John by the Boulder and Denver beer scene.
 
-# Bartenders who have moved on. Rendered small: a face and a name, nothing
-# else. `image` may point at a file that does not exist yet -- the layout
-# falls back to initials, so a photo can be dropped in later and will appear
-# with no other change.
+# Bartenders who have moved on. Rendered small: a face, a name, the job they
+# did and the years they did it. No bio. `image` may point at a file that does
+# not exist yet -- the layout falls back to initials, so a photo can be dropped
+# in later and will appear with no other change. `title` and `years` are both
+# optional and each is skipped on its own if absent.
 alumni:
   - name: Caleb Hardaway
+    title: Bartender
+    years: 2025 to 2026
     image: images/team-caleb-hardaway.jpg

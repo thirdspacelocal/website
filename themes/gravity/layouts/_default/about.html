@@ -64,8 +64,8 @@
 {{- end }}
 
 {{/* Bartenders who have moved on. A separate block rather than a third entry
-     in $groups above, because that loop renders full cards with a title and a
-     bio and this wants neither -- just the face and the name. */}}
+     in $groups above, because that loop renders full cards with a bio and this
+     wants none -- just the face, the name, the job and the years. */}}
 {{- with $t.alumni }}
 <section>
   <div class="wrap">
@@ -82,6 +82,8 @@
         <span class="monogram" aria-hidden="true">{{ $ini }}</span>
         {{- end }}
         <span class="alum-name">{{ .name }}</span>
+        {{- with .title }}<span class="alum-role">{{ . }}</span>{{ end }}
+        {{- with .years }}<span class="alum-years">{{ . }}</span>{{ end }}
       </li>
       {{- end }}
     </ul>
