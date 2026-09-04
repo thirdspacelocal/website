@@ -20,7 +20,10 @@
         <div class="card-body">
           <span class="value-num">{{ printf "%02d" (add $i 1) }}</span>
           <h3>{{ $v.title }}</h3>
-          <p class="muted">{{ $v.body }}</p>
+          {{- /* safeHTML because a value's body may carry an inline link --
+                 "Make room at the table" points at Give Back Mondays. The data
+                 file is ours, not user input. */ -}}
+          <p class="muted">{{ $v.body | safeHTML }}</p>
         </div>
       </article>
       {{- end }}

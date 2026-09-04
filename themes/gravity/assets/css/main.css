@@ -755,3 +755,17 @@ body.page-dark .section-alt { background: rgba(12, 22, 29, .84); }
 .page-hero { min-height: 0; padding-block: clamp(1.6rem, 3.5vw, 2.5rem); }
 .page-head { padding-block: clamp(1.6rem, 3.5vw, 2.2rem) clamp(1rem, 2.5vw, 1.4rem); }
 .event-hero { padding-block: clamp(1.8rem, 4vw, 2.8rem); }
+
+/* ---------- Give Back Mondays ---------- */
+/* The band on /events/. Sits between the hero and the calendar, so it needs to
+   read as a distinct offer without competing with the poster above it: a rule
+   top and bottom rather than a fill, which would make three tinted bands in a
+   row down that page. */
+.give-back-band { border-block: 1px solid var(--line-rule); }
+.give-back-band .lead { max-width: 52ch; }
+.give-back-band .btn { margin-top: .4rem; }
+
+/* The chip on a charity row. Deliberately NOT the accent used by "Don't miss":
+   the two can appear on the same row, and two identical chips side by side
+   read as one word split in half. */
+.agenda-flag-giveback { background: var(--accent-2); color: #17110a; }

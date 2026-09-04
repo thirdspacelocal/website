@@ -50,3 +50,7 @@ or local meetups. Yours can be one of them.
 This page is short on purpose. Every event is a bit different, so rather than
 list packages, we'd sooner hear what you're planning and tell you straight away
 whether we can do it.
+
+Raising money for a local cause? [Give Back Mondays](/give-back/) is a night we
+hand to one nonprofit, with $2 from every pint going to them. That one costs
+you nothing.

@@ -81,6 +81,28 @@
 </section>
 {{- end }}
 
+
+{{- /* After the calendar, not before it. This is the one thing on the page a
+       reader might want to be PART of rather than attend, so it reads as a
+       footnote to the calendar rather than a competing offer above it: someone
+       arriving for "what's on Monday" should get the answer first.
+
+       There is deliberately no nav item, so this band plus the footer link are
+       how anybody reaches the page without being sent it.
+
+       A ruled band rather than a filled one: the agenda above is section-alt
+       and visit below is too, so a third fill would run them together. */ -}}
+<section class="give-back-band">
+  <div class="wrap">
+    <p class="eyebrow">Give Back Mondays</p>
+    <h2>A Monday for your cause.</h2>
+    <p class="lead">We hand one Monday to a local nonprofit and put $2 from
+    every pint we pour that day into their pot. If that sounds like your group,
+    ask us for a night.</p>
+    <p><a class="btn btn-order" href="{{ "give-back/" | absURL }}">How it works</a></p>
+  </div>
+</section>
+
 {{- partial "event-feeds.html" . }}
 
 {{- partial "visit.html" . }}

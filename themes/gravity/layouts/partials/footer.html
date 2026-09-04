@@ -46,6 +46,13 @@
       <p class="contact-label">Parties</p>
       <p><a href="{{ "parties/" | absURL }}">Book your event with us</a><br>
          <a href="mailto:{{ $p.bookingEmail }}">{{ $p.bookingEmail }}</a></p>
+      {{- /* The other "can we use this place" question, and it comes from a
+             different person than the one above: a development director at a
+             local nonprofit, who will not think to look under Parties. There
+             is no nav room for it, so this is the main way anyone finds the
+             page without being sent the link. */ -}}
+      <p class="contact-label">Give Back Mondays</p>
+      <p><a href="{{ "give-back/" | absURL }}">A Monday for your cause</a></p>
     </div>
 
     <div class="footer-col">

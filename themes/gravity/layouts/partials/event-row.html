@@ -26,7 +26,14 @@
     <span class="agenda-thumb"><img src="{{ . }}" alt="" loading="lazy" width="160" height="120"></span>
     {{- end }}
     <span class="agenda-body">
+      {{- /* A charity night is a different KIND of row: the draw is the cause,
+             not the act, and a reader scanning for "what's on Monday" should be
+             able to tell at a glance. Read off the label rather than the title,
+             so the night can be called plainly after the charity it is for
+             instead of carrying a prefix on every surface. */ -}}
+      {{- $giveBack := in (.Params.labels | default slice) (site.Params.giveBackLabel | default "giveback") -}}
       <span class="agenda-title">{{ .Title }}
+        {{- if $giveBack }} <span class="agenda-flag agenda-flag-giveback">Give Back</span>{{ end -}}
         {{- if $.featured }} <span class="agenda-flag">{{ if .Params.featured }}Don&rsquo;t miss{{ else }}Next up{{ end }}</span>{{ end -}}
       </span>
       <span class="agenda-when">{{ .Params.whenLabel }}</span>
