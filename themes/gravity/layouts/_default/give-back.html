@@ -1,0 +1,150 @@
+{{ define "main" }}
+{{- /* Give Back Mondays. Two audiences on one page, and the order between them
+       is the whole design.
+
+       Customers outnumber charities here by orders of magnitude, but a
+       development director who found this page in a search is worth far more
+       per visit -- they are the supply the program runs on. So the customer
+       fact leads (what it is, which Monday, who it's for) and the application
+       sits at the bottom behind #apply, the same shape parties.html uses for
+       its enquiry.
+
+       The schedule band renders only when Mondays are actually booked. An
+       empty "upcoming nights" heading over nothing reads as a dead program,
+       which is the one impression this page cannot afford to give a charity
+       deciding whether to bother applying. */ -}}
+
+{{- $nights := partial "events-by-label.html" (dict "label" (site.Params.giveBackLabel | default "giveback")) -}}
+
+{{- /* Before the first night, the page's job is to sell a launch and collect
+       applications. After it, the programme simply exists and the countdown
+       framing would read as stale. The site rebuilds nightly, so this flips
+       itself within a day of launchDate with nobody editing copy.
+
+       Resolved in the venue's zone: an unquoted YAML date parses as UTC
+       midnight, which flips the page six hours early on the Sunday evening. */ -}}
+{{- $launch := false -}}
+{{- $preLaunch := false -}}
+{{- with .Params.launchDate -}}
+  {{- $launch = time.AsTime . "America/Denver" -}}
+  {{- if lt now.Unix $launch.Unix -}}{{- $preLaunch = true -}}{{- end -}}
+{{- end -}}
+
+{{- $hero := "" -}}
+{{- with resources.Get .Params.heroImage }}{{ $b := .Fill "1800x820 Center" }}{{ $hero = $b.RelPermalink }}{{ end -}}
+<section class="hero page-hero"{{ with $hero }} style="--hero-img: url('{{ . }}')"{{ end }}>
+  <div class="wrap">
+    {{- with .Params.eyebrow }}<p class="eyebrow">{{ . }}</p>{{ end }}
+    {{- /* The <title> is the program name, which is what gets linked and
+           shared. The H1 is the offer, because "Give Back Mondays" tells a
+           first-time visitor nothing and "$2 a pint" tells them everything.
+
+           That figure is also the one phrase on this page with a legal job:
+           Colorado wants the per-unit amount in every advertisement, so it
+           leads here and repeats verbatim in the cards below. */ -}}
+    <h1>{{ .Params.heading | default .Title }}</h1>
+    {{- /* One lead paragraph, not two: before launch the date IS the useful
+           fact and goes first, which is the same rule the rest of the site
+           follows. */ -}}
+    {{- with .Params.subtitle }}
+    <p class="lead">
+      {{- if $preLaunch }}The first one is {{ $launch.Format "Monday, January 2" }}, and we&rsquo;re taking applications now. {{ end -}}
+      {{ . }}
+    </p>
+    {{- end }}
+    <p class="hero-cta">
+      <a class="btn btn-order" href="#apply">{{ if $preLaunch }}Apply for a night{{ else }}Apply for a Monday{{ end }}</a>
+      {{- with $nights }}
+      <a class="btn btn-light" href="#schedule">See who's coming up</a>
+      {{- end }}
+    </p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap split">
+    <div class="split-text stack content">
+      {{ .Content }}
+    </div>
+    <div class="split-media">
+      {{- with resources.Get .Params.splitImage }}
+      {{- $img := .Fill "760x600 Center" }}
+      <img src="{{ $img.RelPermalink }}" width="{{ $img.Width }}" height="{{ $img.Height }}" alt="{{ $.Params.splitAlt }}" loading="lazy">
+      {{- end }}
+    </div>
+  </div>
+</section>
+
+{{- /* The schedule. Same agenda rows as /events/, deliberately: a regular
+       reading this page and a regular reading the calendar should recognise
+       the same object, and event-row.html already handles the poster, the
+       date rail and the phone layout. */ -}}
+{{- with $nights }}
+<section id="schedule">
+  <div class="wrap">
+    <p class="eyebrow">The schedule</p>
+    <h2>Who&rsquo;s coming up.</h2>
+    <ul class="agenda mt-2">
+      {{- range . }}
+      {{ partial "event-row.html" (dict "page" . "featured" false) }}
+      {{- end }}
+    </ul>
+  </div>
+</section>
+{{- end }}
+
+<section class="section-alt">
+  <div class="wrap">
+    <p class="eyebrow">If you&rsquo;re the charity</p>
+    <h2>What you get.</h2>
+    {{- with .Params.what }}
+    <div class="values-grid mt-2">
+      {{- range . }}
+      <article class="value card">
+        <div class="card-body">
+          <h3>{{ .title | markdownify }}</h3>
+          <p class="muted">{{ .body | markdownify }}</p>
+        </div>
+      </article>
+      {{- end }}
+    </div>
+    {{- end }}
+
+    {{- /* The counterpart to the "what it costs" block on the parties page,
+           and it exists for the same reason: the second question anyone has
+           after "what do we get" is "what's the catch". Saying the four
+           conditions plainly is faster than being asked, and every one of
+           them is a condition somebody here has agreed to actually
+           enforce. */ -}}
+    {{- with .Params.ask }}
+    <div class="cost stack">
+      <p class="eyebrow">What we ask</p>
+      <ul>
+        {{- range . }}
+        <li>{{ . | markdownify }}</li>
+        {{- end }}
+      </ul>
+      <p class="muted">Ask as far ahead as you can, and tell us which months
+      would suit. We book nights as people ask for them.</p>
+    </div>
+    {{- end }}
+  </div>
+</section>
+
+<section id="apply">
+  <div class="wrap booking-wrap">
+    <p class="eyebrow">Apply</p>
+    <h2>Ask us for a Monday.</h2>
+    <p class="lead">Nothing here books a date.
+      {{- if $preLaunch }} We start on {{ $launch.Format "Monday, January 2" }},
+      and we&rsquo;re booking the first nights now.
+      {{- else }} Tell us roughly when would suit, and we&rsquo;ll come back to
+      you either way.{{ end }}</p>
+    {{ partial "give-back-form.html" . }}
+  </div>
+</section>
+
+{{- if .Params.visit }}
+{{- partial "visit.html" . }}
+{{- end }}
+{{ end }}

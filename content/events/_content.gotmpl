@@ -223,6 +223,21 @@ Three things here are deliberate and easy to get wrong later:
          manual action that discounts the structured data on EVERY page, not
          just the offending one. Only normal and featured are events; the gate
          itself lives in event-schema.html. */ -}}
+  {{- /* `labels` is free-form and says what KIND of thing this is, which is a
+         different question from `prominence` (how loudly it speaks) and from
+         `eventType` (onsite vs offsite). Those two are already load-bearing --
+         background is what keeps a standing pizza deal from emitting
+         schema.org Event markup, eventType decides the location handling -- so
+         labels must never be made to do either job.
+
+         Deliberately a plain param array and NOT a Hugo taxonomy. Taxonomies
+         are disabled site-wide; turning them back on to get this would publish
+         /labels/<x>/ term pages into the sitemap that nobody asked for and
+         that compete with the real pages for the same words.
+
+         Absent on every event Kit has not labelled yet, so a filter on this
+         has to treat "no labels" as matching nothing rather than
+         everything. */ -}}
   {{- $.AddPage (dict
     "path"    .slug
     "kind"    "page"
@@ -235,6 +250,7 @@ Three things here are deliberate and easy to get wrong later:
       "hasPoster"       $posterOK
       "kitID"           .id
       "eventType"       (.type | default "event")
+      "labels"          (.labels | default slice)
       "summary"         (.summary | default "")
       "startsAt"        $start
       "nextStart"       $next

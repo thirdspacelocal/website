@@ -1,0 +1,126 @@
+{{- /* The Give Back Mondays application.
+
+       A SEPARATE Netlify form from booking-form.html, not a variant of it.
+       Netlify routes a submission by the hidden form-name value, so pointing
+       charities at name="private-event" would drop applications into the
+       buyout inbox carrying guests/buyout/occasion and none of the fields that
+       actually decide whether we can book a night. Two forms, two inboxes.
+
+       It reuses the .booking-form CSS wholesale, which is the part worth
+       sharing: every interior page is body.page-dark, so the controls have to
+       be styled dark-first or they come out white on white.
+
+       Same build-time trap as the buyout form: Netlify scans the DEPLOYED HTML
+       for data-netlify="true", so this must be live in a deploy before any
+       submission can register, and the hidden input has to match the name
+       attribute exactly. */ -}}
+{{- /* Same inbox as the buyout form, on purpose: this does not need a mailbox
+       of its own. The two are already separated where it matters, because
+       Netlify files submissions by form name, so applications arrive as their
+       own list with their own fields. The subject line does the same job for
+       anyone who mails in instead. */ -}}
+{{- $p := site.Params -}}
+{{- $thanks := "/give-back/thanks/" -}}
+{{- $to := $p.bookingEmail -}}
+<form class="booking-form"
+      name="give-back"
+      method="POST"
+      action="{{ $thanks | relURL }}"
+      data-netlify="true"
+      data-netlify-honeypot="bot-field">
+
+  <input type="hidden" name="form-name" value="give-back">
+
+  {{- /* Off screen rather than display:none, which some bots check for. */ -}}
+  <p class="hp" aria-hidden="true">
+    <label>Leave this field empty<input name="bot-field" tabindex="-1" autocomplete="off"></label>
+  </p>
+
+  <fieldset>
+    <legend>Your organization</legend>
+    <div class="form-grid">
+      <p class="field">
+        <label for="gb-org">Organization <span class="req" aria-hidden="true">*</span></label>
+        <input id="gb-org" name="organization" type="text" autocomplete="organization" required>
+      </p>
+      <p class="field">
+        <label for="gb-site">Website</label>
+        <input id="gb-site" name="website" type="text" inputmode="url" placeholder="sistercarmen.org">
+      </p>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>Who to talk to</legend>
+    <div class="form-grid">
+      <p class="field">
+        <label for="gb-name">Your name <span class="req" aria-hidden="true">*</span></label>
+        <input id="gb-name" name="name" type="text" autocomplete="name" required>
+      </p>
+      <p class="field">
+        <label for="gb-email">Email <span class="req" aria-hidden="true">*</span></label>
+        <input id="gb-email" name="email" type="email" autocomplete="email" required>
+      </p>
+      <p class="field">
+        <label for="gb-phone">Phone</label>
+        <input id="gb-phone" name="phone" type="tel" autocomplete="tel">
+      </p>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>The night</legend>
+
+    {{- /* A window, not a date. Asking for one preferred date invites a
+           specific answer we often cannot honour, and then the first reply of
+           the conversation is a no. A range lets the first reply be a
+           night. */ -}}
+    <p class="field">
+      <label for="gb-months">When would suit? <span class="req" aria-hidden="true">*</span></label>
+      <input id="gb-months" name="months" type="text" placeholder="e.g. anything in spring, or September to November" required>
+      <span class="hint">A window works better than a single date. It gives us more to work with.</span>
+    </p>
+
+    {{- /* No form-grid: one field on its own in a two-column grid renders as a
+           half-width stub with a gap beside it. */ -}}
+    <p class="field">
+      <label for="gb-supporters">Roughly how many people could you bring?</label>
+      <input id="gb-supporters" name="supporters" type="number" min="0" step="1" inputmode="numeric">
+      <span class="hint">A guess is fine. The building holds 88.</span>
+    </p>
+
+    <p class="field">
+      <label for="gb-funds">What would the money go to? <span class="req" aria-hidden="true">*</span></label>
+      <textarea id="gb-funds" name="funds" rows="4" required placeholder="One or two sentences. This is roughly what we'll put on the event page and read out on the night."></textarea>
+    </p>
+  </fieldset>
+
+  <fieldset>
+    <legend>One bit of paperwork</legend>
+    {{- /* Colorado treats a "$2 a pint goes to X" night as a charitable sales
+           promotion, and using an organization's name or logo in one without
+           written authorization is charitable fraud under C.R.S. 6-16-111. A
+           ticked box on a Netlify submission is the cheapest durable record of
+           that permission, and it is the step everyone in this category
+           skips. Required on purpose. */ -}}
+    <div class="field">
+      <div class="choices">
+        <label class="choice">
+          <input type="checkbox" name="logo-permission" value="Granted" required>
+          <span>We give Gravity Brewing permission to use our name and logo to
+          promote our Give Back Monday. <span class="req" aria-hidden="true">*</span></span>
+        </label>
+      </div>
+      <span class="hint">Colorado asks us to have this in writing before we can put your name on anything.</span>
+    </div>
+  </fieldset>
+
+  <div class="form-actions">
+    <button class="btn btn-order" type="submit">Send it over</button>
+    <p class="form-note muted">
+      You can also email
+      <a href="mailto:{{ $to }}?subject=Give%20Back%20Mondays">{{ $to }}</a>
+      or call <a href="tel:{{ $p.phoneRaw }}">{{ $p.phone }}</a>.
+    </p>
+  </div>
+</form>

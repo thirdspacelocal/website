@@ -1,0 +1,25 @@
+{{- /* Returns the upcoming events carrying a given label, soonest first.
+
+       Context: dict "label" "giveback"
+
+       Kit labels an event with what kind of thing it is, which is a different
+       question from `prominence` (how loudly it speaks) and from `eventType`
+       (onsite or offsite). Those two are already load-bearing -- background is
+       what keeps a standing pizza deal from emitting schema.org Event markup,
+       and eventType decides the location handling -- so a label must never be
+       made to do either job, or the three will drift and someone will end up
+       marking a real event background purely to hide it from a list.
+
+       Returns an empty slice when nothing carries the label, including on
+       every event Kit has not labelled yet. Callers must handle empty: a
+       heading rendered over no rows reads as a dead programme. */ -}}
+{{- $label := .label -}}
+{{- $out := slice -}}
+{{- with site.GetPage "/events" -}}
+  {{- range (sort .RegularPages "Params.nextStart") -}}
+    {{- if in (.Params.labels | default slice) $label -}}
+      {{- $out = $out | append . -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- return $out -}}

@@ -37,6 +37,10 @@ disableKinds = ["taxonomy", "term"]
   # and forwarded email has to be chased the day that changes. Deliberately
   # separate from wholesaleEmail, which is kegs and cans to the trade.
   bookingEmail = "events@thegravitybrewing.com"
+  # The Kit label that marks an event as a Give Back night. Read by
+  # give-back.html via events-by-label.html. Changing it re-partitions the
+  # schedule, so it lives here rather than as a string buried in a partial.
+  giveBackLabel = "giveback"
   # approximate coords for Louisville, CO downtown — VERIFY before relying on for maps
   latitude = "39.9783"
   longitude = "-105.1319"
