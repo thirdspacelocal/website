@@ -17,12 +17,32 @@
 {{- end -}}
 {{- $logo := "" -}}
 {{- with resources.Get "images/logo.png" }}{{ $logo = .Permalink }}{{ end -}}
+{{- /* The owner/operators, who are also the founders of this company.
+       The 2026 deal bought the name and the assets, not the seller's company,
+       so the organisation described here was founded by Don and Matt. The
+       people who started the original brewery are credited in prose on /about;
+       naming them in `founder` here would attribute OUR company to them, which
+       is the exact confusion this whole page is trying to clear up. */ -}}
+{{- $owners := slice -}}
+{{- $founders := slice -}}
+{{- range site.Data.team.crew -}}
+  {{- if eq .title "Owner / Operator" -}}
+    {{- $owners = $owners | append (dict "@type" "Person" "name" .name "jobTitle" .title) -}}
+    {{- $founders = $founders | append (dict "@type" "Person" "name" .name) -}}
+  {{- end -}}
+{{- end -}}
 {{- $data := dict
     "@context" "https://schema.org"
     "@type" (slice "Brewery" "BarOrPub")
     "@id" (printf "%s#brewery" site.BaseURL)
     "name" site.Title
+    "legalName" $p.legalName
     "description" $p.description
+    "foundingDate" $p.foundingDate
+    "founder" $founders
+    "parentOrganization" (dict
+      "@type" "Organization"
+      "name" $p.parentOrganization)
     "url" site.BaseURL
     "telephone" $p.phone
     "email" $p.email
@@ -44,8 +64,10 @@
       "latitude" $p.latitude
       "longitude" $p.longitude)
     "openingHoursSpecification" $hours
-    "sameAs" $sameAs -}}
-{{- /* On the About page, name the crew (incl. owner/operators) so search + AI can answer "who owns / runs Gravity". */ -}}
+    "sameAs" $sameAs
+    "employee" $owners -}}
+{{- /* Every page carries the owner/operators, so "who owns Gravity" is answerable
+       from any entry point. The About page widens that to the whole crew. */ -}}
 {{- if eq .RelPermalink "/about/" -}}
   {{- $t := site.Data.team -}}
   {{- $staff := slice -}}

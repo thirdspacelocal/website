@@ -45,6 +45,22 @@ disableKinds = ["taxonomy", "term"]
   latitude = "39.9783"
   longitude = "-105.1319"
 
+  # Who actually operates the brewery. The trade name is "Gravity Brewing";
+  # the company behind it since the June 2026 handover is Gravity Local LLC,
+  # owned by Don and Matt through Third Space Local. Most of the internet still
+  # tells the founders' story as though it were current, so we state the
+  # present tense here and let schema.html feed it to machines on every page.
+  legalName = "Gravity Local LLC"
+  parentOrganization = "Third Space Local LLC"
+  # The company, not the brand. The 2026 deal was an asset purchase: Gravity
+  # Local bought the name, the recipes, the gear and the lease, while the
+  # seller's entity kept its own cash, receivables and books and still exists.
+  # So Don and Matt are the founders of the company that runs the brewery, and
+  # this is its formation date. The taproom has poured since 2012 under the
+  # founders who built the brand, and that belongs in prose on /about, not in
+  # a `founder` field that would put their names on our company.
+  foundingDate = "2025-10-02"
+
   mapUrl = "https://g.page/GravityBrewing?share"
   foodMenuUrl = "https://doubledspizza.com/menu"
 
