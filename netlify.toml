@@ -8,6 +8,30 @@
   HUGO_VERSION = "0.164.0"
   HUGO_ENV = "production"
 
+# A short, sayable address for the mailing list, for print and QR codes only.
+# The Square enrol URL ends in an opaque token nobody can read off a table
+# topper or repeat to a customer, and it changes if the opt-in program is ever
+# rebuilt -- which would strand every poster already printed. This indirection
+# means the printed thing never has to change.
+#
+# The site's own links point straight at params.subscribeUrl instead, so a
+# visitor clicking through does not take a redirect hop. This exists for the
+# printed shortcut, not for the website.
+#
+# Both forms, because Netlify matches the path as written and Hugo-shaped URLs
+# elsewhere on the site carry a trailing slash.
+[[redirects]]
+  from = "/subscribe"
+  to = "https://squareup.com/customer-programs/enroll/B8a6bd7JMVHs"
+  status = 302
+  force = true
+
+[[redirects]]
+  from = "/subscribe/"
+  to = "https://squareup.com/customer-programs/enroll/B8a6bd7JMVHs"
+  status = 302
+  force = true
+
 # Long-cache fingerprinted assets (Hugo fingerprints CSS + processed images)
 [[headers]]
   for = "/*"

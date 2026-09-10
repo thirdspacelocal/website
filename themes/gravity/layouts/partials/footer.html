@@ -57,6 +57,18 @@
 
     <div class="footer-col">
       <h2>Find Us Online</h2>
+      {{- /* Above the social list, not in it. Everything below is a place we
+             already are and that the reader has to remember to visit; this is
+             the only one that comes to them, and it is the only one carrying
+             an offer. Ranked accordingly.
+
+             Straight at Square rather than /subscribe for the same reason as
+             the home page band: the redirect is for print, not for links we
+             control. */ -}}
+      {{- with $p.subscribeUrl }}
+      <p class="contact-label">Mailing list</p>
+      <p><a href="{{ . }}" rel="noopener">What&rsquo;s on, plus $5 off</a></p>
+      {{- end }}
       <ul class="social">
         <li><a href="{{ $p.social.facebook }}" rel="noopener">Facebook</a></li>
         <li><a href="{{ $p.social.instagram }}" rel="noopener">Instagram</a></li>

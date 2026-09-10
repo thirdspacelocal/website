@@ -63,6 +63,18 @@ disableKinds = ["taxonomy", "term"]
 
   mapUrl = "https://g.page/GravityBrewing?share"
   foodMenuUrl = "https://doubledspizza.com/menu"
+  # Square's own hosted opt-in page, and deliberately NOT a form on this site.
+  # Square's Customers API has no marketing-opt-in field, so a customer created
+  # through it lands outside the "Email Subscribers" segment and can never be
+  # mailed -- a form posting to Square would quietly build an unusable list.
+  # Enrolling here means the visitor types their own address and consents, so
+  # they arrive subscribed and exportable, unlike the POS Instant Profiles
+  # whose addresses Square masks and will not release.
+  #
+  # The token belongs to the opt-in program configured in Square Dashboard
+  # under Marketing. Changing the program there changes this URL, which is why
+  # it lives here rather than inline in the two templates that link it.
+  subscribeUrl = "https://squareup.com/customer-programs/enroll/B8a6bd7JMVHs"
 
   [params.social]
     facebook = "https://facebook.com/gravitybrewing"

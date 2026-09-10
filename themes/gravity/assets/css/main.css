@@ -335,6 +335,14 @@ section { padding-block: clamp(3rem, 7vw, 5.5rem); }
   .home-events-all { margin-left: 0; }
 }
 
+/* ---------- Mailing list CTA ---------- */
+/* Deliberately plain: it sits directly under .section-navy (home-events),
+   which is the loudest band on the page. Giving this one artwork or a panel
+   of its own would set the two competing, and the events band has to win. */
+.subscribe-cta h2 { margin: 0; }
+.subscribe-cta-lead { max-width: 54ch; margin-top: 1rem; }
+.subscribe-cta-action { margin-top: 1.6rem; }
+
 /* ---------- Quick links ---------- */
 .quicklinks { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.4rem; }
 @media (max-width: 760px) { .quicklinks { grid-template-columns: 1fr; } }

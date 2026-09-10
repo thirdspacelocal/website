@@ -56,6 +56,11 @@
      keeps. Renders nothing at all on a week with an empty calendar. */}}
 {{ partial "home-events.html" . }}
 
+{{/* Straight after the calendar, and before the story. Someone who just read
+     "Saturday" and cannot do Saturday is the likeliest person on this page to
+     want telling next time, and they are one scroll away from leaving. */}}
+{{ partial "subscribe-cta.html" . }}
+
 <section>
   <div class="wrap split">
     <div class="split-text stack">
