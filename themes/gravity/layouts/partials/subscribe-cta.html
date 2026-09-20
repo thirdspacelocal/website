@@ -8,29 +8,68 @@
        it is asking before it has given a reason; anywhere near the footer it
        is behind two sections of brand story that most people never scroll.
 
-       Links straight at Square rather than at /subscribe. The redirect exists
-       for print and QR codes, where an opaque token cannot be read aloud; a
-       visitor who is already on the site should not take a redirect hop to get
-       somewhere we can link directly.
+       A FORM, not a link, and the history matters. This band shipped carrying
+       a button out to Square's hosted opt-in page. In the eleven days that
+       followed, 112 customers were created and 109 of them were POS Instant
+       Profiles; of the three that were not, one was a staff test made ninety
+       seconds after the deploy and one had no email address at all. One
+       plausible stranger, in eleven days. The mechanism was never broken --
+       the test landed in Email Subscribers exactly as intended -- the ask was
+       just too expensive: leave this page, load a Square-branded page you have
+       never seen, then type your address. So we spend no click and put the box
+       on the page they are already reading.
+
+       Posting to Square's own endpoint is what makes this safe to do. The
+       thing NOT to build here is a form at Square's Customers API, which has
+       no marketing-opt-in field and would silently produce customers nobody
+       can ever mail. See the comment over subscribeFormUrl in hugo.toml.
 
        Wrapped in `with` like every other optional band in this theme: drop the
-       param and the section disappears rather than rendering a dead button.
+       param and the section disappears rather than rendering a dead form.
        That matters more than usual here, because the URL points at a Square
        opt-in program that can be deleted from the Square Dashboard by someone
        who has never seen this repo. */ -}}
-{{- with site.Params.subscribeUrl }}
+{{- with site.Params.subscribeFormUrl }}
 <section class="section-alt subscribe-cta">
   <div class="wrap">
     <p class="eyebrow">Stay in touch</p>
     <h2>Know what&rsquo;s on before it&rsquo;s on.</h2>
     {{- /* The offer is stated plainly and the number is real: Square sends a
-           $5 coupon on enrolment, good for 30 days. If that incentive is ever
-           turned off in Square, this line has to change with it -- a promise
-           the enrol page does not keep is worse than no incentive at all. */ -}}
-    <p class="subscribe-cta-lead">Want to stay on top of all that is going on at Gravity? We have a small mailing hat covers new beer launches, big taproom events, new weekly promotions, and more. Sign up and we will send you $5 off your next visit.</p>
-    <p class="subscribe-cta-action">
-      <a class="btn btn-order" href="{{ . }}" rel="noopener">Sign up and get $5 off</a>
-    </p>
+           $5 coupon on enrolment. Confirmed in the opt-in program's own
+           config, which reports coupon "$5" and programs ["email_marketing"].
+           If that incentive is ever turned off in Square, this line has to
+           change with it -- a promise the signup does not keep is worse than
+           no incentive at all. */ -}}
+    <p class="subscribe-cta-lead">Want to stay on top of all that is going on at Gravity? We have a small mailing list that covers new beer launches, big taproom events, new weekly promotions, and more. Sign up and we will send you $5 off your next visit.</p>
+
+    {{- /* target="_blank" is deliberate, and kept from Square's own embed
+           snippet: the confirmation opens in a new tab so the visitor keeps
+           their place on the page rather than being thrown out of it.
+
+           Every inline style Square ships with this markup has been stripped.
+           It comes dressed in Helvetica with a #546476 button -- that colour
+           is the accentColor on the opt-in program, not ours -- and left as
+           given it would be the only control on the site that looks bought. */ -}}
+    <form class="subscribe-form" action="{{ . }}" method="POST" target="_blank" rel="noopener">
+      {{- /* No visually-hidden helper exists in this theme, and bare controls
+             here are labelled the way header.html and carousel.html label
+             theirs: with aria-label. The placeholder is not the label. */ -}}
+      <input class="subscribe-form-email" type="email" name="email_address"
+             placeholder="Your email address" aria-label="Your email address"
+             autocomplete="email" required>
+      <input type="hidden" name="embed" value="true">
+      <button class="btn btn-order" type="submit">Sign up and get $5 off</button>
+    </form>
+
+    {{- /* Square's hosted page carries consent language that its embed snippet
+           drops entirely. Condensed here rather than omitted: the hosted page
+           states the marketing-email consent, that joining is not a condition
+           of purchase, and an 18-or-over certification, and this is a brewery.
+           Full wording stays one link away on the page that actually runs the
+           enrolment. */ -}}
+    {{- with site.Params.subscribeUrl }}
+    <p class="subscribe-form-consent hint">By signing up you agree to receive marketing emails from Gravity Brewing, and confirm you are 18 or over. Joining is not a condition of purchase, and you can unsubscribe at any time. <a href="{{ . }}" rel="noopener">Full terms</a>.</p>
+    {{- end }}
   </div>
 </section>
 {{- end }}

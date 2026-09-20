@@ -341,7 +341,29 @@ section { padding-block: clamp(3rem, 7vw, 5.5rem); }
    of its own would set the two competing, and the events band has to win. */
 .subscribe-cta h2 { margin: 0; }
 .subscribe-cta-lead { max-width: 54ch; margin-top: 1rem; }
-.subscribe-cta-action { margin-top: 1.6rem; }
+
+/* Input and button on one baseline, wrapping to stacked when there is not
+   room for both. The max-width stops the field running the full width of the
+   band on a desktop, where a 60ch email box reads as a mistake. */
+.subscribe-form {
+  display: flex; flex-wrap: wrap; align-items: stretch; gap: .8rem;
+  margin-top: 1.6rem; max-width: 34rem;
+}
+.subscribe-form-email { flex: 1 1 16rem; min-width: 0; }
+.subscribe-form button.btn { flex: none; cursor: pointer; font-family: var(--display); }
+@media (max-width: 560px) {
+  /* Full-width stacked rather than a cramped two-up: a submit button narrow
+     enough to sit beside a usable field is not worth tapping at.
+
+     The flex reset on the field is load-bearing. Once the container turns to
+     a column, the 16rem flex-basis above stops describing a width and starts
+     describing a HEIGHT, which grows the email box into a 250px slab. */
+  .subscribe-form { flex-direction: column; }
+  .subscribe-form-email { flex: none; width: 100%; }
+  .subscribe-form button.btn { width: 100%; }
+}
+
+.subscribe-form-consent { max-width: 54ch; margin-top: .9rem; }
 
 /* ---------- Quick links ---------- */
 .quicklinks { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.4rem; }
@@ -600,14 +622,17 @@ body.page-dark address a { color: var(--ink); }
 .booking-form input[type="date"],
 .booking-form input[type="number"],
 .booking-form select,
-.booking-form textarea {
+.booking-form textarea,
+.subscribe-form input[type="email"] {
   width: 100%; font: inherit; font-size: 1rem; color: var(--ink);
   background: var(--navy-2); border: 1px solid var(--line-d); border-radius: 4px;
   padding: .7rem .8rem; transition: border-color .15s, box-shadow .15s;
 }
 .booking-form textarea { resize: vertical; min-height: 7rem; }
-.booking-form ::placeholder { color: #6d7383; }
-.booking-form :is(input, select, textarea):focus-visible {
+.booking-form ::placeholder,
+.subscribe-form ::placeholder { color: #6d7383; }
+.booking-form :is(input, select, textarea):focus-visible,
+.subscribe-form input:focus-visible {
   outline: none; border-color: var(--accent); box-shadow: 0 0 0 2px rgba(217,160,60,.55);
 }
 /* Safari and Chrome render the native date/number pickers as dark glyphs on

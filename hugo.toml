@@ -63,18 +63,37 @@ disableKinds = ["taxonomy", "term"]
 
   mapUrl = "https://g.page/GravityBrewing?share"
   foodMenuUrl = "https://doubledspizza.com/menu"
-  # Square's own hosted opt-in page, and deliberately NOT a form on this site.
-  # Square's Customers API has no marketing-opt-in field, so a customer created
-  # through it lands outside the "Email Subscribers" segment and can never be
-  # mailed -- a form posting to Square would quietly build an unusable list.
-  # Enrolling here means the visitor types their own address and consents, so
-  # they arrive subscribed and exportable, unlike the POS Instant Profiles
-  # whose addresses Square masks and will not release.
+  # TWO URLS, ONE LIST. Both of these are the same Square opt-in program --
+  # /outreach/hm4jiQ/subscribe 302s to /customer-programs/enroll/B8a6bd7JMVHs.
+  # They are kept apart because they are used in different ways, not because
+  # they collect different people. Verified against Square's own page config,
+  # which reports merchantToken MLS71HNJMK71B, programs ["email_marketing"]
+  # and coupon "$5" -- the same merchant token the customer segments carry.
   #
-  # The token belongs to the opt-in program configured in Square Dashboard
-  # under Marketing. Changing the program there changes this URL, which is why
-  # it lives here rather than inline in the two templates that link it.
+  # What must NOT be used is Square's Customers API. It has no marketing-opt-in
+  # field, so a customer created through it lands outside the "Email
+  # Subscribers" segment and can never be mailed. Both URLs below record
+  # consent properly and land the subscriber in that segment; a hand-rolled
+  # form posting at the Customers API would quietly build an unusable list.
+  # That distinction is the whole reason this is worth a comment.
+  #
+  # The tokens belong to the opt-in program configured in Square Dashboard
+  # under Marketing. Rebuilding the program there changes both, which is why
+  # they live here rather than inline in the templates that use them.
+
+  # The hosted page. Used where we need somewhere to SEND a person: the footer
+  # link, and the /subscribe redirect for print and QR codes.
   subscribeUrl = "https://squareup.com/customer-programs/enroll/B8a6bd7JMVHs"
+
+  # The POST target for an embedded form, which is what the same program calls
+  # itself when it is not being visited. Used by subscribe-cta.html so the home
+  # page can ask for the address in place instead of spending the click.
+  #
+  # Worth knowing before changing it: in the eleven days the home page carried
+  # a LINK to the hosted page instead of this form, it produced exactly one
+  # signup that was not a staff test. The form exists because that ask was too
+  # expensive for what it was worth.
+  subscribeFormUrl = "https://squareup.com/outreach/hm4jiQ/subscribe"
 
   [params.social]
     facebook = "https://facebook.com/gravitybrewing"
