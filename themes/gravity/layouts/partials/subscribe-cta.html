@@ -8,28 +8,32 @@
        it is asking before it has given a reason; anywhere near the footer it
        is behind two sections of brand story that most people never scroll.
 
-       A FORM, not a link, and the history matters. This band shipped carrying
-       a button out to Square's hosted opt-in page. In the eleven days that
-       followed, 112 customers were created and 109 of them were POS Instant
-       Profiles; of the three that were not, one was a staff test made ninety
-       seconds after the deploy and one had no email address at all. One
-       plausible stranger, in eleven days. The mechanism was never broken --
-       the test landed in Email Subscribers exactly as intended -- the ask was
-       just too expensive: leave this page, load a Square-branded page you have
-       never seen, then type your address. So we spend no click and put the box
-       on the page they are already reading.
+       A LINK, AND IT HAS TO BE. This was briefly an email box posting to
+       Square's own embed snippet, at https://squareup.com/outreach/hm4jiQ/
+       subscribe. Do not try that again. That URL is a vanity redirect, not an
+       endpoint: it answers 302 to the hosted enrol page no matter what you
+       POST to it, discards the body, and carries no address across. The
+       visitor typed their email here and was then asked to type it again on
+       Square's page -- strictly worse than this button.
 
-       Posting to Square's own endpoint is what makes this safe to do. The
-       thing NOT to build here is a form at Square's Customers API, which has
-       no marketing-opt-in field and would silently produce customers nobody
-       can ever mail. See the comment over subscribeFormUrl in hugo.toml.
+       Nor can the address be handed over in the query string. The enrol page
+       echoes ?email_address= into its router props and ignores it; the field
+       renders empty. It is client-rendered behind a reCAPTCHA with a submit
+       button disabled until it validates its own input, which is Square
+       saying fairly plainly that the hosted page is the only way in.
+
+       So the click is not waste, it is the product. The only ways around it
+       would be Square's Customers API, which cannot set marketing opt-in and
+       would build a list nobody can mail (see hugo.toml), or collecting
+       addresses ourselves and importing them, which splits consent across two
+       systems. Both are worse than sending people to Square.
 
        Wrapped in `with` like every other optional band in this theme: drop the
-       param and the section disappears rather than rendering a dead form.
+       param and the section disappears rather than rendering a dead button.
        That matters more than usual here, because the URL points at a Square
        opt-in program that can be deleted from the Square Dashboard by someone
        who has never seen this repo. */ -}}
-{{- with site.Params.subscribeFormUrl }}
+{{- with site.Params.subscribeUrl }}
 <section class="section-alt subscribe-cta">
   <div class="wrap">
     <p class="eyebrow">Stay in touch</p>
@@ -38,38 +42,16 @@
            $5 coupon on enrolment. Confirmed in the opt-in program's own
            config, which reports coupon "$5" and programs ["email_marketing"].
            If that incentive is ever turned off in Square, this line has to
-           change with it -- a promise the signup does not keep is worse than
-           no incentive at all. */ -}}
+           change with it -- a promise the enrol page does not keep is worse
+           than no incentive at all. */ -}}
     <p class="subscribe-cta-lead">Want to stay on top of all that is going on at Gravity? We have a small mailing list that covers new beer launches, big taproom events, new weekly promotions, and more. Sign up and we will send you $5 off your next visit.</p>
-
-    {{- /* target="_blank" is deliberate, and kept from Square's own embed
-           snippet: the confirmation opens in a new tab so the visitor keeps
-           their place on the page rather than being thrown out of it.
-
-           Every inline style Square ships with this markup has been stripped.
-           It comes dressed in Helvetica with a #546476 button -- that colour
-           is the accentColor on the opt-in program, not ours -- and left as
-           given it would be the only control on the site that looks bought. */ -}}
-    <form class="subscribe-form" action="{{ . }}" method="POST" target="_blank" rel="noopener">
-      {{- /* No visually-hidden helper exists in this theme, and bare controls
-             here are labelled the way header.html and carousel.html label
-             theirs: with aria-label. The placeholder is not the label. */ -}}
-      <input class="subscribe-form-email" type="email" name="email_address"
-             placeholder="Your email address" aria-label="Your email address"
-             autocomplete="email" required>
-      <input type="hidden" name="embed" value="true">
-      <button class="btn btn-order" type="submit">Sign up and get $5 off</button>
-    </form>
-
-    {{- /* Square's hosted page carries consent language that its embed snippet
-           drops entirely. Condensed here rather than omitted: the hosted page
-           states the marketing-email consent, that joining is not a condition
-           of purchase, and an 18-or-over certification, and this is a brewery.
-           Full wording stays one link away on the page that actually runs the
-           enrolment. */ -}}
-    {{- with site.Params.subscribeUrl }}
-    <p class="subscribe-form-consent hint">By signing up you agree to receive marketing emails from Gravity Brewing, and confirm you are 18 or over. Joining is not a condition of purchase, and you can unsubscribe at any time. <a href="{{ . }}" rel="noopener">Full terms</a>.</p>
-    {{- end }}
+    {{- /* No consent line here, deliberately. Square's page carries its own,
+           including the 18-or-over certification, and it is the page that
+           actually records the opt-in. Restating it beside a button that
+           collects nothing would be ours to keep accurate for no benefit. */ -}}
+    <p class="subscribe-cta-action">
+      <a class="btn btn-order" href="{{ . }}" rel="noopener">Sign up and get $5 off</a>
+    </p>
   </div>
 </section>
 {{- end }}
