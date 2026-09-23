@@ -10,19 +10,41 @@
 
        Returns a dict:
          all      -- every event, in date order (empty slice if the section
-                     is missing or empty)
+                     is missing or empty), standing offers included. The
+                     calendar on /events/ wants the lot.
+         real     -- the same list without `prominence: background`, which is
+                     how Kit marks a standing offer rather than a happening: a
+                     pizza deal, a weekly happy hour. Those are things that are
+                     always true, not things to turn up for, and a home page
+                     that answers "is anything on" with "we sell pizza" has
+                     answered a question nobody asked. Same field that keeps
+                     them out of the schema.org markup.
          featured -- the lead event, or nil when there are no events at all.
                      Callers must handle nil: the taproom calendar does empty
                      out, and a template that assumes an event exists takes the
-                     whole site down with it on the quiet week. */ -}}
+                     whole site down with it on the quiet week.
+         starred  -- every flagged event in date order, lead included, so a
+                     caller can show the SECOND one. The home page does: the
+                     hero takes the lead and the band below takes the next
+                     flagged night, which is how two big events in one month
+                     both get a full-size slot instead of one being repeated
+                     twice on the same screen. Usually empty or one long, so
+                     a caller has to handle both. */ -}}
 {{- $all := slice -}}
 {{- with site.GetPage "/events" -}}
   {{- $all = sort .RegularPages "Params.nextStart" -}}
 {{- end -}}
 
+{{- /* The lead comes from the real events, never from a standing offer. It
+       leads two pages and an empty-calendar week is exactly when the soonest
+       row is a pizza deal, which is the week it would have gone out as the
+       headline. */ -}}
+{{- $real := where $all "Params.prominence" "!=" "background" -}}
+
 {{- $featured := false -}}
-{{- with $all -}}
-  {{- $starred := where . "Params.featured" true -}}
+{{- $starred := slice -}}
+{{- with $real -}}
+  {{- $starred = where . "Params.featured" true -}}
   {{- if $starred -}}
     {{- $featured = index $starred 0 -}}
   {{- else -}}
@@ -30,4 +52,4 @@
   {{- end -}}
 {{- end -}}
 
-{{- return (dict "all" $all "featured" $featured) -}}
+{{- return (dict "all" $all "real" $real "featured" $featured "starred" $starred) -}}

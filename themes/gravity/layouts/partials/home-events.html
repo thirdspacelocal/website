@@ -16,18 +16,39 @@
        job is to tell a first-time visitor what this place is, and it still
        has to do that on a week with nothing on. */ -}}
 {{- $data := partial "featured-event.html" . -}}
-{{- with $data.featured }}
+
+{{- /* The hero has already spent the lead event. This band takes the SECOND
+       one, so a reader who scrolls past the fold meets a new night rather than
+       the one they just read.
+
+       Second means the next FLAGGED event where there is one: two big nights in
+       a month should both get a full-size slot, and that is the whole reason
+       the flag exists. With only one flagged night (the usual case) it falls
+       back to whatever is soonest, so the band still has something to lead
+       with on an ordinary week. */ -}}
+{{- /* `real`, not `all`: standing offers stay off this page entirely. Someone
+       asking "is anything on this week" is not asking about the pizza deal. */ -}}
+{{- $lead := $data.featured -}}
+{{- $rest := slice -}}
+{{- range $data.real }}{{ if ne . $lead }}{{ $rest = $rest | append . }}{{ end }}{{ end -}}
+
+{{- $second := false -}}
+{{- with where $rest "Params.featured" true }}{{ $second = index . 0 }}{{ end -}}
+{{- if not $second }}{{ with $rest }}{{ $second = index . 0 }}{{ end }}{{ end -}}
+
+{{- with $second }}
 {{- $ev := . -}}
 {{- $art := partial "event-image.html" (dict "page" . "fit" "560x560") -}}
-{{- /* Everything except the lead, soonest first. Filtered rather than sliced
-       off the front: the lead is usually but not always the first by date. */ -}}
-{{- $rest := slice -}}
-{{- range $data.all }}{{ if ne . $ev }}{{ $rest = $rest | append . }}{{ end }}{{ end -}}
-{{- /* Two, not three. They are cards now rather than a line of text each, and
-       three cards across this band shrink to a width where the poster is a
-       stamp and the title wraps three times. Two also pairs with the lead
-       above it: one big night, then the two after it. */ -}}
-{{- $rest = first 2 $rest -}}
+{{- /* The next two after both of those, in date order. Filtered rather than
+       sliced off the front: neither the hero's event nor this band's is
+       reliably first by date.
+
+       Two, not three. They are cards rather than a line of text each, and
+       three across this band shrink to a width where the poster is a stamp and
+       the title wraps three times. */ -}}
+{{- $more := slice -}}
+{{- range $rest }}{{ if ne . $ev }}{{ $more = $more | append . }}{{ end }}{{ end -}}
+{{- $rest = first 2 $more -}}
 <section class="section-navy home-events">
   <div class="wrap">
     <div class="home-events-grid">
