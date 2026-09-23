@@ -777,3 +777,13 @@ body.page-dark .section-alt { background: rgba(12, 22, 29, .84); }
    the two can appear on the same row, and two identical chips side by side
    read as one word split in half. */
 .agenda-flag-giveback { background: var(--accent-2); color: #17110a; }
+
+/* The pointer on a charity night's own page. A panel rather than a band,
+   because it sits inside the prose column under the event description and a
+   full-width fill there would cut the page in two. Prose width, so it does not
+   run wider than the copy it follows. */
+.event-giveback { margin-top: clamp(1.8rem, 4vw, 2.6rem); max-width: 46rem; }
+.event-giveback p { margin: 0 0 .8rem; }
+.event-giveback .eyebrow { color: var(--accent-2); }
+.event-giveback .btn { margin-top: .4rem; }
+.event-giveback p:last-child { margin-bottom: 0; }

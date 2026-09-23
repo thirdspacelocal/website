@@ -27,6 +27,29 @@
       {{- with .Params.registrationURL }}
       <p><a class="btn" href="{{ . }}">Book a place</a></p>
       {{- end }}
+
+      {{- /* A charity night is the one page here that can recruit its own
+             successor. Someone at a nonprofit who found this page -- sent by a
+             friend, or from the partner's own list -- has just read proof the
+             programme runs, and until now had nowhere to go with that: the
+             only routes to /give-back/ are the band at the bottom of /events/
+             and the footer link, and neither is on this page.
+
+             Read off the label rather than the title, same rule as the agenda
+             row: the night is named after the charity, not after the
+             programme. */ -}}
+      {{- if in (.Params.labels | default slice) (site.Params.giveBackLabel | default "giveback") }}
+      <aside class="event-giveback callout">
+        <p class="eyebrow">Give Back Mondays</p>
+        <p>This night belongs to one local nonprofit. $2 from every draft pint
+        we pour that day goes to them, and there's a table by the door if they
+        want one.</p>
+        <p>We book one group per Monday, and any local nonprofit can ask for a
+        night.</p>
+        <p><a class="btn btn-ghost" href="{{ "/give-back/" | relURL }}">Ask us for a Monday</a></p>
+      </aside>
+      {{- end }}
+
       <p><a href="{{ "/events/" | relURL }}">← All events</a></p>
     </div>
 
