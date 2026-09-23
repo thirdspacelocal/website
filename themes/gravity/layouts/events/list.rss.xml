@@ -20,7 +20,7 @@
   <channel>
     <title>Events · {{ site.Title }}</title>
     <link>{{ .Permalink }}</link>
-    <description>What&#39;s coming up at {{ site.Title }} in {{ site.Params.addressLocality }}, {{ site.Params.addressRegion }} — live music, trivia, classes and parties in the taproom and bier garten.</description>
+    <description>What&#39;s coming up at {{ site.Title }} in {{ site.Params.addressLocality }}, {{ site.Params.addressRegion }}. Live music, trivia, classes and parties in the taproom and bier garten.</description>
     <generator>Hugo</generator>
     <language>{{ site.Language.Locale | default "en-us" }}</language>
     <copyright>© {{ now.Format "2006" }} {{ site.Title }}</copyright>

@@ -58,7 +58,7 @@
         <dt>When</dt>
         <dd>
           {{ .Params.whenLabel }}
-          {{- if .Params.recurring }}<br><span class="subtle">Every week — just turn up.</span>{{ end }}
+          {{- if .Params.recurring }}<br><span class="subtle">Every week. Just turn up.</span>{{ end }}
         </dd>
         {{- /* A series on set dates, or a monthly one, has no cadence that can
                be stated in a phrase -- so list the dates. Weekly is excluded:
@@ -82,7 +82,7 @@
         {{- end }}
         {{- with .Params.location }}
         <dt>Where</dt>
-        <dd>{{ . }}{{ if eq $.Params.eventType "festival" }}<br><span class="subtle">Off-site — we're coming to you.</span>{{ end }}</dd>
+        <dd>{{ . }}{{ if eq $.Params.eventType "festival" }}<br><span class="subtle">Off-site. We're coming to you.</span>{{ end }}</dd>
         {{- end }}
         {{- with .Params.priceLabel }}
         <dt>Cost</dt>
