@@ -311,28 +311,49 @@ section { padding-block: clamp(3rem, 7vw, 5.5rem); }
   background: #fff; box-shadow: 0 6px 26px rgba(0,0,0,.28);
 }
 
-/* The next few dates. One event reads as a one-off; three reads as a calendar. */
-.home-events-more {
-  list-style: none; margin: clamp(2rem, 4vw, 3rem) 0 0; padding: clamp(1.4rem, 3vw, 1.8rem) 0 0;
+/* The two nights after the lead. One event reads as a one-off; three dates in
+   a row read as a calendar -- and a card carries the poster and the summary,
+   which is the difference between proving there is a calendar and making
+   somebody want the Tuesday.
+
+   A pair, not a row of three: at this width three cards put the art at stamp
+   size. The lead above is the headline, these are the follow-on, so they sit
+   below a rule rather than in a band of their own. */
+.home-events-next {
+  list-style: none; margin: clamp(2rem, 4vw, 3rem) 0 0; padding: clamp(1.6rem, 3vw, 2rem) 0 0;
   border-top: 1px solid var(--line-d);
-  display: flex; flex-wrap: wrap; gap: .6rem 2.2rem; align-items: baseline;
+  display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.4rem;
 }
-.home-events-more a { color: #fff; display: flex; gap: .7rem; align-items: baseline; }
-.home-events-more a:hover { color: var(--accent-2); text-decoration: none; }
+.home-events-card a {
+  display: grid; grid-template-columns: 8.5rem 1fr; gap: 1.1rem; height: 100%;
+  color: #fff; background: var(--navy-2); border: 1px solid var(--line-d);
+  border-radius: 6px; overflow: hidden; transition: .15s;
+}
+.home-events-card a:hover { border-color: var(--accent-2); text-decoration: none; }
+.home-events-card-art img { width: 100%; height: 100%; object-fit: cover; }
+.home-events-card-body { display: block; padding: 1rem 1.1rem 1.1rem 0; align-self: center; }
 .home-events-date {
+  display: block;
   font-family: var(--mono); font-size: .75rem; letter-spacing: .08em;
   text-transform: uppercase; color: var(--accent-2); white-space: nowrap;
 }
-.home-events-name { font-size: .95rem; }
-.home-events-all { margin-left: auto; }
+.home-events-name { display: block; font-family: var(--display); text-transform: uppercase; font-size: 1.05rem; line-height: 1.2; margin-top: .3rem; }
+.home-events-card-summary { display: block; font-size: .9rem; color: rgba(255,255,255,.82); margin-top: .45rem; }
+
+.home-events-all { margin: 1.2rem 0 0; text-align: right; }
 .home-events-all a { font-family: var(--display); font-size: .78rem; letter-spacing: .02em; text-transform: uppercase; color: var(--accent-2); }
 
 @media (max-width: 760px) {
   /* Art first on a phone: it is the thing that stops a thumb. */
   .home-events-grid { grid-template-columns: 1fr; }
   .home-events-art { order: -1; max-width: 16rem; }
-  .home-events-more { flex-direction: column; gap: .8rem; }
-  .home-events-all { margin-left: 0; }
+  /* One card per row rather than two half-width ones: side by side on a phone
+     the art column eats most of the card and the title wraps every word. */
+  .home-events-next { grid-template-columns: 1fr; }
+  .home-events-all { text-align: left; }
+}
+@media (max-width: 420px) {
+  .home-events-card a { grid-template-columns: 6.5rem 1fr; gap: .9rem; }
 }
 
 /* ---------- Mailing list CTA ---------- */

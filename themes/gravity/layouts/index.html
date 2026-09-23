@@ -61,19 +61,13 @@
      want telling next time, and they are one scroll away from leaving. */}}
 {{ partial "subscribe-cta.html" . }}
 
-<section>
-  <div class="wrap split">
-    <div class="split-text stack">
-      <p class="eyebrow">Find your orbit</p>
-      <h2>Where you fit.</h2>
-      <p>Gravity is a <strong>third place</strong>, the spot between home and work. Whether you are looking for conversation, entertainment, or just a space to decompress, Gravity is for you.</p>
-      <p class="muted"><a href="{{ "/about" | relURL }}">Get to know us →</a></p>
-    </div>
-    <div class="split-media">
-      {{- with resources.Get "images/home-about-1.jpg" }}{{ $i := .Fill "760x600 Center" }}<img src="{{ $i.RelPermalink }}" width="{{ $i.Width }}" height="{{ $i.Height }}" alt="Gathering at Gravity Brewing" loading="lazy">{{ end }}
-    </div>
-  </div>
-</section>
+{{/* "Where you fit" stood here: a third-place pitch in the abstract, between
+     the calendar and the "Why Gravity" story. Cut, not moved. It told a
+     stranger nothing the events band above had not just shown them with actual
+     nights, and it was the third "here is who we are" block in a row on a page
+     whose job below the fold is to give someone a reason to come in. /about
+     still makes the argument at length, and the hero badge and the footer both
+     link there. */}}
 
 <section class="section-alt">
   <div class="wrap split reverse">

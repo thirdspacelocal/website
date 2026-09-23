@@ -23,7 +23,11 @@
        off the front: the lead is usually but not always the first by date. */ -}}
 {{- $rest := slice -}}
 {{- range $data.all }}{{ if ne . $ev }}{{ $rest = $rest | append . }}{{ end }}{{ end -}}
-{{- $rest = first 3 $rest -}}
+{{- /* Two, not three. They are cards now rather than a line of text each, and
+       three cards across this band shrink to a width where the poster is a
+       stamp and the title wraps three times. Two also pairs with the lead
+       above it: one big night, then the two after it. */ -}}
+{{- $rest = first 2 $rest -}}
 <section class="section-navy home-events">
   <div class="wrap">
     <div class="home-events-grid">
@@ -52,21 +56,41 @@
       {{- end }}
     </div>
 
+    {{- /* The two nights after the lead, as cards rather than as a line of
+           text each. The strip that was here listed a date and a title and
+           nothing else, which is enough to prove a calendar exists but not
+           enough to make anyone want a Tuesday: the poster and the one-line
+           summary are what actually sell a night, and they were being kept for
+           the lead alone.
+
+           Same parts as an agenda row, deliberately -- art, date, title,
+           summary -- so somebody who scrolls on to /events/ meets the same
+           object in a different arrangement. */ -}}
     {{- with $rest }}
-    <ul class="home-events-more">
+    <ul class="home-events-next">
       {{- range . }}
-      <li>
+      {{- $art := partial "event-image.html" (dict "page" . "fill" "640x420 Center") }}
+      <li class="home-events-card">
         <a href="{{ .RelPermalink }}">
-          <span class="home-events-date">
-            {{- if .Params.recurring }}Every {{ substr (.Params.nextStart.Format "Monday") 0 3 }}
-            {{- else }}{{ .Params.nextStart.Format "Jan 2" }}{{ end -}}
+          {{- with $art }}
+          {{- /* Decorative here even when it is a real poster: the title and
+                 date sit right beside it in text, so describing it again only
+                 makes a screen reader say the night twice. */ -}}
+          <span class="home-events-card-art"><img src="{{ . }}" alt="" loading="lazy" width="320" height="210"></span>
+          {{- end }}
+          <span class="home-events-card-body">
+            <span class="home-events-date">
+              {{- if .Params.recurring }}Every {{ .Params.nextStart.Format "Monday" }}
+              {{- else }}{{ .Params.nextStart.Format "Mon, Jan 2" }}{{ end -}}
+            </span>
+            <span class="home-events-name">{{ .Title }}</span>
+            {{- with .Params.summary }}<span class="home-events-card-summary">{{ . }}</span>{{ end }}
           </span>
-          <span class="home-events-name">{{ .Title }}</span>
         </a>
       </li>
       {{- end }}
-      <li class="home-events-all"><a href="{{ "/events/" | relURL }}">All events &rarr;</a></li>
     </ul>
+    <p class="home-events-all"><a href="{{ "/events/" | relURL }}">All events &rarr;</a></p>
     {{- end }}
   </div>
 </section>
