@@ -124,8 +124,8 @@
         <li>{{ . | markdownify }}</li>
         {{- end }}
       </ul>
-      <p class="muted">Ask as far ahead as you can, and tell us which months
-      would suit. We book nights as people ask for them.</p>
+      <p class="muted">Apply as far ahead as you can and tell us which months
+      suit you. We book nights in the order people ask.</p>
     </div>
     {{- end }}
   </div>
@@ -135,11 +135,11 @@
   <div class="wrap booking-wrap">
     <p class="eyebrow">Apply</p>
     <h2>Ask us for a Monday.</h2>
-    <p class="lead">Nothing here books a date.
+    <p class="lead">Sending this form does not book a date.
       {{- if $preLaunch }} We start on {{ $launch.Format "Monday, January 2" }},
       and we&rsquo;re booking the first nights now.
-      {{- else }} Tell us roughly when would suit, and we&rsquo;ll come back to
-      you either way.{{ end }}</p>
+      {{- else }} Tell us which months would suit, and we&rsquo;ll reply either
+      way.{{ end }}</p>
     {{ partial "give-back-form.html" . }}
   </div>
 </section>

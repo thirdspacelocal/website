@@ -1,7 +1,7 @@
 ---
 title: "Thanks, we've got it"
 eyebrow: "Message received"
-subtitle: "Your note is in, and a person will read it."
+subtitle: "We have your enquiry and will reply by email."
 description: "Your party enquiry has reached Gravity Brewing."
 # Netlify lands people here after a successful post. It is a destination for
 # exactly one person at a time and has no business in search results or the
@@ -11,8 +11,8 @@ noindex: true
 sitemap_exclude: true
 ---
 
-Thanks for getting in touch. Someone will read this and get back to you about
-the date and what the night would cost.
+Thanks for getting in touch. We'll email you about the date and what the night
+would cost.
 
 If it's urgent, call the taproom on
 <a href="tel:{{< param phoneRaw >}}">{{< param phone >}}</a>.

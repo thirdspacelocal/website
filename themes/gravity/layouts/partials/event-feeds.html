@@ -20,8 +20,8 @@
   <div class="wrap">
     <h2>Never miss what&rsquo;s on</h2>
     <p>
-      Subscribe and everything here shows up in your own calendar, updating on
-      its own when plans change.
+      Subscribe and our events appear in your own calendar, and update when
+      plans change.
     </p>
     <p class="feeds-actions">
       {{- /* safeURL because html/template's allowlist is http/https/mailto and
@@ -37,37 +37,37 @@
       <summary>For calendar editors</summary>
 
       <p>
-        Running a community calendar? Point it at one of these and our events
-        will appear on it automatically from then on.
+        If you run a community calendar, point it at one of these feeds and our
+        events will appear on it automatically.
       </p>
 
       <dl>
         <dt><a href="{{ $base }}/events-featured.ics">Featured only</a></dt>
         <dd>
           <code>{{ $base }}/events-featured.ics</code><br>
-          Our handful of big ones &mdash; anniversary parties, Oktoberfest, beer
-          releases. Best for a chamber or town calendar.
+          Our biggest events: anniversary parties, Oktoberfest, beer releases.
+          Best for a chamber or town calendar.
         </dd>
 
         <dt><a href="{{ $base }}/events-highlights.ics">Highlights</a></dt>
         <dd>
           <code>{{ $base }}/events-highlights.ics</code><br>
-          Everything that is a real happening. Excludes standing weekly offers
-          like happy hour, and excludes festivals we are only attending &mdash;
-          those belong to whoever is hosting them.
+          Every actual event. Excludes standing weekly offers like happy hour,
+          and excludes festivals we are only attending, which belong on the
+          host&rsquo;s calendar.
         </dd>
 
         <dt><a href="{{ $all }}">Everything</a></dt>
         <dd>
           <code>{{ $all }}</code><br>
-          The lot, standing offers included.
+          Every event we publish, standing weekly offers included.
         </dd>
       </dl>
 
       <p>
         <strong>Please subscribe rather than import.</strong> A one-time import
-        looks like it worked and then quietly goes stale &mdash; it will keep
-        listing events we have cancelled and miss everything we add. A
+        looks like it worked and then goes stale. It keeps listing events we
+        have cancelled and misses everything we add. A
         subscription stays current on its own. The feeds are rebuilt whenever
         anything changes, and at least once a night.
       </p>

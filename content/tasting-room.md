@@ -28,13 +28,12 @@ gallery:
 visit: true
 ---
 
-In addition to award-winning beer, the Gravity tasting room offers friendly, down-to-earth
-service. We have ample space inside as well as a large outdoor **bier garten**. Our craft beers
-are sold by the glass and filled fresh from the brewery taps.
+We pour our beer by the glass, filled fresh from the brewery taps. There is room inside and a
+large outdoor **bier garten**.
 
-### To go
+### Beer to take home
 
-We also sell beer for consumption off premises:
+We sell beer to go in:
 
 - 32oz and 64oz growlers
 - 750ml bottles
@@ -58,8 +57,8 @@ whole place if you need it. The building holds 88.
 
 ### Gravity Gear
 
-Choose from a wide array of stylish Gravity Gear at the tasting room: t-shirts, long sleeve
-shirts, hoodies, hats, glassware and more.
+We sell Gravity Gear at the tasting room: t-shirts, long sleeve shirts, hoodies, hats,
+glassware and more.
 
 <div class="gear-grid">
   {{< figure src="images/tr-gear-1.jpg" alt="Gravity Gear apparel" >}}

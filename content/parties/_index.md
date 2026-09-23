@@ -29,7 +29,7 @@ can:
   - title: "The whole place"
     body: "For a bigger night we can close to the public. The building holds 88."
   - title: "Beer and food"
-    body: "We'll pick the tap list with you. Food depends on the night and the size of the group, so it's one of the things we'll talk through."
+    body: "We'll pick the tap list with you. Food depends on the night and the size of your group, so we'll work that out with you."
 
 # Feeds the Occasion dropdown in the form. Not rendered on the page: eight
 # occasions printed in a row reads as a menu of things we have done before, and
@@ -47,10 +47,9 @@ occasions:
 Gravity has been bringing people together since 2012. Birthdays, work drinks,
 or local meetups. Yours can be one of them.
 
-This page is short on purpose. Every event is a bit different, so rather than
-list packages, we'd sooner hear what you're planning and tell you straight away
-whether we can do it.
+Every event is different, so we don't publish packages. Tell us what you're
+planning and we'll tell you whether we can do it.
 
-Raising money for a local cause? [Give Back Mondays](/give-back/) is a night we
-hand to one nonprofit, with $2 from every pint going to them. That one costs
-you nothing.
+Raising money for a local cause? On a [Give Back Monday](/give-back/) we give
+the night to one nonprofit and $2 from every pint we pour goes to them. There is
+no charge to the nonprofit.

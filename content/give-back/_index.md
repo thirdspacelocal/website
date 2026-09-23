@@ -3,7 +3,7 @@ title: "Give Back Mondays"
 layout: give-back
 heading: "$2 a pint, every Monday, to a local cause."
 eyebrow: "Give Back Mondays"
-subtitle: "One local nonprofit takes the night. $2 from every pint we pour that day goes to them, and there's a table by the door if they want one."
+subtitle: "One local nonprofit takes the night. $2 from every pint we pour that day goes to them, and we provide a table by the door for their materials and donations."
 description: "Give Back Mondays at Gravity Brewing in Louisville, Colorado. A fundraiser night for local nonprofits, schools and booster clubs in Boulder County: $2 from every draft pint we pour that day goes to your organization. Apply for a night."
 # The first Give Back night. Before this date the page sells the launch and
 # pushes applications; on and after it, that framing disappears on its own.
@@ -28,28 +28,28 @@ outputs: ["HTML"]
 # is the one phrase that has to survive editing anywhere it appears.
 what:
   - title: "A Monday with your name on it"
-    body: "Your night goes on our calendar, out to our social media, and into the calendar feeds anyone can subscribe to. You also get a page here you can send to your own list."
+    body: "We list your night on our events calendar, post it to our social media, and include it in the calendar feeds people subscribe to. You also get a page here you can send to your own list."
   - title: "$2 from every pint"
-    body: "Every draft pint we pour that day, from open to close. The more of your people turn up, the bigger it gets."
-  - title: "A table, if you want one"
-    body: "There's room by the door for a banner, a sign-up sheet, a donation jar, whatever you want to put out. Come and work it, drop it off, or skip it altogether. Anything you collect there is yours and we take none of it."
+    body: "Every draft pint we pour that day, from open to close. The more of your supporters who come, the more it raises."
+  - title: "A table by the door"
+    body: "We provide a table by the door for your banner, sign-up sheets, or a donation jar. Staff it yourself, drop your materials off, or skip the table. You keep everything you collect there."
 
 # Rendered as a plain list under "What we ask". Kept to four because every one
 # of them is a real condition someone has agreed to enforce. Do not add a fifth
 # unless it is also true.
 ask:
-  - "Tell your people. The pint money only gets interesting when they turn up."
+  - "Promote the night to your supporters. The pint money only adds up if they come."
   - "Send us your logo and a line about what the money funds, three weeks ahead."
-  - "Be a 501(c)(3). We check that you're registered to solicit in Colorado, and we can help you work it out if you're not sure."
+  - "Be a 501(c)(3). We check that you're registered to solicit in Colorado. If you're not sure, ask us and we'll walk you through it."
 ---
 
 Every Monday belongs to one local nonprofit. It could be yours.
 
-We put $2 from every draft pint we pour that day into your pot. You tell your
-people to come and drink, and if you want a table by the door for anything else
-you're asking for, it's there.
+$2 from every draft pint we pour that day goes to your organization. You bring
+your supporters in to drink, and we provide a table by the door for sign-up
+sheets, a donation jar, or whatever else you're asking people for.
 
 We book one local organization per night. School booster clubs and PTOs, food
-banks, animal rescues, youth sports, arts groups, anything doing something
-useful near here. Monday is the standing slot. If your people can't do a
-Monday, say so on the form and we'll see what we can work out.
+banks, animal rescues, youth sports, arts groups, any local group doing useful
+work nearby. Monday is the standing slot. If your people can't do a Monday, say
+so on the form and we'll look for another night.
