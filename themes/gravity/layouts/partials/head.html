@@ -86,6 +86,8 @@
   <script src="{{ $js.RelPermalink }}" integrity="{{ $js.Data.Integrity }}" defer></script>
   {{- end }}
 
+  {{- partial "meta-pixel.html" . }}
+
   {{- partial "schema.html" . -}}
   {{- /* The site-wide Brewery node above says who we are; this says what is
          happening. Without it an event page carries no machine-readable trace

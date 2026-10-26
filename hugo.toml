@@ -86,6 +86,11 @@ disableKinds = ["taxonomy", "term"]
   # it lives here rather than inline in the two templates that link it.
   subscribeUrl = "https://squareup.com/customer-programs/enroll/B8a6bd7JMVHs"
 
+  # Meta Pixel ID, from Meta Events Manager (Data sources > the pixel >
+  # Settings). A 15-16 digit number, not secret: it ships in every page.
+  # Empty means no pixel is rendered at all. See partials/meta-pixel.html.
+  metaPixelId = "4753268651652927"
+
   [params.social]
     facebook = "https://facebook.com/gravitybrewing"
     instagram = "https://instagram.com/thegravitybrewing"
