@@ -162,6 +162,13 @@ disableKinds = ["taxonomy", "term"]
     weight = 8
     [menus.main.params]
       external = true
+  # Square eGift cards, sent by text or email.
+  [[menus.main]]
+    name = "Gift Cards"
+    url = "https://app.squareup.com/gift/MLS71HNJMK71B/order"
+    weight = 9
+    [menus.main.params]
+      external = true
 
 [markup.goldmark.renderer]
   unsafe = true  # allow inline HTML in content where needed
