@@ -102,7 +102,11 @@
       "name" site.Title
       "url" site.BaseURL) -}}
 
-{{- with $desc }}{{ $data = merge $data (dict "description" (. | truncate 900)) }}{{ end -}}
+{{- /* Unescape AFTER truncating. `truncate` treats a plain string as text
+       bound for HTML and escapes it, so "Battles & Brews" came out of it as
+       "Battles &amp; Brews" -- and jsonify then shipped that entity verbatim
+       to Google, after the htmlUnescape above had already run. */ -}}
+{{- with $desc }}{{ $data = merge $data (dict "description" (. | truncate 900 | htmlUnescape)) }}{{ end -}}
 {{- with $endStr }}{{ $data = merge $data (dict "endDate" .) }}{{ end -}}
 {{- with $img }}{{ $data = merge $data (dict "image" (slice .)) }}{{ end -}}
 {{- if $place }}{{ $data = merge $data (dict "location" $place) }}{{ end -}}
