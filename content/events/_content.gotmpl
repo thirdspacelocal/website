@@ -222,7 +222,15 @@ Three things here are deliberate and easy to get wrong later:
          "Don't mark coupons or vouchers as events" -- and answers it with a
          manual action that discounts the structured data on EVERY page, not
          just the offending one. Only normal and featured are events; the gate
-         itself lives in event-schema.html. */ -}}
+         itself lives in event-schema.html.
+
+         `standingOffer` is the ONE place that decides which prominence values
+         are offers rather than happenings, mirroring Kit's IsStandingOffer().
+         Templates must ask it, never compare `prominence` to a value: Kit has
+         two below-normal values -- `background` (our own standing offer, like
+         happy hour) and `amenity` (a partner's, like Double D's pizza deal) --
+         and checking only `background` is exactly how the pizza deals ended up
+         marked up as Events and counted as "what's on". */ -}}
   {{- /* `labels` is free-form and says what KIND of thing this is, which is a
          different question from `prominence` (how loudly it speaks) and from
          `eventType` (onsite vs offsite). Those two are already load-bearing --
@@ -247,6 +255,7 @@ Three things here are deliberate and easy to get wrong later:
     "params"  (dict
       "featured"        (.featured | default false)
       "prominence"      (.prominence | default "normal")
+      "standingOffer"   (in (slice "background" "amenity") (.prominence | default "normal"))
       "hasPoster"       $posterOK
       "kitID"           .id
       "eventType"       (.type | default "event")
