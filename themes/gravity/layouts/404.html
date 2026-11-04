@@ -1,0 +1,25 @@
+{{ define "main" }}
+{{- /* Netlify serves public/404.html for any path it has no file for, at the
+       broken URL itself, so every link here has to be root-relative. Most
+       people land here from an event link: the night has passed, it was
+       cancelled, or it was shared before the site rebuilt. Events is the
+       first way out for that reason. */ -}}
+<div class="page-head">
+  <div class="wrap">
+    <p class="eyebrow">Page not found</p>
+    <h1>That page isn't on tap.</h1>
+    <p class="lead">It may have moved, or it was an event that has already happened. Here's where to find what's on now.</p>
+  </div>
+</div>
+
+<section>
+  <div class="wrap stack content">
+    <p>
+      <a class="btn btn-order" href="{{ "/events" | relURL }}">What's on</a>
+      <a class="btn btn-ghost" href="{{ "/our-beers" | relURL }}">Our Beers</a>
+      <a class="btn btn-ghost" href="{{ "/" | relURL }}">Home</a>
+    </p>
+    <p>Looking for something else? Call us at <a href="tel:{{ site.Params.phoneRaw }}">{{ site.Params.phone }}</a> or email <a href="mailto:{{ site.Params.email }}">{{ site.Params.email }}</a>.</p>
+  </div>
+</section>
+{{ end }}

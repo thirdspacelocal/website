@@ -31,8 +31,9 @@
          same words and answer nobody's question. Set `noindex: true` in front
          matter, and set `sitemap_exclude: true` beside it: a URL that is both
          announced in the sitemap and marked noindex is a contradiction Search
-         Console reports as an error. */ -}}
-  {{- if .Params.noindex }}
+         Console reports as an error. The 404 page is served at whatever
+         broken URL was asked for, so it is always noindex. */ -}}
+  {{- if or .Params.noindex (eq .Kind "404") }}
   <meta name="robots" content="noindex, follow">
   {{- end }}
 
