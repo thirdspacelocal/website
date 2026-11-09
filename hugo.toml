@@ -156,9 +156,11 @@ disableKinds = ["taxonomy", "term"]
     pageRef = "/about"
     weight = 7
   # Square's online ordering page: bottles, cans and crowlers for pickup.
+  # /shop is a Netlify redirect (see netlify.toml), so the store can move
+  # without touching links.
   [[menus.main]]
     name = "Shop"
-    url = "https://cash.app/$gravitybrewing"
+    url = "/shop"
     weight = 8
     [menus.main.params]
       external = true

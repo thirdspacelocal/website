@@ -32,6 +32,21 @@
   status = 302
   force = true
 
+# Our own address for Square's online ordering page (Cash App). Unlike
+# /subscribe, the site's own links go through this too, so if the store ever
+# moves there is one line to change instead of every link and printed sign.
+[[redirects]]
+  from = "/shop"
+  to = "https://cash.app/$gravitybrewing/"
+  status = 302
+  force = true
+
+[[redirects]]
+  from = "/shop/"
+  to = "https://cash.app/$gravitybrewing/"
+  status = 302
+  force = true
+
 # Long-cache fingerprinted assets (Hugo fingerprints CSS + processed images)
 [[headers]]
   for = "/*"
