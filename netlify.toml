@@ -32,19 +32,16 @@
   status = 302
   force = true
 
-# Our own address for Square's online ordering page (Cash App). Unlike
-# /subscribe, the site's own links go through this too, so if the store ever
-# moves there is one line to change instead of every link and printed sign.
-[[redirects]]
-  from = "/shop"
-  to = "https://cash.app/$gravitybrewing/"
-  status = 302
-  force = true
-
+# /shop is deliberately not redirected here. It is a page (content/shop.md)
+# that counts the visit before forwarding to params.shopUrl in hugo.toml, so
+# tagged QR codes can be measured; a redirect would skip the page entirely.
+#
+# The page is built as shop.html so the address is /shop with no slash.
+# /shop/ is sent there for anyone who types one, keeping any ?src= tag.
 [[redirects]]
   from = "/shop/"
-  to = "https://cash.app/$gravitybrewing/"
-  status = 302
+  to = "/shop"
+  status = 301
   force = true
 
 # Long-cache fingerprinted assets (Hugo fingerprints CSS + processed images)

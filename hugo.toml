@@ -91,6 +91,11 @@ disableKinds = ["taxonomy", "term"]
   # Empty means no pixel is rendered at all. See partials/meta-pixel.html.
   metaPixelId = "4753268651652927"
 
+  # Square's online ordering page (Cash App). /shop forwards here after
+  # counting the visit; see layouts/_default/shop.html. Change it here if the
+  # store ever moves, and every link and printed QR code follows.
+  shopUrl = "https://cash.app/$gravitybrewing/"
+
   [params.social]
     facebook = "https://facebook.com/gravitybrewing"
     instagram = "https://instagram.com/thegravitybrewing"
@@ -156,8 +161,8 @@ disableKinds = ["taxonomy", "term"]
     pageRef = "/about"
     weight = 7
   # Square's online ordering page: bottles, cans and crowlers for pickup.
-  # /shop is a Netlify redirect (see netlify.toml), so the store can move
-  # without touching links.
+  # /shop is our own page that counts the visit and forwards to
+  # params.shopUrl, so the store can move without touching links.
   [[menus.main]]
     name = "Shop"
     url = "/shop"
