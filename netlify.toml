@@ -36,13 +36,9 @@
 # that counts the visit before forwarding to params.shopUrl in hugo.toml, so
 # tagged QR codes can be measured; a redirect would skip the page entirely.
 #
-# The page is built as shop.html so the address is /shop with no slash.
-# /shop/ is sent there for anyone who types one, keeping any ?src= tag.
-[[redirects]]
-  from = "/shop/"
-  to = "/shop"
-  status = 301
-  force = true
+# The page is built as shop.html so the address is /shop with no slash. Do not
+# add a /shop/ -> /shop rule: Netlify matches redirects ignoring the trailing
+# slash, so it catches /shop itself and loops.
 
 # Long-cache fingerprinted assets (Hugo fingerprints CSS + processed images)
 [[headers]]
