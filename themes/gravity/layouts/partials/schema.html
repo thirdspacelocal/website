@@ -9,6 +9,17 @@
       "opens" .opens
       "closes" .closes) -}}
 {{- end -}}
+{{- /* Holiday hours. Google reads a closed day as opens = closes = 00:00. */ -}}
+{{- $special := slice -}}
+{{- range partialCached "special-hours.html" . "special-hours" -}}
+  {{- $d := .day.Format "2006-01-02" -}}
+  {{- $special = $special | append (dict
+      "@type" "OpeningHoursSpecification"
+      "validFrom" $d
+      "validThrough" $d
+      "opens" (cond (.closed | default false) "00:00" .opens)
+      "closes" (cond (.closed | default false) "00:00" .closes)) -}}
+{{- end -}}
 {{- $sameAs := slice $p.social.facebook $p.social.instagram $p.social.twitter $p.social.untappd -}}
 {{- /* Photos + logo — Google's LocalBusiness rich result wants at least one image. */ -}}
 {{- $images := slice -}}
@@ -64,6 +75,7 @@
       "latitude" $p.latitude
       "longitude" $p.longitude)
     "openingHoursSpecification" $hours
+    "specialOpeningHoursSpecification" $special
     "sameAs" $sameAs
     "employee" $owners -}}
 {{- /* Every page carries the owner/operators, so "who owns Gravity" is answerable

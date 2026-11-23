@@ -395,6 +395,9 @@ section { padding-block: clamp(3rem, 7vw, 5.5rem); }
 .hours-row { display: flex; justify-content: space-between; gap: 1rem; padding-block: .35rem; border-bottom: 1px dashed var(--line); }
 .hours-row:last-child { border-bottom: 0; }
 .hours dt { color: var(--muted); } .hours dd { margin: 0; font-variant-numeric: tabular-nums; }
+.hours-special-head { margin: 1.2rem 0 .3rem; font-size: .8rem; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); }
+.hours-date, .hours-note { display: block; font-size: .85rem; }
+.hours-note { font-style: italic; }
 .map-embed { width: 100%; aspect-ratio: 16/9; border: 1px solid var(--line); border-radius: 0; filter: invert(.92) hue-rotate(180deg) saturate(.5) brightness(.95); }
 
 /* ---------- Dark interior pages (everything except Home) ---------- */

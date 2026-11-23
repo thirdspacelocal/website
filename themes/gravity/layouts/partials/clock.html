@@ -1,0 +1,9 @@
+{{- /* "19:00" -> "7", or "7pm" with suffix; "18:30" -> "6:30". Matches how the
+       regular hours read in hugo.toml: "12 – 7pm". */ -}}
+{{- $t := time.AsTime (printf "2000-01-01T%s:00" .t) -}}
+{{- $h := mod $t.Hour 12 -}}
+{{- if eq $h 0 }}{{ $h = 12 }}{{ end -}}
+{{- $s := string $h -}}
+{{- if ne $t.Minute 0 }}{{ $s = printf "%d:%02d" $h $t.Minute }}{{ end -}}
+{{- if .suffix }}{{ $s = printf "%s%s" $s (cond (ge $t.Hour 12) "pm" "am") }}{{ end -}}
+{{- return $s -}}

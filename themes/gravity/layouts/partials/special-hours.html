@@ -1,0 +1,40 @@
+{{- /* Returns the holiday hours worth showing at build time, read from Kit's
+       events feed (its `special_hours` list), so hours are set in one place --
+       Kit -- and a closed day there also drops that day's events. Shown from
+       45 days before each date until that day is over in Louisville; the site
+       rebuilds nightly, so a past holiday drops off by the next morning.
+
+       resources.GetRemote is cached per build, so the events section and every
+       page that calls this share one fetch. With no feed configured (a bare
+       local build) this returns nothing; the events section is what fails the
+       build in that case, on purpose.
+
+       Each entry comes back with `day` (a time.Time) and `display` added. */ -}}
+{{- $out := slice -}}
+{{- $url := getenv "KIT_EVENTS_URL" -}}
+{{- $token := getenv "KIT_EVENTS_TOKEN" -}}
+{{- if and $url $token -}}
+  {{- $opts := dict "headers" (dict "Authorization" (printf "Bearer %s" $token)) -}}
+  {{- with try (resources.GetRemote $url $opts) -}}
+    {{- with .Value -}}
+      {{- if in .MediaType.Type "json" -}}
+        {{- $feed := .Content | transform.Unmarshal -}}
+        {{- $lead := mul 45 86400 -}}
+        {{- range $feed.special_hours | default slice -}}
+          {{- /* Resolved in the venue's zone: a bare date parses as UTC
+                 midnight, which would drop the day at 5pm on the day itself. */ -}}
+          {{- $day := time.AsTime .date "America/Denver" -}}
+          {{- $end := add $day.Unix 86400 -}}
+          {{- if and (lt now.Unix $end) (ge now.Unix (sub $day.Unix $lead)) -}}
+            {{- $display := "" -}}
+            {{- if not .closed -}}
+              {{- $display = printf "%s – %s" (partial "clock.html" (dict "t" .opens)) (partial "clock.html" (dict "t" .closes "suffix" true)) -}}
+            {{- end -}}
+            {{- $out = $out | append (merge . (dict "day" $day "display" $display)) -}}
+          {{- end -}}
+        {{- end -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- return sort $out "date" -}}

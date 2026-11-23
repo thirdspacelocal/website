@@ -1,0 +1,13 @@
+{{- /* Holiday hours under the regular ones, in the same <dl> styling. Renders
+       nothing when no holiday is coming up, so there is no empty heading. */ -}}
+{{- with partialCached "special-hours.html" . "special-hours" }}
+<p class="hours-special-head">Holiday Hours</p>
+<dl class="hours hours-special">
+  {{- range . }}
+  <div class="hours-row">
+    <dt>{{ .label }}<span class="hours-date">{{ .day.Format "Mon, Jan 2" }}</span>{{ with .note }}<span class="hours-note">{{ . }}</span>{{ end }}</dt>
+    <dd>{{ if .closed }}Closed{{ else }}{{ .display }}{{ end }}</dd>
+  </div>
+  {{- end }}
+</dl>
+{{- end }}

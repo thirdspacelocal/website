@@ -23,6 +23,7 @@
         <div class="hours-row"><dt>{{ .days }}</dt><dd>{{ .display }}</dd></div>
         {{- end }}
       </dl>
+      {{- partial "special-hours-list.html" . }}
     </div>
 
     <div class="footer-col">
