@@ -92,6 +92,11 @@ disableKinds = ["taxonomy", "term"]
   metaPixelId = "4753268651652927"
 
 
+  # Ounces in the keg the shop sells (a 1/6 barrel sixtel: 5.17 gal). The
+  # Kegs section divides this by each beer's bar pour, from Kit's shop feed,
+  # to show what a keg works out to per glass. Change it if the keg changes.
+  kegOunces = 661
+
   [params.social]
     facebook = "https://facebook.com/gravitybrewing"
     instagram = "https://instagram.com/thegravitybrewing"

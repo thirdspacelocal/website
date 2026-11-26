@@ -1,0 +1,14 @@
+{{- /* What a keg works out to per glass: the keg's price over the number of
+       the beer's bar pours (from Kit's feed) it holds. Context: dict "v" VARIATION "kegOz" OUNCES. */ -}}
+{{- $oz := int .v.pour.ounces -}}
+{{- $n := int (math.Floor (div (float .kegOz) $oz)) -}}
+{{- $each := div (float .v.price_cents) (mul $n 100) -}}
+{{- /* Pints are the unit people know; a smaller pour is named by its size so
+       a 9oz glass is never called a pint. */ -}}
+<span class="keg-pours">
+  {{- if eq $oz 16 -}}
+    {{ lang.FormatCurrency 2 "USD" $each }}/pint
+  {{- else -}}
+    {{ lang.FormatCurrency 2 "USD" $each }}/{{ $oz }}oz pour
+  {{- end -}}
+</span>

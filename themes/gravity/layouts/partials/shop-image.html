@@ -1,0 +1,19 @@
+{{- /* A product photo from Square, scaled down at build time to fit inside
+       the given box with its own proportions kept (Fit, not Fill: these are
+       product shots, and cropping cut off the cans and the keg). It sits in a
+       fixed frame (.shop-photo) so photos of different shapes still line up
+       across a row.
+       Context: dict "url" URL "size" "WxH" ["eager" true]. Renders nothing
+       when there is no URL or the download fails (a warning, not an error:
+       one missing photo should not block the shop). */ -}}
+{{- with .url -}}
+  {{- $src := . -}}
+  {{- with try (resources.GetRemote $src) -}}
+    {{- with .Err -}}
+      {{- warnf "shop: could not fetch image %s: %s" $src . -}}
+    {{- else with .Value -}}
+      {{- $i := .Fit (printf "%s webp q80" $.size) -}}
+<div class="shop-photo"><img class="shop-img" src="{{ $i.RelPermalink }}" width="{{ $i.Width }}" height="{{ $i.Height }}" alt="" {{ if not $.eager }}loading="lazy"{{ end }}></div>
+    {{- end -}}
+  {{- end -}}
+{{- end -}}

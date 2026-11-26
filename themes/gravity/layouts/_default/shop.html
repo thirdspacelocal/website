@@ -1,53 +1,102 @@
 {{- /* /shop: the Square "Online Shop" catalog, rendered statically.
 
-       Kit reads the catalog from Square and serves it at shop.json, next to
-       the events feed and behind the same token (see Kit's
-       internal/apps/events/feed_shop.go). The URL is derived from
-       KIT_EVENTS_URL so the build needs no extra secret; params.shopFeedUrl
-       overrides it.
+       Kit reads the catalog and its automatic pricing rules from Square and
+       serves them at shop.json, next to the events feed and behind the same
+       token (Kit: internal/apps/events/feed_shop.go). The URL is derived from
+       KIT_EVENTS_URL; params.shopFeedUrl overrides it.
 
-       Same failure rule as the events adapter: a feed that cannot be fetched
-       fails the build, and Netlify keeps serving the last good deploy. A shop
-       page that silently publishes no products is worse than a stale one.
+       A feed that cannot be fetched, or has no products, fails the build and
+       Netlify keeps the last good deploy.
 
-       There is no checkout. Square no longer allows online payment for
-       age-restricted products on this account, so the page shows what we
-       sell and the price, and the sale happens at the bar. */ -}}
+       There is no checkout: Square does not allow online payment for
+       age-restricted products on this account, so everything is sold at the
+       bar. Sale prices come from Square's own pricing rules, so the page and
+       the register agree. */ -}}
 {{ define "main" }}
-<div class="page-head">
+{{- $feed := partialCached "shop-feed.html" . }}
+
+{{- /* Items with a sale that has not ended feed the deals band, which spans
+       from the earliest sale start to the latest sale end. */}}
+{{- $deals := slice }}
+{{- $start := "" }}{{ $end := "" }}{{ $saleName := "" }}
+{{- range $feed.sections }}
+  {{- range .items }}
+    {{- $sales := slice }}
+    {{- range .variations }}
+      {{- with .sale }}
+        {{- with .starts_at }}{{ if or (not $start) (lt . $start) }}{{ $start = . }}{{ end }}{{ end }}
+        {{- with .ends_at }}{{ if or (not $end) (gt . $end) }}{{ $end = . }}{{ end }}{{ end }}
+        {{- if not $saleName }}{{ $saleName = .name }}{{ end }}
+      {{- end }}
+      {{- if .sale }}{{ $sales = $sales | append . }}{{ end }}
+    {{- end }}
+    {{- if $sales }}{{ $deals = $deals | append (dict "item" . "sales" $sales) }}{{ end }}
+  {{- end }}
+{{- end }}
+
+{{- if $deals }}
+{{- /* The pricing rule is named like "Black Friday Crowlers"; its first two
+       words name the event. A sale that runs over several days is a weekend
+       ("Black Friday Weekend") rather than the one day the name suggests. */}}
+{{- $event := delimit (first 2 (split $saleName " ")) " " }}
+{{- if and $start $end (gt ((time.AsTime $end).Sub (time.AsTime $start)).Hours 36) (not (in (lower $event) "weekend")) }}
+  {{- $event = printf "%s Weekend" $event }}
+{{- end }}
+<section class="shop-deals" data-sale-start="{{ $start }}" data-sale-end="{{ $end }}">
   <div class="wrap">
-    {{- with .Params.eyebrow }}<p class="eyebrow">{{ . }}</p>{{ end }}
-    <h1>{{ .Title }}</h1>
-    {{- with .Params.subtitle }}<p class="lead">{{ . }}</p>{{ end }}
+    <div class="shop-deals-head">
+      <p class="eyebrow">
+        {{- with $start }}{{ (time.AsTime .).Format "Mon Jan 2" }}{{ end }}
+        {{- with $end }} – {{ ((time.AsTime .).Add -1000000000).Format "Mon Jan 2" }}{{ end }} · at the bar</p>
+      <h1>{{ $event }}</h1>
+    </div>
+    <div class="shop-deals-grid">
+      {{- range $deals }}
+      {{- $item := .item }}
+      {{- $s := index .sales 0 }}
+      {{- $pct := sub 100 (math.Round (mul 100 (div (float $s.sale.price_cents) $s.price_cents))) }}
+      {{- $allSame := true }}
+      {{- range .sales }}{{ if ne $pct (sub 100 (math.Round (mul 100 (div (float .sale.price_cents) .price_cents)))) }}{{ $allSame = false }}{{ end }}{{ end }}
+      <a class="shop-deal" href="#item-{{ $item.id }}">
+        {{- partial "shop-image.html" (dict "url" $item.image_url "size" "640x640" "eager" true) }}
+        <span class="shop-deal-body">
+          <span class="shop-deal-name">{{ $item.name }}</span>
+          {{- if eq (len $item.variations) 1 }}
+          <span class="shop-deal-price"><s>{{ lang.FormatCurrency 0 "USD" (div (float $s.price_cents) 100) }}</s> {{ lang.FormatCurrency 0 "USD" (div (float $s.sale.price_cents) 100) }}</span>
+          {{- else if and $allSame (eq $pct 50.0) }}
+          <span class="shop-deal-price">Half off</span>
+          {{- else if $allSame }}
+          <span class="shop-deal-price">{{ $pct }}% off</span>
+          {{- else }}
+          <span class="shop-deal-price">On sale</span>
+          {{- end }}
+          {{- if gt (len $item.variations) 1 }}<span class="shop-deal-note">every flavor</span>{{ end }}
+        </span>
+      </a>
+      {{- end }}
+    </div>
+  </div>
+</section>
+{{- end }}
+
+<div class="shop-head">
+  <div class="wrap">
+    {{- if $deals }}<h2>{{ .Title }}</h2>{{ else }}<h1>{{ .Title }}</h1>{{ end }}
+    <p class="muted">Available for pickup. Bring a valid photo ID for anything with alcohol.</p>
   </div>
 </div>
 
-<section>
-  <div class="wrap stack content">
-    {{ .Content }}
-  </div>
-</section>
-
-{{- $feed := partialCached "shop-feed.html" . }}
-{{- range $feed.sections }}
+{{- range $i, $sec := $feed.sections }}
 {{- if .items }}
-<section class="shop-section" id="shop-{{ .name | urlize }}">
+<section class="shop-section" id="{{ .name | urlize }}">
   <div class="wrap stack">
     <h2>{{ .name }}</h2>
-    <div class="grid grid-3 shop-grid">
+    <div class="shop-grid">
       {{- range .items }}
-      <article class="card shop-item">
-        {{- with .image_url }}
-        {{- $src := . }}
-        {{- with try (resources.GetRemote $src) }}
-          {{- with .Err }}
-            {{- warnf "shop: could not fetch image %s: %s" $src . }}
-          {{- else with .Value }}
-            {{- $i := .Fill "600x450 Center webp q80" }}
-        <img class="shop-img" src="{{ $i.RelPermalink }}" width="{{ $i.Width }}" height="{{ $i.Height }}" alt="" loading="lazy">
-          {{- end }}
-        {{- end }}
-        {{- end }}
+      {{- $wide := gt (len .variations) 6 }}
+      {{- $isKeg := eq ($sec.name | lower) "kegs" }}
+      <article class="card shop-item{{ if $wide }} wide{{ end }}" id="item-{{ .id }}">
+        {{- partial "shop-image.html" (dict "url" .image_url "size" (cond $wide "900x900" "700x700") "eager" (and (eq $i 0) (not $deals))) }}
         <div class="card-body stack">
           <h3>{{ .name }}</h3>
           {{- with .description }}<p class="muted">{{ . }}</p>{{ end }}
@@ -55,8 +104,9 @@
             {{- $single := eq (len .variations) 1 }}
             {{- range .variations }}
             <li{{ if .sold_out }} class="sold-out"{{ end }}>
-              <span>{{ if and $single (eq .name "Regular") }}Price{{ else }}{{ .name }}{{ end }}</span>
-              <span>{{ if .sold_out }}Sold out{{ else if .price_cents }}{{ lang.FormatCurrency 2 "USD" (div (float .price_cents) 100) }}{{ else }}Ask at the bar{{ end }}</span>
+              <span class="name">{{ if and $single (eq .name "Regular") }}Price{{ else }}{{ .name }}{{ end }}</span>
+              {{- if .sold_out }}<span class="price">Sold out</span>{{ else }}{{ partial "shop-price.html" . }}{{ end }}
+              {{- if and $isKeg .pour .price_cents }}{{ partial "shop-keg-pours.html" (dict "v" . "kegOz" site.Params.kegOunces) }}{{ end }}
             </li>
             {{- end }}
           </ul>
@@ -72,4 +122,25 @@
 {{- if .Params.visit }}
 {{- partial "visit.html" . }}
 {{- end }}
+
+{{- /* Sale prices switch on and off by the visitor's clock, so a page built
+       on Thursday still shows Friday's prices on Friday. */}}
+<script>
+(function () {
+  var now = Date.now();
+  function state(el) {
+    var s = Date.parse(el.dataset.saleStart || '') || -Infinity;
+    var e = Date.parse(el.dataset.saleEnd || '') || Infinity;
+    return now < s ? 'soon' : now < e ? 'live' : 'over';
+  }
+  document.querySelectorAll('.price[data-sale-start], .price[data-sale-end]').forEach(function (el) {
+    var st = state(el);
+    el.classList.toggle('is-live', st === 'live');
+    el.classList.toggle('is-soon', st === 'soon');
+  });
+  document.querySelectorAll('.shop-deals').forEach(function (el) {
+    if (state(el) === 'over') el.hidden = true;
+  });
+})();
+</script>
 {{ end }}

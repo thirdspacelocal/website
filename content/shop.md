@@ -15,29 +15,6 @@ title: "Shop"
 # will add ordering later at the same URL.
 url: "/shop.html"
 layout: "shop"
-eyebrow: "Crowlers · Cans · Gift Cards"
-subtitle: "Everything here is for sale at the bar. Online ordering is paused for now."
 description: "Crowlers, cans, kegs and gift cards from Gravity Brewing, for sale at the bar at 1150 Pine Street, Louisville, CO. Prices for everything we sell to go."
 visit: true
 ---
-
-## Buy it at the bar
-
-Online ordering is paused. Everything below is for sale at the bar. You need
-to be 21 with a photo ID to buy beer.
-
-{{< until "2026-12-01T00:00:00-07:00" >}}
-## Black Friday weekend: November 27 to 30
-
-In the taproom, Friday through Monday:
-
-- **Crowlers, half price.** Any 32oz crowler of beer, craft soda or hop water.
-- **Tsar Bomba 4-pack, $15** (normally $22). Our 11% Russian Imperial Stout
-  in 16oz cans.
-- **Gift cards, 10% off.** $50 and $100 cards.
-{{< /until >}}
-
-## Gift cards
-
-Gift cards are sold at the bar and work on anything we sell. We can't sell
-them online right now.

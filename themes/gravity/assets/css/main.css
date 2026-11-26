@@ -812,12 +812,66 @@ body.page-dark .section-alt { background: rgba(12, 22, 29, .84); }
 .event-giveback .btn { margin-top: .4rem; }
 .event-giveback p:last-child { margin-bottom: 0; }
 
-/* Shop: the Square "Online Shop" catalog, from Kit's shop feed. Prices sit in
-   a two-column list so a crowler with eighteen beers stays scannable. */
-.shop-section { padding-top: 0; }
-.shop-img { display: block; width: 100%; height: auto; aspect-ratio: 4/3; object-fit: cover; background: var(--navy); }
+/* Shop: the Square "Online Shop" catalog, from Kit's shop feed. */
+
+/* Deals band: the promo leads, with product photos, above the fold. */
+.shop-deals { background: var(--navy); padding: clamp(1.8rem, 4vw, 3rem) 0 clamp(2rem, 4vw, 3.2rem); }
+.shop-deals-head { display: flex; flex-direction: column-reverse; gap: .2rem; margin-bottom: 1.4rem; }
+.shop-deals-head h1 { margin: 0; font-size: clamp(2.6rem, 7vw, 5rem); line-height: .95; color: #fff; }
+.shop-deals-head .eyebrow { margin: 0; color: var(--accent); }
+.shop-deals-grid { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); }
+@media (max-width: 560px) {
+  .shop-deals-grid { grid-template-columns: 1fr 1fr; gap: .7rem; }
+  .shop-deal-body { padding: .6rem .7rem .8rem; }
+  .shop-deal-name { font-size: .8rem; }
+  .shop-deal-price { font-size: 1.5rem; }
+  .shop-deal-price s { font-size: 1rem; }
+}
+.shop-deal { display: flex; flex-direction: column; background: var(--bg); color: #fff; text-decoration: none; border: 1px solid var(--line); transition: transform .15s ease, border-color .15s ease; }
+.shop-deal:hover { transform: translateY(-3px); border-color: var(--accent); }
+
+.shop-deal-body { flex: 1; display: flex; flex-direction: column; gap: .15rem; padding: .9rem 1rem 1.1rem; }
+.shop-deal-name { font-family: var(--display); text-transform: uppercase; letter-spacing: .04em; font-size: .95rem; }
+.shop-deal-price { font-family: var(--display); font-size: 2rem; line-height: 1.05; color: var(--accent); }
+.shop-deal-price s { color: var(--muted); font-size: 1.2rem; text-decoration-thickness: 2px; margin-right: .2rem; }
+.shop-deal-note { font-size: .85rem; color: var(--muted); }
+
+.shop-head { padding: clamp(1.6rem, 3vw, 2.4rem) 0 0; }
+.shop-head h1, .shop-head h2 { margin: 0; }
+.shop-head p { margin: .3rem 0 0; }
+.shop-section { padding-top: clamp(1.6rem, 3vw, 2.4rem); padding-bottom: 0; }
+.shop-section:last-of-type { padding-bottom: clamp(2rem, 4vw, 3rem); }
+.shop-grid { display: grid; gap: 1.2rem; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
+/* Every photo gets the same square frame and is fitted inside it, never
+   cropped, so a tall bottle and a wide six-pack line up and the text under
+   them starts at the same height. */
+.shop-photo { position: relative; aspect-ratio: 1/1; background: var(--bg-alt); }
+.shop-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
+.shop-item { display: flex; flex-direction: column; }
+.shop-item .card-body { flex: 1; display: flex; flex-direction: column; }
+.shop-item .shop-prices { margin-top: auto; }
+
+/* An item with many flavours (crowlers, kegs) takes the full row: photo on
+   the left, prices in columns, instead of an 18-row strip down one card. */
+.shop-item.wide { grid-column: 1 / -1; display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 3fr); }
+.shop-item.wide .shop-photo { aspect-ratio: 3/4; }
+.shop-item.wide .shop-prices { columns: 2 220px; column-gap: 2rem; }
+@media (max-width: 720px) { .shop-item.wide { grid-template-columns: 1fr; } }
+
 .shop-prices { list-style: none; margin: 0; padding: 0; font-variant-numeric: tabular-nums; }
-.shop-prices li { display: flex; justify-content: space-between; gap: 1rem; padding: .3rem 0; border-top: 1px solid var(--line); }
-.shop-prices li:first-child { border-top: 0; }
+.shop-prices li { display: flex; justify-content: space-between; gap: 1rem; padding: .3rem 0; border-top: 1px solid var(--line); break-inside: avoid; }
 .shop-prices .sold-out { color: var(--muted); }
-.shop-prices .sold-out span:first-child { text-decoration: line-through; }
+.shop-prices .sold-out .name { text-decoration: line-through; }
+
+/* Price states, set by shop-price.html and re-checked by the page script. */
+.price { white-space: nowrap; }
+.price .now, .price .soon { display: none; }
+.price .was { text-decoration: none; }
+.price.is-live .was { text-decoration: line-through; color: var(--muted); margin-right: .35rem; }
+.price.is-live .now { display: inline; color: var(--accent); }
+.price.is-soon .soon { display: inline; margin-left: .4rem; color: var(--accent); }
+
+/* Keg rows carry a second line: pours per keg and the cost per glass. */
+.shop-prices li:has(.keg-pours) { flex-wrap: wrap; }
+.keg-pours { flex-basis: 100%; font-size: .82rem; color: var(--muted); margin-top: -.1rem; }
+.shop-prices li .name { flex: 1 1 0; min-width: 0; }

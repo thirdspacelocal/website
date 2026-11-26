@@ -1,0 +1,23 @@
+{{- /* One variation's price, with its sale if Square has one.
+
+       Renders every state and lets CSS pick: `is-live` (crossed-out price and
+       sale price), `is-soon` (regular price plus a "from Friday" tag) or
+       neither (regular price). The class is set at build time and then
+       re-checked in the browser by shop.html's script, so the page flips at
+       midnight on the day without needing a rebuild. */ -}}
+{{- $v := . -}}
+{{- with $v.sale -}}
+  {{- $state := "" -}}
+  {{- $start := time.AsTime "1970-01-01T00:00:00Z" -}}
+  {{- with .starts_at }}{{ $start = time.AsTime . }}{{ end -}}
+  {{- $end := time.AsTime "2999-01-01T00:00:00Z" -}}
+  {{- with .ends_at }}{{ $end = time.AsTime . }}{{ end -}}
+  {{- if lt now $start }}{{ $state = "is-soon" }}{{ else if lt now $end }}{{ $state = "is-live" }}{{ end -}}
+<span class="price {{ $state }}" data-sale-start="{{ .starts_at }}" data-sale-end="{{ .ends_at }}">
+  <s class="was">{{ lang.FormatCurrency 2 "USD" (div (float $v.price_cents) 100) }}</s>
+  <b class="now">{{ lang.FormatCurrency 2 "USD" (div (float .price_cents) 100) }}</b>
+  <small class="soon">{{ lang.FormatCurrency 2 "USD" (div (float .price_cents) 100) }} from {{ $start.Format "Mon" }}</small>
+</span>
+{{- else -}}
+<span class="price">{{ with $v.price_cents }}{{ lang.FormatCurrency 2 "USD" (div (float .) 100) }}{{ else }}Ask at the bar{{ end }}</span>
+{{- end -}}
