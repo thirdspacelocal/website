@@ -28,10 +28,10 @@
   </div>
 </section>
 
-{{- $feed := partial "shop-feed.html" . }}
+{{- $feed := partialCached "shop-feed.html" . }}
 {{- range $feed.sections }}
 {{- if .items }}
-<section class="shop-section" id="{{ .name | urlize }}">
+<section class="shop-section" id="shop-{{ .name | urlize }}">
   <div class="wrap stack">
     <h2>{{ .name }}</h2>
     <div class="grid grid-3 shop-grid">
@@ -56,7 +56,7 @@
             {{- range .variations }}
             <li{{ if .sold_out }} class="sold-out"{{ end }}>
               <span>{{ if and $single (eq .name "Regular") }}Price{{ else }}{{ .name }}{{ end }}</span>
-              <span>{{ if .sold_out }}Sold out{{ else if .price_cents }}{{ lang.FormatCurrency 2 "USD" (div (float .price_cents) 100) }}{{ end }}</span>
+              <span>{{ if .sold_out }}Sold out{{ else if .price_cents }}{{ lang.FormatCurrency 2 "USD" (div (float .price_cents) 100) }}{{ else }}Ask at the bar{{ end }}</span>
             </li>
             {{- end }}
           </ul>

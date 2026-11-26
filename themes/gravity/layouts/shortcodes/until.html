@@ -1,0 +1,7 @@
+{{- /* Shows its content only until a moment passes, for promos with an end
+       date: {{< until "2026-12-01T00:00:00-07:00" >}}...{{< /until >}}.
+       Evaluated at build time, so the promo disappears on the first build
+       after the date, not at the exact minute. */ -}}
+{{- if lt now (time.AsTime (.Get 0)) -}}
+{{ .Inner | .Page.RenderString (dict "display" "block") }}
+{{- end -}}

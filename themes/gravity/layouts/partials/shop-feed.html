@@ -1,12 +1,16 @@
 {{- /* Fetches Kit's shop feed and returns it as a map with a `sections` list.
 
        Fails the build rather than returning an empty shop: see the note in
-       layouts/_default/shop.html. Called once per build (partialCached). */ -}}
+       layouts/_default/shop.html. An empty shop counts as a failure too: the
+       Online Shop category always has products, so none means something
+       upstream broke. Call it with partialCached. */ -}}
 {{- $url := site.Params.shopFeedUrl | default (replace (getenv "KIT_EVENTS_URL") "feed.json" "shop.json") -}}
 {{- $token := getenv "KIT_EVENTS_TOKEN" -}}
 {{- $feed := dict "sections" slice -}}
 {{- if not (and $url $token) -}}
   {{- errorf "shop: KIT_EVENTS_URL and KIT_EVENTS_TOKEN are not set; the shop is built from Kit's shop feed." -}}
+{{- else if eq $url (getenv "KIT_EVENTS_URL") -}}
+  {{- errorf "shop: could not derive the shop feed URL from KIT_EVENTS_URL (%s); it must end in feed.json, or set params.shopFeedUrl." $url -}}
 {{- else -}}
   {{- $opts := dict "headers" (dict "Authorization" (printf "Bearer %s" $token)) -}}
   {{- with try (resources.GetRemote $url $opts) -}}
@@ -17,7 +21,12 @@
         {{- errorf "shop: %s returned %s, not JSON." $url .MediaType.Type -}}
       {{- else -}}
         {{- $feed = .Content | transform.Unmarshal -}}
-        {{- warnf "shop: building %d section(s) from Kit" (len $feed.sections) -}}
+        {{- $items := 0 -}}
+        {{- range $feed.sections -}}{{- $items = add $items (len .items) -}}{{- end -}}
+        {{- if eq $items 0 -}}
+          {{- errorf "shop: %s returned no products. Refusing to publish an empty shop." $url -}}
+        {{- end -}}
+        {{- warnf "shop: building %d product(s) in %d section(s) from Kit" $items (len $feed.sections) -}}
       {{- end -}}
     {{- end -}}
   {{- end -}}
