@@ -32,12 +32,9 @@
   status = 302
   force = true
 
-# /shop is deliberately not redirected here. It is a page (content/shop.md)
-# that counts the visit before forwarding to params.shopUrl in hugo.toml, so
-# tagged QR codes can be measured; a redirect would skip the page entirely.
-#
-# The page is built as shop.html so the address is /shop with no slash. Do not
-# add a /shop/ -> /shop rule: Netlify matches redirects ignoring the trailing
+# /shop is deliberately not redirected here. It is a page (content/shop.md),
+# built as shop.html so the address is /shop with no slash. Do not add a
+# /shop/ -> /shop rule: Netlify matches redirects ignoring the trailing
 # slash, so it catches /shop itself and loops.
 
 # Long-cache fingerprinted assets (Hugo fingerprints CSS + processed images)

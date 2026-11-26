@@ -1,50 +1,75 @@
-{{- /* /shop: our own address for Square's online ordering page.
+{{- /* /shop: the Square "Online Shop" catalog, rendered statically.
 
-       A page rather than a Netlify redirect, because a redirect sends people
-       on before anything loads and the visit is never counted. This records
-       the visit and then forwards to params.shopUrl, so printed QR codes can
-       carry a tag (/shop?src=bf-register) and each sign can be told apart in
-       Meta Events Manager by its URL.
+       Kit reads the catalog from Square and serves it at shop.json, next to
+       the events feed and behind the same token (see Kit's
+       internal/apps/events/feed_shop.go). The URL is derived from
+       KIT_EVENTS_URL so the build needs no extra secret; params.shopFeedUrl
+       overrides it.
 
-       The visit is sent as the Pixel's image request rather than by loading
-       fbevents.js: the request fires at once, and the forward waits for it to
-       finish (or fail, under an ad blocker) for at most a moment. Any
-       analytics tool added to the site later needs adding here too, since
-       this page does not use head.html. */ -}}
-{{- $to := site.Params.shopUrl -}}
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{{ .Title }} · {{ site.Title }}</title>
-  <meta name="robots" content="noindex, follow">
-  <noscript><meta http-equiv="refresh" content="0; url={{ $to }}"></noscript>
-  <style>
-    body { margin: 0; min-height: 100vh; display: grid; place-items: center;
-           font: 18px/1.4 system-ui, sans-serif; background: #171A14; color: #F6F2E7; }
-    a { color: #F5A81C; }
-  </style>
-</head>
-<body>
-  <p>Taking you to our shop&hellip; <a href="{{ $to }}">Continue</a></p>
-  <script>
-  (function () {
-    var to = {{ $to }}, done = false;
-    function go() { if (!done) { done = true; location.replace(to); } }
-    {{- with site.Params.metaPixelId }}{{ if hugo.IsProduction }}
-    var px = new Image();
-    px.onload = px.onerror = go;
-    px.src = 'https://www.facebook.com/tr?id={{ . }}&ev=PageView&noscript=1'
-      + '&dl=' + encodeURIComponent(location.href)
-      + '&rl=' + encodeURIComponent(document.referrer);
-    setTimeout(go, 800);
-    {{- else }}
-    go();
-    {{- end }}{{ else }}
-    go();
-    {{- end }}
-  })();
-  </script>
-</body>
-</html>
+       Same failure rule as the events adapter: a feed that cannot be fetched
+       fails the build, and Netlify keeps serving the last good deploy. A shop
+       page that silently publishes no products is worse than a stale one.
+
+       There is no checkout. Square no longer allows online payment for
+       age-restricted products on this account, so the page shows what we
+       sell and the price, and the sale happens at the bar. */ -}}
+{{ define "main" }}
+<div class="page-head">
+  <div class="wrap">
+    {{- with .Params.eyebrow }}<p class="eyebrow">{{ . }}</p>{{ end }}
+    <h1>{{ .Title }}</h1>
+    {{- with .Params.subtitle }}<p class="lead">{{ . }}</p>{{ end }}
+  </div>
+</div>
+
+<section>
+  <div class="wrap stack content">
+    {{ .Content }}
+  </div>
+</section>
+
+{{- $feed := partial "shop-feed.html" . }}
+{{- range $feed.sections }}
+{{- if .items }}
+<section class="shop-section" id="{{ .name | urlize }}">
+  <div class="wrap stack">
+    <h2>{{ .name }}</h2>
+    <div class="grid grid-3 shop-grid">
+      {{- range .items }}
+      <article class="card shop-item">
+        {{- with .image_url }}
+        {{- $src := . }}
+        {{- with try (resources.GetRemote $src) }}
+          {{- with .Err }}
+            {{- warnf "shop: could not fetch image %s: %s" $src . }}
+          {{- else with .Value }}
+            {{- $i := .Fill "600x450 Center webp q80" }}
+        <img class="shop-img" src="{{ $i.RelPermalink }}" width="{{ $i.Width }}" height="{{ $i.Height }}" alt="" loading="lazy">
+          {{- end }}
+        {{- end }}
+        {{- end }}
+        <div class="card-body stack">
+          <h3>{{ .name }}</h3>
+          {{- with .description }}<p class="muted">{{ . }}</p>{{ end }}
+          <ul class="shop-prices">
+            {{- $single := eq (len .variations) 1 }}
+            {{- range .variations }}
+            <li{{ if .sold_out }} class="sold-out"{{ end }}>
+              <span>{{ if and $single (eq .name "Regular") }}Price{{ else }}{{ .name }}{{ end }}</span>
+              <span>{{ if .sold_out }}Sold out{{ else if .price_cents }}{{ lang.FormatCurrency 2 "USD" (div (float .price_cents) 100) }}{{ end }}</span>
+            </li>
+            {{- end }}
+          </ul>
+        </div>
+      </article>
+      {{- end }}
+    </div>
+  </div>
+</section>
+{{- end }}
+{{- end }}
+
+{{- if .Params.visit }}
+{{- partial "visit.html" . }}
+{{- end }}
+{{ end }}

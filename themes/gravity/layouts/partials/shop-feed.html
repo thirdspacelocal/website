@@ -1,0 +1,25 @@
+{{- /* Fetches Kit's shop feed and returns it as a map with a `sections` list.
+
+       Fails the build rather than returning an empty shop: see the note in
+       layouts/_default/shop.html. Called once per build (partialCached). */ -}}
+{{- $url := site.Params.shopFeedUrl | default (replace (getenv "KIT_EVENTS_URL") "feed.json" "shop.json") -}}
+{{- $token := getenv "KIT_EVENTS_TOKEN" -}}
+{{- $feed := dict "sections" slice -}}
+{{- if not (and $url $token) -}}
+  {{- errorf "shop: KIT_EVENTS_URL and KIT_EVENTS_TOKEN are not set; the shop is built from Kit's shop feed." -}}
+{{- else -}}
+  {{- $opts := dict "headers" (dict "Authorization" (printf "Bearer %s" $token)) -}}
+  {{- with try (resources.GetRemote $url $opts) -}}
+    {{- with .Err -}}
+      {{- errorf "shop: could not fetch the shop feed from Kit (%s). Refusing to build rather than publish an empty shop." . -}}
+    {{- else with .Value -}}
+      {{- if not (in .MediaType.Type "json") -}}
+        {{- errorf "shop: %s returned %s, not JSON." $url .MediaType.Type -}}
+      {{- else -}}
+        {{- $feed = .Content | transform.Unmarshal -}}
+        {{- warnf "shop: building %d section(s) from Kit" (len $feed.sections) -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- return $feed -}}

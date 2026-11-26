@@ -811,3 +811,13 @@ body.page-dark .section-alt { background: rgba(12, 22, 29, .84); }
 .event-giveback .eyebrow { color: var(--accent-2); }
 .event-giveback .btn { margin-top: .4rem; }
 .event-giveback p:last-child { margin-bottom: 0; }
+
+/* Shop: the Square "Online Shop" catalog, from Kit's shop feed. Prices sit in
+   a two-column list so a crowler with eighteen beers stays scannable. */
+.shop-section { padding-top: 0; }
+.shop-img { display: block; width: 100%; height: auto; aspect-ratio: 4/3; object-fit: cover; background: var(--navy); }
+.shop-prices { list-style: none; margin: 0; padding: 0; font-variant-numeric: tabular-nums; }
+.shop-prices li { display: flex; justify-content: space-between; gap: 1rem; padding: .3rem 0; border-top: 1px solid var(--line); }
+.shop-prices li:first-child { border-top: 0; }
+.shop-prices .sold-out { color: var(--muted); text-decoration: line-through; }
+.shop-prices .sold-out span:last-child { text-decoration: none; }

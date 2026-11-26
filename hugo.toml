@@ -91,10 +91,6 @@ disableKinds = ["taxonomy", "term"]
   # Empty means no pixel is rendered at all. See partials/meta-pixel.html.
   metaPixelId = "4753268651652927"
 
-  # Square's online ordering page (Cash App). /shop forwards here after
-  # counting the visit; see layouts/_default/shop.html. Change it here if the
-  # store ever moves, and every link and printed QR code follows.
-  shopUrl = "https://cash.app/$gravitybrewing/"
 
   [params.social]
     facebook = "https://facebook.com/gravitybrewing"
@@ -160,22 +156,19 @@ disableKinds = ["taxonomy", "term"]
     name = "About Us"
     pageRef = "/about"
     weight = 7
-  # Square's online ordering page: bottles, cans and crowlers for pickup.
-  # /shop is our own page that counts the visit and forwards to
-  # params.shopUrl, so the store can move without touching links.
+  # /shop is our own page (content/shop.md). Online ordering is paused since
+  # Square disabled card-not-present payments, so it sends people to the bar.
+  # Printed QR codes point at /shop, so the address must not change.
   [[menus.main]]
     name = "Shop"
     url = "/shop"
     weight = 8
-    [menus.main.params]
-      external = true
-  # Square eGift cards, sent by text or email.
+  # Square eGift cards were sold online, which Square no longer allows on this
+  # account. Gift cards are sold at the bar; this points at that section.
   [[menus.main]]
     name = "Gift Cards"
-    url = "https://app.squareup.com/gift/MLS71HNJMK71B/order"
+    url = "/shop#gift-cards"
     weight = 9
-    [menus.main.params]
-      external = true
 
 [markup.goldmark.renderer]
   unsafe = true  # allow inline HTML in content where needed
